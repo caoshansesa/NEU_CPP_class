@@ -6,7 +6,7 @@ ODIR=.
 
 LIBS=-lncurses
 
-_DEPS = 
+_DEPS =
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 _OBJ = hw1.o
@@ -21,9 +21,9 @@ hw1: $(OBJ)
 .PHONY: clean
 
 clean:
-	rm -f *~ core $(INCDIR)/*~ 
+	rm -f *~ core $(INCDIR)/*~
 	rm -f hw1
 	rm -f *.o
 
-etags: 
-	find . -type f -iname "*.[ch]" | xargs etags --append 
+etags:
+	find . -type f -iname "*.[ch]" | xargs etags --append
