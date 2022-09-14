@@ -19,7 +19,7 @@ int main() {
   char dollar = '$';
   char symble_in_use;
 
-  cout << "This is a program could print "
+  cout << "This is a program could print \n"
             "an up-wise Right triangle,\n" 
             "a down-wise triangle, \n"
             "a rectangle.\n\n\n"
@@ -34,10 +34,10 @@ int main() {
 
 
 
-  cout << "Please input the number of rows you expect \n";
+  cout << "Please input the number of rows you expect: \n";
   cin >> num_of_rows;
-  cout << "Please privide what shape you prefer, input 1 for +, input 2 for * "
-          "input 3 for $";
+  cout << "Please privide what shape you prefer, input 1 for +, input 2 for *, "
+          "input 3 for $. \n";
 
   cin >> symble_choice;
   if (symble_choice == 1) {
@@ -52,8 +52,8 @@ int main() {
   }
 
   cout << "------------------------------------" << endl;
-
-  /* Use + to print a up-wise triangle */
+    cout << "up-wise triangle \n";
+  /* print a up-wise triangle */
   for (int i = 0; i < num_of_rows; i += 1) {
     for (int j = 0; j < num_of_rows - i; j += 1) {
       cout << symble_in_use;
@@ -63,7 +63,7 @@ int main() {
 
   cout << "------------------------------------" << endl;
   /* print a down-wise triangle */
-
+  cout << "down-wise triangle \n";
   for (int i = 0; i < num_of_rows; ++i) {
     for (int j = 0; j < i; ++j) {
       cout << symble_in_use;
@@ -72,6 +72,7 @@ int main() {
   }
 
   cout << "------------------------------------" << endl;
+  cout << "rectangle \n";
   /* print a rectangle */
   for (int i = 0; i < num_of_rows; ++i) {
     for (int j = 0; j < num_of_rows; ++j) {
