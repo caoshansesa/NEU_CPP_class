@@ -20,19 +20,17 @@ int main() {
   char symble_in_use;
 
   cout << "This is a program could print \n"
-            "an up-wise Right triangle,\n" 
-            "a down-wise triangle, \n"
-            "a rectangle.\n\n\n"
-            "Please provide:\n"
-            "number of rows you expected,\n" 
-            "the shape you want, \n"
-            "and the symble you prefer \n"
+          "an up-wise Right triangle,\n"
+          "a down-wise triangle, \n"
+          "a rectangle.\n\n\n"
+          "Please provide:\n"
+          "number of rows you expected,\n"
+          "the shape you want, \n"
+          "and the symble you prefer \n"
           "----------------------------------------------------------\n";
   do {
     cout << '\n' << "Press a key to continue...";
   } while (cin.get() != '\n');
-
-
 
   cout << "Please input the number of rows you expect: \n";
   cin >> num_of_rows;
@@ -52,7 +50,7 @@ int main() {
   }
 
   cout << "------------------------------------" << endl;
-    cout << "up-wise triangle \n";
+  cout << "up-wise triangle \n";
   /* print a up-wise triangle */
   for (int i = 0; i < num_of_rows; i += 1) {
     for (int j = 0; j < num_of_rows - i; j += 1) {
