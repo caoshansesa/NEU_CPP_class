@@ -1,8 +1,24 @@
+/*************************************
+ * Shan Cao
+ * Practices 2
+ * 09/19/2022 22:20:56
+ *************************************/
+
+#include <algorithm>
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <string>
 
 using namespace std;
+
+int sum_of_ascII(string ss) {
+  int sum = 0;
+  for (int i = 0; i < ss.size(); i++) {
+    sum = sum + ss[i];
+  }
+  return sum;
+}
 
 int main() {
   cout << "Guest Book\n\n";
@@ -44,6 +60,11 @@ int main() {
   cout << "Country:  \t";
   cin >> country;
 
+
+
+  cout << "--------------------------------------------------------\n\n";
+  cout << "Display what has been typed in \n";
+
   cout << "\nENTRY\n"  // display the entry
        << "First Name:  \t" << first_name + "\n"
        << "Middle Name: \t" << ' ' + middle_initial + ".\n"
@@ -53,9 +74,32 @@ int main() {
        << "State:       \t" << state_name + " \n"
        << "Country      \t" << country + "\n";
 
-  cout << "\nENTRY\n"
-       << first_name + " " + middle_initial + ". " + last_name + "\n"
-       << address + "\n"
-       << city + ", " + state_name + "  " + zip_code + "\n"
-       << country + "\n";
+
+
+
+
+  cout << "--------------------------------------------------------\n\n";
+  cout << "Display what it looks like if we put all the variables into the "
+          "same variables\n";
+  string longstr = first_name + " " + middle_initial + " " + last_name + '\n' +
+                   address + " \n" + city + " " + state_name + " " + zip_code +
+                   " \n" + country + "\n";
+
+  longstr = longstr + '\n';
+  cout << "\nENTRY\n";  // display the entry
+  cout << longstr;
+
+  replace(longstr.begin(), longstr.end(), '\n', '.');
+
+  cout << "--------------------------------------------------------\n\n";
+  cout << "Display what it looks like if we replace all the slash n with the "
+          "dot \n";
+  cout << longstr;
+
+
+
+
+  int total = sum_of_ascII(longstr);
+  cout << "the number is: \t";
+  cout << total;
 }
