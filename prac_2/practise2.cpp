@@ -29,9 +29,11 @@ int main() {
   cout << "City:\t";
   cin >> city;
 
-  char state_name[2];
+  string state_name;
   cout << "state:\t";
-  cin.getline(state_name,2);
+  cin.ignore(); /* Flush the cin*/
+  getline(cin, state_name, '\n');
+  state_name = state_name.substr(0,2);/* get only the first two digits for the State name string */
 
   string zip_code;
   cout << "zip_code\t";
@@ -43,19 +45,16 @@ int main() {
 
   cout << "\nENTRY\n"  // display the entry
        << "First Name:\t" << first_name + "\n"
-       << "Middle Name:\t" << ' ' +  middle_initial + ".\n"
+       << "Middle Name:\t" << ' ' + middle_initial + ".\n"
        << "Last Name:\t" << last_name + "\n"
        << "Address: \t" << address + "\n"
        << "City: \t" << city + "\n"
-       << "State: \t" << state_name[0] + ' ' + state_name[1] + ' ' + " \n"
+       << "State: \t" << ' ' + state_name[0] + state_name[1] + ' ' + " \n"
        << "Country \t" << country + "\n";
 
   cout << "\nENTRY\n"
-        << first_name + " " + middle_initial + ". " + last_name + "\n"
-        << address + "\n"
-        << city + ", " + state_name + "  " + zip_code + "\n"
-        << country + "\n";
+       << first_name + " " + middle_initial + ". " + last_name + "\n"
+       << address + "\n"
+       << city + ", " + state_name + "  " + zip_code + "\n"
+       << country + "\n";
 }
-
-
-
