@@ -99,6 +99,8 @@ int main() {
 
 
 
+  cout << "--------------------------------------------------------\n\n";
+  cout << "The Sum of the ASC value of all the digits \n";
   int total = sum_of_ascII(longstr);
   cout << "the number is: \t";
   cout << total;
