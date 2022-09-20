@@ -99,9 +99,9 @@ int main() {
 
 
 
-  cout << "--------------------------------------------------------\n\n";
-  cout << "The Sum of the ASC value of all the digits \n";
+  cout << "\n--------------------------------------------------------\n\n";
+  cout << "\nThe Sum of the ASC value of all the digits \n";
   int total = sum_of_ascII(longstr);
-  cout << "the number is: \t";
-  cout << total;
+  cout << "\nthe number is: \t";
+  cout << total << endl;
 }
