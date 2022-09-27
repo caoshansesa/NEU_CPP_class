@@ -33,7 +33,7 @@ file3: $(_OBJ3)
 4_rdm_para_gnrtor: $(_OBJ4)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
-5_Hex_to_Oct: $(_OBJ4)
+5_Hex_to_Oct: $(_OBJ5)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 .PHONY: clean
 
