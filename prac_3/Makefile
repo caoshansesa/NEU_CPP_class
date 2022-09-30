@@ -13,10 +13,10 @@ _OBJ = prac3.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.cpp $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC)  -c -o $@ $< $(CFLAGS)
 
 practise3: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+	$(CC) -o  $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean
 
