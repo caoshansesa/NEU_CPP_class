@@ -30,7 +30,7 @@ void DisplayOptionsMenu() {
 void Options() {
   int choice = 0;
   do {
-    system("cls");
+    system("clear");
     DisplayOptionsMenu();
     choice = GetInput();
     switch (choice) {
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
   int choice = 0;
 
   do {
-    system("cls");
+    system("clear");
     DisplayMainMenu();
     choice = GetInput();
     switch (choice) {
@@ -70,6 +70,5 @@ int main(int argc, char *argv[]) {
         break;
     }
   } while (choice != 3);
-  system("PAUSE");
   return EXIT_SUCCESS;
 }
