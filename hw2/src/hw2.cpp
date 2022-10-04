@@ -1,5 +1,11 @@
 #include "../inc/hw2.hpp"
 
+void wait_on_enter()
+{
+    string dummy;
+    getline(std::cin, dummy);
+}
+
 int GetInput() {
   int choice;
   cin >> choice;
@@ -29,7 +35,7 @@ void option_for_main_menu() {
         cout << "difficulty stuff";
         break;
       case 2:
-        cout << "difficulty stuff";
+        option_for_2_print_passager_manifest();
         break;
       case 3:
         cout << "difficulty stuff";
@@ -57,7 +63,16 @@ void option_for_main_menu() {
 
 void print_2_passager_manifest() {}
 
-void print_2_seat_map() {}
+void print_2_seat_map() {
+  for (auto& row : seat) {
+    for (int column : row) {
+      cout << "x"
+           << " ";
+    }
+    cout << endl;
+  }
+wait_on_enter();
+}
 
 void Display_2_Print_passager_manifest() {
   cout << " 1 - Print Passager Manifest" << endl;
@@ -72,10 +87,10 @@ void option_for_2_print_passager_manifest() {
     choice = GetInput();
     switch (choice) {
       case 1:
-        cout << "difficulty stuff";
+        // task 1
         break;
       case 2:
-        cout << "sound stuff";
+        print_2_seat_map();
         break;
       case 3:
         break;
@@ -83,6 +98,8 @@ void option_for_2_print_passager_manifest() {
         break;
     }
   } while (choice != 3);
+  // turn back to main menu
+  option_for_main_menu();
 }
 
 void load_3_passager_manifest() {
@@ -93,69 +110,38 @@ void save_4_passager_manifest() {
   // Show Blank and show the main screen
 }
 
-void print_menu_5()
-{
+void print_menu_5() {}
 
-}
-
-void option_for_menu_5()
-{
-    
-}
+void option_for_menu_5() {}
 
 void choose_seats_5() {
-   // Type define 1, First class, Bu..clas? ecnoy class?
-   /*
-        * Which_class_the_user_input()
-    {
-        FirstClass()
-        BusinessClass()
-        Economy()
-    }
-   */
-   //
-   // Assign a random seats 
-   //   RandomNumGenerator()
-//	    int = num_generator()
-//	            if(int not seen before)                             
+  // Type define 1, First class, Bu..clas? ecnoy class?
+  /*
+       * Which_class_the_user_input()
+   {
+       FirstClass()
+       BusinessClass()
+       Economy()
+   }
+  */
+  //
+  // Assign a random seats
+  //   RandomNumGenerator()
+  //	    int = num_generator()
+  //	            if(int not seen before)
   // Check_Whether_this_seat_is_available()
   // Downgrade_compatiple test
   //
 }
 
-
-void Option_Cancel_seat_assignment_6()
-{
-   
-    //print current seat alignment?
-    // save the seat info?
+void Option_Cancel_seat_assignment_6() {
+  // print current seat alignment?
+  //  save the seat info?
 }
 
+void print_boarding_pass_7(int seatNumber, string name) {}
 
-void print_boarding_pass_7(int seatNumber, string name){}
-
-
-
-
-int main(int argc, char *argv[]) {
-  int choice = 0;
-  do {
-    system("clear");
-    ShowMainMenu();
-    choice = GetInput();
-    switch (choice) {
-      case 1:
-        cout << "Pew pew!\n";
-        break;
-      case 2:
-        break;
-      case 3:
-        cout << "Goodbye!";
-        break;
-
-      default:
-        break;
-    }
-  } while (choice != 3);
-  return EXIT_SUCCESS;
+int main(int argc, char* argv[]) {
+  system("clear");
+  option_for_main_menu();
 }
