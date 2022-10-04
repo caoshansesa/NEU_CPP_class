@@ -1,10 +1,5 @@
 #include "../inc/hw2.hpp"
-
-void wait_on_enter()
-{
-    string dummy;
-    getline(std::cin, dummy);
-}
+#include <iostream>
 
 int GetInput() {
   int choice;
@@ -32,9 +27,10 @@ void option_for_main_menu() {
     choice = GetInput();
     switch (choice) {
       case 1:
-        cout << "difficulty stuff";
+        //1 - Display the seating map/chart showing all seats.
         break;
       case 2:
+        //2 - Print a passenger manifest.
         option_for_2_print_passager_manifest();
         break;
       case 3:
@@ -64,14 +60,14 @@ void option_for_main_menu() {
 void print_2_passager_manifest() {}
 
 void print_2_seat_map() {
-  for (auto& row : seat) {
-    for (int column : row) {
-      cout << "x"
-           << " ";
+  for (int i = 0; i < 72; ++i) {
+    if ( i % 9 ==0) {
+        cout << endl;
     }
-    cout << endl;
+    cout << "x" << " ";
   }
-wait_on_enter();
+  cout << endl;
+  system("read -n 1 -s -p \"Press any key to continue...\"");
 }
 
 void Display_2_Print_passager_manifest() {
@@ -81,25 +77,21 @@ void Display_2_Print_passager_manifest() {
 
 void option_for_2_print_passager_manifest() {
   int choice = 0;
+  int wait = 0;
   do {
     system("clear");
     Display_2_Print_passager_manifest();
     choice = GetInput();
     switch (choice) {
       case 1:
-        // task 1
+        print_2_passager_manifest();
         break;
       case 2:
         print_2_seat_map();
-        break;
-      case 3:
-        break;
-      default:
+        choice = 3;  // Manually Exit
         break;
     }
   } while (choice != 3);
-  // turn back to main menu
-  option_for_main_menu();
 }
 
 void load_3_passager_manifest() {
