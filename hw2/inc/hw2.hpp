@@ -1,6 +1,10 @@
 #include <cstdlib>
 #include <iostream>
-#include <vector>
+#include <string.h>
+#include <fstream>
+#include <iostream>
+#include "vector"
+#include <iostream>
 
 using namespace std;
 
@@ -31,5 +35,7 @@ void option_for_menu_5();
 void choose_seats_5();
 
 void Option_Cancel_seat_assignment_6();
+void Option_Print_boardingPass_7();
 
 void print_boarding_pass_7(int seatNumber, string name);
+
