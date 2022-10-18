@@ -20,7 +20,6 @@ $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 all: 3dmatrix db_3d_dynamic db_charptr db_practice_1 db_practice_2 db_struct
-
 	
 3dmatrix: $(_OBJ1)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
@@ -43,14 +42,10 @@ db_struct: $(_OBJ6)
 .PHONY: clean
 
 clean:
-	rm -f *~ core $(INCDIR)/*~ 
 	rm -f 3dmatrix
+	rm *.o
 	rm -f db_3d_dynamic
 	rm -f db_charptr
 	rm -f db_practice_1
 	rm -f db_practice_2
 	rm -f db_struct
-	rm -f *.o
-
-etags: 
-	find . -type f -iname "*.[ch]" | xargs etags --append 
