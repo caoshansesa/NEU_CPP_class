@@ -9,6 +9,8 @@
 #include <iostream>
 #include <string>
 
+// Bug 1. missing std namespace
+using namespace std;
 struct car {
   char *name;
   int modelYear;
@@ -16,7 +18,7 @@ struct car {
 };
 
 int main(void) {
-  char n[20];
+  char n[20]; 
   int a;
   float w;
 
@@ -25,22 +27,22 @@ int main(void) {
 
   cout << "What is your favorite car's name: ";
   cin >> n;
-  name = n;
+  c.name = n; //bug 3. name is part of struct car
 
   cout << "When was it launched : ";
-  cout >> a;
+  cin >> a;// bug 4.this should be a cin for input
   c.modelYear = a; 
 
   cout << "How much speed does it give : ";
-  cin << w;
-  c.speed = speed; 
+  cin >> w; //bug 5. the operator error
+  c.speed = w; //bug 6. the assignment should be input w
 
 
-  cout << "Car's name is" << c.name << ", and should be the same as" << cPtr.name
+  cout << "Car's name is" << c.name << ", and should be the same as" << cPtr->name// bugs 7. should use cPtr ->name
        << ".\n";
 
-  cout << "Car's model year is" << car.modelYear << ", and should be the same as "
-       << modelYear << ".\n";
+  cout << "Car's model year is" << c.modelYear << ", and should be the same as "// use instance not the type
+       << cPtr->modelYear << ".\n";//9 shoudl use cPtr->modelYear
   cout << "Car's speed is" << c.speed << ", and should be the same as "
-       << w << ".\n";
+       << cPtr->speed  << ".\n"; // 10. it should use cPtr -> speed
 }

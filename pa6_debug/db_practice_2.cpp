@@ -5,30 +5,37 @@
 // Number of errors/bugs = 10
 
 #include <iostream>
+
+#define SIZE 3  // 1. No define for SIZE
 using namespace std;
-void display(double Matrix[3][3],int size); 
+void display(int Matrix[SIZE][SIZE], int size);  // 2.API siginiture wrong
 
 int main(void) {
-	int size=3; 
-	int Matrix[size + 1][size + 1]; 
-	cin<<"Enter 9 elements of the matrix:"<<endl;
-	for (i = 0; i < size; i++) 
-    {
-      int j = 0;
-      for (; j < size; j++){
-        cin>>Matrix[j][i]; 
-      }
+  int size = 3;
+  int input = 0;           // define input
+  int Matrix[SIZE][SIZE];  // 3 . the requiremnt say 3x3, this use 4x4.
+  cout << "Enter 9 elements of the matrix:"
+       << endl;                   // 4. should use cout for te output
+  for (int i = 0; i < SIZE; i++)  // 5.  i was not defined.
+  {
+    int j = 0;  // 6.  j was not defined.
+    for (; j < SIZE; j++) {
+      cin >> input;
+      Matrix[i][j] = input;  // 7 could not assign to Matrix directly typo also
     }
-	display(&Matrix,3);
-	return 0;
+  }
+  display(Matrix, SIZE);  // 8, remove &
+                          // 9.typo Matrix
+  return 0;
 }
 
-void display(int Matrix[3][3], float size) { 
-	for (int i = 0; i < size , i++) {
-		for (int j = 0; j < size; i++) 
-        {
-            cout<<Matrix[i][j]<<", ";
-        }
-        cout<<endl
-	}    
+void display(int Matrix[SIZE][SIZE], int size) {  // 10. signiture does not
+                                                  // match
+  for (int i = 0; i < size; i++) {  // 11 :  ; insted ,
+    for (int j = 0; j < size; i++)  // 12.  j++ inread of i++
+    {
+      cout << Matrix[i][j] << ", ";
+    }
+    cout << endl;  // 13. missing a ;
+  }
 }
