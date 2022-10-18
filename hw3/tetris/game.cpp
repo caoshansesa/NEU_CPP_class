@@ -57,12 +57,18 @@ int game(void) {
   struct timespec tim = {0,1000000};  // Each execution of while(1) is approximately 1mS
   struct timespec tim_ret;
   int move_counter = 0;
+  int random_fall;
+  int fall_options[5] = {50, 1000, 250, 750, 500};
   int move_timeout = BASE_FALL_RATE;            
+  int init_move = MOVE_OK;
 
+  time_t time_start = time(NULL);
+  time_t time_passed = 0; 
   while(1) {
     switch(state) {
     case INIT:               // Initialize the game, only run one time 
       initscr();
+      start_color();
       nodelay(stdscr,TRUE);  // Do not wait for characters using getch.  
       noecho();              // Do not echo input characters 
       getmaxyx(stdscr,y,x);  // Get the screen dimensions 
@@ -72,41 +78,70 @@ int game(void) {
       state = ADD_PIECE;
       break;
     case ADD_PIECE:          // Add a new piece to the game
+      init_move = MOVE_OK;
       if (next) {
-	current = next;
-	next = create_tetromino ((w->upper_left_x+(w->width/2)), w->upper_left_y);
+	      undisplay_tetromino(next);
+          current = next;
+	      init_move = move_tet(current, (w->upper_left_x+(w->width/2)), w->upper_left_y);
+	      next = create_tetromino (w->upper_left_x + w->width + 5, w->upper_left_y + (w->height/2));
       }
       else {
-	current = create_tetromino ((w->upper_left_x+(w->width/2)), w->upper_left_y);
-	next = create_tetromino ((w->upper_left_x+(w->width/2)), w->upper_left_y);
+	      current = create_tetromino ((w->upper_left_x+(w->width/2)), w->upper_left_y);
+      	next = create_tetromino (w->upper_left_x + w->width + 5, w->upper_left_y + (w->height/2));
+
+        
       }
       display_tetromino(current);
+      display_tetromino(next);
+      random_fall = rand() % 5;
+      move_timeout = fall_options[random_fall];
       state = MOVE_PIECE;
       break;
     case MOVE_PIECE:         // Move the current piece 
       if ((arrow = read_escape(&c)) != NOCHAR) {
 	switch (arrow) {
-	case UP:
-	  mvprintw(10,10,"UP            ");
-	  break;
-	case DOWN:
-	  mvprintw(10,10,"DOWN          ");
-	  break;
-	case LEFT:
-	  mvprintw(10,10,"LEFT          ");
-	  break;
-	case RIGHT:
-	  mvprintw(10,10,"RIGHT         ");
-	  break;
-	case REGCHAR: 
-	  mvprintw(10,10,"REGCHAR 0x%02x",c);
+        case UP:
+              undisplay_tetromino(current);
+              rotate_cw(current);
+              display_tetromino(current);
+              mvprintw(10,10,"UP            ");
+          break;
+        case DOWN:
+              undisplay_tetromino(current);
+              rotate_ccw(current);
+              display_tetromino(current);
+              mvprintw(10,10,"DOWN          ");
+          break;
+        case LEFT:
+              undisplay_tetromino(current);
+              move_tet(current, current->upper_left_x - 1, current->upper_left_y);
+              display_tetromino(current);	
+              mvprintw(10,10,"LEFT         ");
+          break;
+        case RIGHT:
+              undisplay_tetromino(current);
+              move_tet(current, current->upper_left_x + 1, current->upper_left_y);
+              display_tetromino(current);
+             mvprintw(10,10,"RIGHT         ");
+          break;
+        case REGCHAR: 
+          mvprintw(10,10,"REGCHAR 0x%02x",c);
 	  if (c == 'q') {
 	    state = EXIT;
  	  }
+          else if (c == 'p'){
+            time_passed += difftime(time(NULL), time_start);
+            state = PAUSE;
+          }
+	  else if (c == ' '){
+	    move_timeout = DROP_RATE;
+	    mvprintw(10,10,"SPACE 0x%02x",c);
+	  }
 	}
       } 
       if (move_counter++ >= move_timeout) {
 	move_counter = 0;
+	move_timeout = fall_options[random_fall];
       }
       break;
     case EXIT:

@@ -44,7 +44,7 @@ typedef struct terminal_dimensions {
 #endif
 
 // Game States
-enum {INIT, ADD_PIECE, MOVE_PIECE, ADJUST_WELL, EXIT};
+enum {INIT, ADD_PIECE, MOVE_PIECE, ADJUST_WELL, PAUSE,EXIT};
 
 void init_game(void);
 

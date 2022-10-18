@@ -55,6 +55,7 @@ tetromino_t *create_tetromino (int, int);
 int destroy_tetromino(tetromino_t *);
 void print_tetromino(tetromino_t *tet);
 void display_tetromino(tetromino_t *tet);
+void undisplay_tetromino(tetromino_t *tet);
 void test_tetromino(void);
 
 /* tetromino.hpp ends here */
