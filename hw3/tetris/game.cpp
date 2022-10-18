@@ -142,6 +142,9 @@ int game(void) {
       if (move_counter++ >= move_timeout) {
 	move_counter = 0;
 	move_timeout = fall_options[random_fall];
+        undisplay_tetromino(current);
+	int move_down = move_tet(current, current->upper_left_x , current->upper_left_y + 1);
+        display_tetromino(current);
       }
       break;
     case EXIT:
