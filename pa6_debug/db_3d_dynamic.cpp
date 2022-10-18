@@ -21,9 +21,7 @@ int main() {
   printf("Initializing array values!\n");
   for (i = 0; i < N; i++) {
     for (j = 0; j < M; j++) {
-      d_array[i][j] =
-          i +
-          j;  // Bug2: Use ; intead of ,
+      d_array[i][j] = i + j;  // Bug2: Use ; intead of ,
               // Bug3: The way access the code is different, use a[][] intead
     }
   }
