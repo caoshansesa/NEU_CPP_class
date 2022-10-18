@@ -38,11 +38,11 @@ int main(void) {
   c.speed = w; //bug 6. the assignment should be input w
 
 
-  cout << "Car's name is" << c.name << ", and should be the same as" << cPtr->name// bugs 7. should use cPtr ->name
+  cout << "Car's name is " << c.name << ", and should be the same as " << cPtr->name// bugs 7. should use cPtr ->name
        << ".\n";
 
-  cout << "Car's model year is" << c.modelYear << ", and should be the same as "// use instance not the type
+  cout << "Car's model year is " << c.modelYear << ", and should be the same as "// use instance not the type
        << cPtr->modelYear << ".\n";//9 shoudl use cPtr->modelYear
-  cout << "Car's speed is" << c.speed << ", and should be the same as "
+  cout << "Car's speed is " << c.speed << ", and should be the same as "
        << cPtr->speed  << ".\n"; // 10. it should use cPtr -> speed
 }

@@ -32,7 +32,7 @@ int main(void) {
 void display(int Matrix[SIZE][SIZE], int size) {  // 10. signiture does not
                                                   // match
   for (int i = 0; i < size; i++) {  // 11 :  ; insted ,
-    for (int j = 0; j < size; i++)  // 12.  j++ inread of i++
+    for (int j = 0; j < size; j++)  // 12.  j++ inread of i++
     {
       cout << Matrix[i][j] << ", ";
     }

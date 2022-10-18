@@ -17,7 +17,7 @@ int main(void){ // return type
     while(*(cPtr) != '\0'){  //bug 5: no decrement
 							// bug 6: use dereference to get the value to compare.
  							
-        cout<<cPtr++;       //bug7: need output value
+        cout << *(cPtr++);     //bug7: need output value
     }
   cout<<"\n";
   return 0;    
