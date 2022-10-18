@@ -7,7 +7,7 @@
 // 
 
 #include <iostream>
-#define SIZE 7
+#define SIZE 3
 
 using namespace std; // Bugs1: namespace missing
 
@@ -50,10 +50,15 @@ void display_3d(double Matrix_3d[SIZE][SIZE][SIZE],int size)
 	
 	int i;
 	for (i= 0; i < (size*size*size); i++) {
-       	cout<<(double*)Matrix_3d + i <<", "<< Matrix_3d[i/(size*size)][(i/size)%size][i%size]<<endl;
-        if(!(i % (size*size)))
+        if((i % (size))==0)
+        {
+            cout << endl;
+        }
+        if((i % (size*size))==0)
         {
             cout<< "Next panel" << endl;
         }
+
+       	cout<<(double*)Matrix_3d + i <<", "<< Matrix_3d[i/(size*size)][(i/size)%size][i%size]<<endl;
     }
 }
