@@ -34,10 +34,17 @@
 /* Code: */
 #include <stdio.h>
 #include <ncurses.h>
+#include <string>
+#include <cstring>
 #include "tetromino.hpp"
 #include "game.hpp"
 
+char * player_name[80] ={};
+
 int main(void) {
+ // strcpy(get_name(),player_name);
+  get_name();
+  clear();
   game();
   return (0);
 }

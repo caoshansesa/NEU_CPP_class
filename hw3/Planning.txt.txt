@@ -1,0 +1,162 @@
+Milestone1
+abhutta edited this page 3 days ago · 4 revisions
+ Pages 6
+Find a Page…
+Home
+Github Setup Instructions
+GNU Debugging
+Introduction to Linux and Coding with Makefile
+Milestone1
+Tetris Project
+Objective:
+Preliminary Steps
+Overview:
+Milestone 1 Requirements
+Adding new shapes and displaying them and selecting them randomly
+Random Drop Rates
+Ending the Game / Game over Screen
+User Lives and Name
+Hints
+What to turn in.
+Scoring
+Milestone2
+Clone this wiki locally
+https://github.khoury.northeastern.edu/CS3520/Fall-2022.wiki.git
+Tetris Project
+Objective:
+This project is divided into two milestones. Milestone1 and Milestone2 are both part of Assignment3. You will need to complete Milestone1 before you can complete Milestone2.
+
+In this milestone, you will be starting your tetris project. All of the code will be compiled or tested on Khoury Linux server. During these milestones, you will start by getting familiarized with the basic structure of the game and then will work with the codebase to accomplish a number of tasks. This process mimics what you often see in the real-world where a new member of the team first goes through an on-boarding process before he/she can start working on adding features to the project.
+
+In this milestone, you will be adding tetromino movements to your program. This will include both movement that the user controls - left/right arrows, spacebar along with movement that happens through automatic falling of the pieces and pause.
+
+Left and right tetromino control using the arrow keys.
+Collision detection with the walls of the well and previous tetromino at the bottom of the well.
+Automatic movement of the tetromino based on a timer.
+Dropping the current tetromino using the spacebar
+Pause/Un-pause the game
+Detecting that the game has ended. Display a game over message to the player.
+Give the user 1 life at the start. When the game begins, prompt the user to enter his/her name. Also display number of lives left on screen.
+You will also be clearing the bottom of the well while keeping score for the game (in next milestone) but now let's work on detecting if game has ended and adding new tetromino shapes.
+
+Preliminary Steps
+This section assumes that you have already setup your local repository, setup upstream and fetched the code (i.e., completed all steps mentioned in GitHub setup guide)
+
+Create a milestone_1 branch: You will be creating a branch where you will be doing the work for this phase of the project. The TAs will refer to this branch for grading. The following are the steps for creating a branch. This involves creating the branch, checking it out, and then pushing the branch to your github repo. You can get more information on branching in the Pro Git branching chapter.
+git branch milestone_1
+git checkout milestone_1
+git push origin milestone_1
+Don't forget that you have been working on the "master" or "main" branch so far. Think of each branch as an independent version of the code. If you decide to go back to main branch, just use checkout command. By the way, you could decide to merge branches together but that's not what we will need for now.
+
+Overview:
+In this project we are going to be building the game tetris to run on Linux environment (Khoury Server). To simplify the development of the game, we will be using the ncurses library rather than a pixel based graphics library such as GTK. Ncurses is a character based graphics library that has been used to develop command line utilities and tools such as editors. This library is already part of Linux environment and you wont be able to install it in replit or your local windows computer.
+
+**To get started on the right foot, I would highly recommend that you should spend some time looking over the documentation for ncurses library. Believe me, it will save you a ton of hours later on. **
+
+ncurses documentation
+To get your project started, you have been provided with a template in the tetris folder. Below is a summary of the files that have been provided with the project:
+
+Makefile: This file is used to build the executable tetris. The following is an example of how to build tetris.
+[abhutta@github:~/tetris] $ make
+g++ -c -o main.o main.cpp -I../include -g -O0
+g++ -c -o tetromino.o tetromino.cpp -I../include -g -O0
+g++ -c -o game.o game.cpp -I../include -g -O0
+g++ -c -o well.o well.cpp -I../include -g -O0
+g++ -c -o key.o key.cpp -I../include -g -O0
+g++ -o tetris main.o tetromino.o game.o well.o key.o -I../include -g -O0 -lncurses
+[abhutta@github:~/tetris] $ 
+To remove the build files, you can do a "make clean". This will remove tetris and the associate object files (*.o). This is useful prior to committing files to the repository because you typically do not want to include generated files in the repo.
+
+[abhutta@github:~/tetris] $ make clean 
+rm -f *~ core /*~ 
+rm -f  tetris
+rm -f *.o
+[aabhutta@github:~/tetris] $
+tetromino.cpp[hpp]: Defines the structure for the tetromino along with functions to create, destroy, display, undisplay, and rotate the tetromino.
+This file includes four functions. Move_tet attempts to move a tet and provides the status of MOVE_OK if it was successful. If it fails due to a collision, then MOVE_FAILED is returned. In this case, the tet position is not modified. The two rotate functions have been defined to handle collisions.
+
+//New functions
+int move_tet (tetromino_t *tet, int new_x, int new_y);
+int check_collision (tetromino_t *tet);
+
+//Updated functions
+int rotate_cw(tetromino_t *tet);
+int rotate_ccw(tetromino_t *tet);
+well.cpp[hpp]: Includes function to initialize, draw, undraw and change the dimensions of the well where the tetromino will fall.
+
+key.cpp[hpp]: Includes a function that will read key presses from the keyboard. Because tetris uses the arrow keys, this function deals with the ANSI escape sequences generated by the arrow keys.
+
+game.cpp[hpp]: This file defines a function called game(). This function includes a state machine wrapped in an infinite loop. This state machine is the heart of the game. Game activities such as block movement, collision detection, scoring, game termination, etc. are launched from this state machine.
+
+In the current game while(1) loop. The speed at which the loop can execute is limited to 1000hz (period of 1mS). Each loop cannot happen any faster than 1mS/iteration. This is controlled by the nanosleep at the bottom of the loop.
+
+    struct timespec tim = {0,1000000};  // Each execution of while(1) is approximately 1mS
+	...
+	nanosleep(&tim,&tim_ret);
+Because, the base rate of execution of the event loops is close to 1mS/iteration, we can count iteration to allow us to control the rate at which events occur. The counter has a count variable and a timeout. In the case of the timeout, the value is initialized to BASE_FALL_RATE. This is a defined constant that is in tetris.h. The default value is 500.
+
+This implies that move counter will reach the timeout value every 500mS. This can be used to automatically move a tetromino down a row at the expiration of the timer. If it is desirable for the tetromino to fall faster, as in the case of dropping the tet using the spacebar, the move_timeout value can be decreased to make the timer expire faster.
+
+	int move_counter = 0;
+	int move_timeout = BASE_FALL_RATE;
+	...
+	if (move_counter++ >= move_timeout) {
+	   move_counter = 0;
+    }
+tetris.hpp: This file includes two defined constants related to the event loop counter.
+#define BASE_FALL_RATE 500 // Provides a fall velocity of 500mS/row fall rate. 
+#define DROP_RATE 10       // Provided a drop velocity of 10mS/row fall rate for dropping with spacebar.
+These constants can be used to move a tetromino at the prescribed rate.
+
+Milestone 1 Requirements
+This milestone is about gaining basic familiarity with the code and then adding few features like adding rotation to the tetromino using the arrow keys and so on.
+
+In the game() function, there is a switch statement that indicates the current state of the state machine. The state where you will be making your modifications is MOVE_PIECE. This state currently prints a message for each arrow key or the ASCII value of the key if it is a standard key such as a letter or the spacebar.
+
+You should implement the code necessary to implement the following functionality.
+
+Up Arrow: Rotate tetromino clockwise.
+Down Arrow: Rotate tetromino counter clockwise
+x or q: Quit the game. q key already works (implemented in the code)
+Left Arrow: Move tetromino left bounded by the left side of the well.
+Right Arrow: Move tetromino right bounded by the right side of the well.
+The current tet should fall at the appropriate rate. When the tet collides with the bottom of the well it should stop and the next tet should start falling into the well.
+Spacebar: Drop the current tetromino to the bottom of the well immediately (at much faster pace that normal). When it collides with the bottom or a previously placed tet, the next tet should fall into the well.
+p: Pause the game. Resume when pressed again
+Adding new shapes and displaying them and selecting them randomly
+Let's start by create four original {new} tetromino pieces. They can be any shape you want but it has to be contiguous like the standard pieces are. You can use {less or more than} 6 squares and they can be rotationally symmetric as well. Once you have a few different tetomino shapes, you will randomly select the next shape {to be dropped}. Display the next piece {to be dropped} on the right side of the well. This will enable the player to better plan their current move.
+Random Drop Rates
+Each tetromino should now have a random drop rate. You can select a few pre-defined drop rates and randomly select one for the new tetrimino. The effect of this will be that some tets will fall faster than others. Make the drop rate significantly different than others to observe the difference while playing the game.
+Ending the Game / Game over Screen
+The game is over when a new tetromino cannot be added to the well without colliding i.e., when a tetromino will immediately collide if it is dropped in the well.
+
+In this case, the game state should be set to GAME_OVER.
+
+The game over state will clear the screen and display a message. Your code should display the current player's score on this screen.
+
+User Lives and Name
+Your game will start with 1 life. You should display the number of lives left on the screen at the appropriate location. The name should also be displayed at the appropriate location.
+
+Hints
+There is a pointer to the current tet structure called current. You should use this to display and rotate the tet.
+There are functions to manage the rotation of the tet structure in tetromino.cpp. You do not need to write these functions.
+To perform the rotation, you should un-display the tet, rotate it, and then display it. There are display/un-display functions in tetromino.cpp.
+Each key on the keyboard is represented by an ASCII hex code. Find the codes for the keys and use the code in key.c file to handle the keypress event for those keys.
+There are functions to undraw the well and change its dimensions, if needed.
+If the game is paused and key 'p' is pressed again, that should resume the game.
+Pressing spacebar twice should not affect the drop rate.
+After the game over screen and score are displayed the game should gracefully exit after 5-10 seconds.
+What to turn in.
+Check in your game into your milestone_1 branch. The TAs will checkout this branch, compile the code, and then run it to grade your work. All of your testing will happen on Khoury servers.
+Submit the link to the branch/commit as described in GitHub setup instructions.
+Scoring
+5 pts: Clockwise and counter clockwise rotation of the tetromino in response to the arrow keys.
+5 pts: Left/Right motion of the tetromino.
+5 pts: Automatic dropping of the current tetromino as the game runs prior to the spacebar being pressed.
+5 pts: Dropping the tetromino immediately (i.e., at much faster pace) when the spacebar is pressed.
+5 pts: Pause and Resume game.
+5 pts: Add 4 new shapes to the existing tetromino structure, selected randomly.
+10 pts: Display next random piece on the screen. Display name and number of lives.
+10 pts: Add random drop rates for every tetromino that falls into the well.
+5 pts: Detect the Game over scenario.
+Note: If your code does not compile and run on Khoury linux server, your grade will start at 50%. Please build and test in that environment.

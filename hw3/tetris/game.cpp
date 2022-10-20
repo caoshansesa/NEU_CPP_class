@@ -38,14 +38,48 @@
 #include <unistd.h>
 
 #include <cstdlib>
+#include <cstring>
 #include <ctime>
+#include <string>
 
 #include "key.hpp"
 #include "tetris.hpp"
 #include "tetromino.hpp"
 #include "well.hpp"
 
+char str[80] = {};
+int lives = 1;
+time_t time_start = time(NULL);
+int score = 0;
 void init_game(void) { int x, y; }
+
+void game_over() {
+  // start get user name: new window
+  char mesg[] = "GAME OVER, the score is :";
+  int x, y;
+  initscr();
+  getmaxyx(stdscr, y, x);
+  mvprintw(y/2 + y/4, (x - strlen(mesg)) / 2, "%s%d", mesg, score);
+  nodelay(stdscr, true);
+  noecho();
+  napms(1000);
+  endwin();
+  refresh();
+}
+
+void get_name() {
+  // start get user name: new window
+  char mesg[] = "Welcome to Tetris, please enter your NAME: ";
+  int x, y;
+  initscr();
+  getmaxyx(stdscr, y, x);
+  mvprintw(y / 2, (x - strlen(mesg)) / 2, "%s", mesg);
+  getstr(str);
+  nodelay(stdscr, true);
+  noecho();
+  endwin();
+  refresh();
+}
 
 int game(void) {
   static int state = INIT;
@@ -59,102 +93,129 @@ int game(void) {
       0, 1000000};  // Each execution of while(1) is approximately 1mS
   struct timespec tim_ret;
   int move_counter = 0;
-  int random_fall;
-  int fall_options[5] = {50, 1000, 250, 750, 500};
   int move_timeout = BASE_FALL_RATE;
-  int init_move = MOVE_OK;
-
-  time_t time_start = time(NULL);
-  time_t time_passed = 0;
+  int display_y =
+      WELL_HEIGHT / 8;  // display_x to help us place the panel on the side
+  int display_x = WELL_WIDTH + (WELL_WIDTH / 8);
   while (1) {
+    mvprintw(w->upper_left_y, w->upper_left_x + display_x, "Player: %s", str);
+    mvprintw(w->upper_left_y + display_y, w->upper_left_x + display_x,
+             "Lives: %d", lives);
+    if (next) {
+      mvprintw(w->upper_left_y + (display_y * 2), w->upper_left_x + display_x,
+               "Next Tetromino:");
+    }
     switch (state) {
       case INIT:  // Initialize the game, only run one time
         initscr();
-        start_color();
         nodelay(stdscr, TRUE);   // Do not wait for characters using getch.
         noecho();                // Do not echo input characters
         getmaxyx(stdscr, y, x);  // Get the screen dimensions
         w = init_well(((x / 2) - (WELL_WIDTH / 2)), 1, WELL_WIDTH, WELL_HEIGHT);
         draw_well(w);
         srand(time(NULL));  // Seed the random number generator with the time.
-                            // Used in create tet.
+        // Used in create tet.
         state = ADD_PIECE;
         break;
       case ADD_PIECE:  // Add a new piece to the game
-        init_move = MOVE_OK;
         if (next) {
-          undisplay_tetromino(next);
+          undisplay_tetromino(next);  // need to alwar
+          move_timeout = (rand() % BASE_FALL_RATE) +
+                         10;  // Random drop rate for each piece
+          next->upper_left_x = w->width / 2 + w->upper_left_x;
+          next->upper_left_y = w->upper_left_y;
           current = next;
-          init_move = move_tet(current, (w->upper_left_x + (w->width / 2)),
-                               w->upper_left_y);
-          next = create_tetromino(w->upper_left_x + w->width + 5,
-                                  w->upper_left_y + (w->height / 2));
+          if (check_collision(current) ==
+              COLLIDE) {  // check for check_collision, meaning we could not
+                          // move the piece any more, so lose a life and start
+                          // again
+            lives--;
+            state = CALL_GAME_AGAIN;
+            break;
+          }
+          next = create_tetromino(w->upper_left_x + display_x,
+                                  w->upper_left_y + (display_y * 3));
         } else {
-          current = create_tetromino((w->upper_left_x + (w->width / 2)),
+          current = create_tetromino(w->upper_left_x + (w->width / 2),
                                      w->upper_left_y);
-          next = create_tetromino(w->upper_left_x + w->width + 5,
-                                  w->upper_left_y + (w->height / 2));
+          next = create_tetromino(w->upper_left_x + display_x,
+                                  w->upper_left_y + (display_y * 3));
         }
+
         display_tetromino(current);
         display_tetromino(next);
-        random_fall = rand() % 5;
-        move_timeout = fall_options[random_fall];
         state = MOVE_PIECE;
         break;
       case MOVE_PIECE:  // Move the current piece
         if ((arrow = read_escape(&c)) != NOCHAR) {
           switch (arrow) {
-            case UP:
+            case UP:  // For each of the cases, un-dispaly and move then display
+                      // again
+              mvprintw(10, 10, "UP            ");
               undisplay_tetromino(current);
               rotate_cw(current);
               display_tetromino(current);
-              mvprintw(10, 10, "UP            ");
               break;
             case DOWN:
+              mvprintw(10, 10, "DOWN          ");
               undisplay_tetromino(current);
               rotate_ccw(current);
               display_tetromino(current);
-              mvprintw(10, 10, "DOWN          ");
               break;
             case LEFT:
+              mvprintw(10, 10, "LEFT          ");
               undisplay_tetromino(current);
-              move_tet(current, current->upper_left_x - 1,
+              move_tet(current, current->upper_left_x - (WELL_WIDTH / 10),
                        current->upper_left_y);
               display_tetromino(current);
-              mvprintw(10, 10, "LEFT         ");
               break;
             case RIGHT:
+              mvprintw(10, 10, "RIGHT         ");
               undisplay_tetromino(current);
-              move_tet(current, current->upper_left_x + 1,
+              move_tet(current, current->upper_left_x + (WELL_WIDTH / 10),
                        current->upper_left_y);
               display_tetromino(current);
-              mvprintw(10, 10, "RIGHT         ");
               break;
             case REGCHAR:
               mvprintw(10, 10, "REGCHAR 0x%02x", c);
-              if (c == 'q') {
+              if (c == 'q' || c == 'x') {  // quit by pressing q or x
                 state = EXIT;
-              } else if (c == 'p') {
+              } else if (c == 'p') {  // hit p, will pause the game, hit p
+                                      // again, it will resume
                 state = PAUSE;
               } else if (c == ' ') {
-                move_timeout = DROP_RATE;
+                move_timeout = DROP_RATE;  // press space to change to a faster
+                                           // tet drop rate
                 mvprintw(10, 10, "SPACE 0x%02x", c);
               }
+              break;
           }
         }
-        if (move_counter++ >= move_timeout) {
+        if (move_counter++ >=
+            move_timeout) {  // drop tetromino in regular speed
           move_counter = 0;
-          move_timeout = fall_options[random_fall];
           undisplay_tetromino(current);
-          int move_down =
-              move_tet(current, current->upper_left_x,
-                       current->upper_left_y + 1);  // Move one step down
-          if (move_down == MOVE_FAILED) {
-            state = ADD_PIECE;
-          }
+          int ret = move_tet(current, current->upper_left_x,
+                             current->upper_left_y + 1);
           display_tetromino(current);
+          if (ret == MOVE_FAILED) {  // if Move fails, you reach the bottom of
+                                     // the well or hit another piece
+            state = ADD_PIECE;       // Add another piece and continue
+          }
         }
         break;
+      case CALL_GAME_AGAIN:  // As long as you have life, then start another
+                             // round, otherwise, GAME_OVER
+        if (lives > 0) {
+          clear();
+          endwin();
+          refresh();
+          state = INIT;
+        } else {
+          state = GAME_OVER;
+        }
+        break;
+
       case PAUSE:
         mvprintw(20, 20, "PAUSE");
         int read_back_dummy;
@@ -175,7 +236,13 @@ int game(void) {
         endwin();
         return (0);
         break;
+
+      case GAME_OVER:
+        game_over();
+
+        break;
     }
+
     refresh();
     nanosleep(&tim, &tim_ret);
   }

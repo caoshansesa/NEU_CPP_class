@@ -1,34 +1,34 @@
-/* game.hpp --- 
- * 
+/* game.hpp ---
+ *
  * Filename: game.hpp
-  * Description: 
+ * Description:
  * Author: Bryce
  * Maintainer: Adeel Bhutta
  * Created: Tue Sep  6 11:08:59 2016
  * Last-Updated: 01-10-2021
  *           By: Adeel Bhutta
-*     Update #: 0
- * Keywords: 
- * Compatibility: 
- * 
+ *     Update #: 0
+ * Keywords:
+ * Compatibility:
+ *
  */
 
-/* Commentary: 
- * 
- * 
- * 
+/* Commentary:
+ *
+ *
+ *
  */
 
 /* Change log:
- * 
- * 
+ *
+ *
  */
 
 /* Copyright (c) 2016 IUB
- * 
- * All rights reserved. 
- * 
- * Additional copyrights may follow 
+ *
+ * All rights reserved.
+ *
+ * Additional copyrights may follow
  */
 
 /* Code: */
@@ -44,11 +44,20 @@ typedef struct terminal_dimensions {
 #endif
 
 // Game States
-enum {INIT, ADD_PIECE, MOVE_PIECE, ADJUST_WELL, PAUSE,EXIT};
+enum {
+  INIT,
+  ADD_PIECE,
+  MOVE_PIECE,
+  ADJUST_WELL,
+  EXIT,
+  PAUSE,
+  CALL_GAME_AGAIN,
+  GAME_OVER
+};
 
 void init_game(void);
 
+void get_name();
 int game(void);
-
-
+void game_over();
 /* game.hpp ends here */
