@@ -117,15 +117,6 @@ int prune_well(well_t *well) {
 
   int space_teller = 0;
   int line;
-
-  int del_line = 0;
-  int first_y = 0;
-  int height = 0;
-  int width = 0;
-  int first_x = 0;
-
-  // chtype row_buf[height][width + 1];
-  chtype sign;
   int y = 0, x = 0;
   chtype row_buf[current_well_height][current_well_width + 1];
   for (int y = 0; y < current_well_height; y++) {
@@ -144,31 +135,39 @@ int prune_well(well_t *well) {
     {
       scored_lined_to_be_removed += 1;
       mvprintw(line, well_first_x, "%*c", current_well_width, ' ');
-      //      drop_lines(well, line);
-      del_line = line;
-      first_y = well->upper_left_y;
-      height = del_line - first_y;
-      width = well->width - 1;
-      first_x = well->upper_left_x + 1;
-
-      // chtype row_buf[height][width + 1];
-      chtype sign;
-      line = del_line - 1;
-      y = 0, x = 0;
-      for (; line > first_y + 1; line--) {
-        for (x = 0; x < width; x++) {
-          sign = mvinch(line, first_x + x);
-          if (sign != ' ') {
-            mvprintw(line + 1, first_x + x, "%c", sign);
-          } else
-            mvprintw(line + 1, first_x + x, "%c", sign);
-        }
-        y++;
-      }
+      drop_lines(well, line);
     }
     space_teller = 0;
   }
   refresh();
 
   return scored_lined_to_be_removed;
+}
+
+void drop_lines(well_t *well,
+                int del_line)  // del_line is the line will get deleted
+{
+  int first_y = well->upper_left_y;
+  int height = del_line - first_y;
+  int width = well->width - 1;
+  int first_x = well->upper_left_x + 1;
+
+  // chtype row_buf[height][width + 1];
+  chtype sign;
+  int line = del_line - 1;
+  int y = 0, x = 0;
+  int color = 7;
+  init_pair(color, color, color);
+  for (; line > first_y + 1; line--) {
+    for (x = 0; x < width; x++) {
+      sign = mvinch(line, first_x + x);
+      if (sign != ' ') {
+        attron(COLOR_PAIR(color));
+        mvprintw(line + 1, first_x + x, "%c", sign);
+        attroff(COLOR_PAIR(color));
+      } else
+        mvprintw(line + 1, first_x + x, "%c", sign);
+    }
+    y++;
+  }
 }
