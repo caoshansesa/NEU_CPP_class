@@ -116,10 +116,10 @@ int game(void) {
         state = ADD_PIECE;
         break;
       case ADD_PIECE:  // Add a new piece to the game
+        prune_well(w);
         if (next) {
           undisplay_tetromino(next);  // need to alwar
-          move_timeout = (rand() % BASE_FALL_RATE) +
-                         10;  // Random drop rate for each piece
+          move_timeout = 500;  // Random drop rate for each piece
           next->upper_left_x = w->width / 2 + w->upper_left_x;
           next->upper_left_y = w->upper_left_y;
           current = next;

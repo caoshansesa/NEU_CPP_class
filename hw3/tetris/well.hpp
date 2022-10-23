@@ -49,4 +49,7 @@ well_t *changeWellSize(int upper_left_x, int upper_left_y, int width, int height
 
 void undraw_well(well_t *);
 
+int prune_well(well_t *);
+
+void drop_lines(well_t *, int);
 /* well.hpp ends here */

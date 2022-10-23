@@ -1,45 +1,47 @@
-/* well.cpp --- 
- * 
+/* well.cpp ---
+ *
  * Filename: well.cpp
- * Description: 
+ * Description:
  * Author: Bryce
  * Maintainer: Adeel Bhutta
  * Created: Tue Sep  6 11:08:59 2016
  * Last-Updated: 01-10-2021
  *           By: Adeel Bhutta
  *     Update #: 0
- * Keywords: 
- * Compatibility: 
- * 
+ * Keywords:
+ * Compatibility:
+ *
  */
 
-/* Commentary: 
- * 
- * 
- * 
+/* Commentary:
+ *
+ *
+ *
  */
 
 /* Change log:
- * 
- * 
+ *
+ *
  */
 
-/* Copyright (c) 2016 IUB 
- * 
- * All rights reserved. 
- * 
- * Additional copyrights may follow 
+/* Copyright (c) 2016 IUB
+ *
+ * All rights reserved.
+ *
+ * Additional copyrights may follow
  */
 
 /* Code: */
 
-#include <cstdlib>
-#include <ncurses.h>
 #include "well.hpp"
+
+#include <ncurses.h>
+
+#include <cstdlib>
 
 well_t *init_well(int upper_left_x, int upper_left_y, int width, int height) {
   well_t *w;
-  w = (well_t*) malloc(sizeof(well_t));
+  w = (well_t *)malloc(sizeof(well_t));
   w->upper_left_x = upper_left_x;
   w->upper_left_y = upper_left_y;
   w->width = width;
@@ -54,50 +56,119 @@ well_t *init_well(int upper_left_x, int upper_left_y, int width, int height) {
 void draw_well(well_t *w) {
   int row_counter, column_counter;
   // Draw left side of well
-  for (column_counter=w->upper_left_y;column_counter<=(w->upper_left_y + w->height);column_counter++) {
-    mvprintw(column_counter,w->upper_left_x,"%c",w->draw_char);
+  for (column_counter = w->upper_left_y;
+       column_counter <= (w->upper_left_y + w->height); column_counter++) {
+    mvprintw(column_counter, w->upper_left_x, "%c", w->draw_char);
   }
 
   // Draw right side of well
-  for (column_counter=w->upper_left_y;column_counter<=(w->upper_left_y + w->height);column_counter++) {
-    mvprintw(column_counter,(w->upper_left_x + w->width),"%c",w->draw_char);
+  for (column_counter = w->upper_left_y;
+       column_counter <= (w->upper_left_y + w->height); column_counter++) {
+    mvprintw(column_counter, (w->upper_left_x + w->width), "%c", w->draw_char);
   }
-  
-  // Draw Bottom of well 
-  for (row_counter=w->upper_left_x;row_counter<=(w->upper_left_x + w->width);row_counter++) {
-    mvprintw(w->upper_left_y + w->height,row_counter,"%c",w->draw_char);
+
+  // Draw Bottom of well
+  for (row_counter = w->upper_left_x;
+       row_counter <= (w->upper_left_x + w->width); row_counter++) {
+    mvprintw(w->upper_left_y + w->height, row_counter, "%c", w->draw_char);
   }
 }
 
-well_t *changeWellSize(int upper_left_x, int upper_left_y, int width, int height, well_t *w) {
-
+well_t *changeWellSize(int upper_left_x, int upper_left_y, int width,
+                       int height, well_t *w) {
   w->upper_left_x = upper_left_x;
   w->upper_left_y = upper_left_y;
-  if(width < 10)
-     w->width = 10;
+  if (width < 10)
+    w->width = 10;
   else
-     w->width = width;
+    w->width = width;
 
   w->height = height;
-  
+
   return (w);
 }
 
 void undraw_well(well_t *w) {
   int row_counter, column_counter;
   // Undraw left side of well
-  for (column_counter=w->upper_left_y;column_counter<=(w->upper_left_y + w->height);column_counter++) {
-    mvprintw(column_counter,w->upper_left_x," ",w->draw_char);
+  for (column_counter = w->upper_left_y;
+       column_counter <= (w->upper_left_y + w->height); column_counter++) {
+    mvprintw(column_counter, w->upper_left_x, " ", w->draw_char);
   }
 
   // Undraw right side of well
-  for (column_counter=w->upper_left_y;column_counter<=(w->upper_left_y + w->height);column_counter++) {
-    mvprintw(column_counter,(w->upper_left_x + w->width)," ",w->draw_char);
+  for (column_counter = w->upper_left_y;
+       column_counter <= (w->upper_left_y + w->height); column_counter++) {
+    mvprintw(column_counter, (w->upper_left_x + w->width), " ", w->draw_char);
   }
-  
-  // Undraw Bottom of well 
-  for (row_counter=w->upper_left_x;row_counter<=(w->upper_left_x + w->width);row_counter++) {
-    mvprintw(w->upper_left_y + w->height,row_counter," ",w->draw_char);
+
+  // Undraw Bottom of well
+  for (row_counter = w->upper_left_x;
+       row_counter <= (w->upper_left_x + w->width); row_counter++) {
+    mvprintw(w->upper_left_y + w->height, row_counter, " ", w->draw_char);
   }
 }
-/* well.cpp ends here */
+int prune_well(well_t *well) {
+  int scored_lined_to_be_removed = 0;
+  int current_well_height = well->height;
+  int well_first_x = well->upper_left_x + 1;
+  int current_well_width = well->width - 1;
+  int well_first_y = well->upper_left_y;
+
+  int space_teller = 0;
+  int line;
+
+  int del_line = 0;
+  int first_y = 0;
+  int height = 0;
+  int width = 0;
+  int first_x = 0;
+
+  // chtype row_buf[height][width + 1];
+  chtype sign;
+  int y = 0, x = 0;
+  chtype row_buf[current_well_height][current_well_width + 1];
+  for (int y = 0; y < current_well_height; y++) {
+    line = y + well_first_y;
+    mvinchnstr(line, well_first_x, row_buf[y],
+               current_well_width);  // read back all the well dot
+    for (int x = 0; x < current_well_width; x++) {
+      if (row_buf[y][x] == ' ')  // read in one line
+      {
+        space_teller = 1;
+        break;
+      }
+    }
+    if (space_teller == 0)  // if whole line are filled with the spcail case.
+                            // means the line has reach to the end
+    {
+      scored_lined_to_be_removed += 1;
+      mvprintw(line, well_first_x, "%*c", current_well_width, ' ');
+      //      drop_lines(well, line);
+      del_line = line;
+      first_y = well->upper_left_y;
+      height = del_line - first_y;
+      width = well->width - 1;
+      first_x = well->upper_left_x + 1;
+
+      // chtype row_buf[height][width + 1];
+      chtype sign;
+      line = del_line - 1;
+      y = 0, x = 0;
+      for (; line > first_y + 1; line--) {
+        for (x = 0; x < width; x++) {
+          sign = mvinch(line, first_x + x);
+          if (sign != ' ') {
+            mvprintw(line + 1, first_x + x, "%c", sign);
+          } else
+            mvprintw(line + 1, first_x + x, "%c", sign);
+        }
+        y++;
+      }
+    }
+    space_teller = 0;
+  }
+  refresh();
+
+  return scored_lined_to_be_removed;
+}
