@@ -1,5 +1,5 @@
 IDIR =../include
-CC=gcc
+CC=g++
 CFLAGS= -I$(IDIR) -g -O0
 
 ODIR=.
@@ -12,7 +12,7 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 _OBJ = main.o tetromino.o game.o well.o key.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
-$(ODIR)/%.o: %.c $(DEPS)
+$(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 tetris: $(OBJ)

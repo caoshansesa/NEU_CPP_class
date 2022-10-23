@@ -47,7 +47,7 @@
 #include "tetromino.hpp"
 #include "well.hpp"
 
-char str[80] = {};
+char str[80] = {0};
 int lives = 1;
 time_t time_start = time(NULL);
 int score = 0;
@@ -59,7 +59,7 @@ void game_over() {
   int x, y;
   initscr();
   getmaxyx(stdscr, y, x);
-  mvprintw(y/2 + y/4, (x - strlen(mesg)) / 2, "%s%d", mesg, score);
+  mvprintw(y / 2 + y / 4, (x - strlen(mesg)) / 2, "%s%d", mesg, score);
   nodelay(stdscr, true);
   noecho();
   napms(1000);
@@ -97,10 +97,8 @@ int game(void) {
   int display_y =
       WELL_HEIGHT / 8;  // display_x to help us place the panel on the side
   int display_x = WELL_WIDTH + (WELL_WIDTH / 8);
+
   while (1) {
-    mvprintw(w->upper_left_y, w->upper_left_x + display_x, "Player: %s", str);
-    mvprintw(w->upper_left_y + display_y, w->upper_left_x + display_x,
-             "Lives: %d", lives);
     if (next) {
       mvprintw(w->upper_left_y + (display_y * 2), w->upper_left_x + display_x,
                "Next Tetromino:");
