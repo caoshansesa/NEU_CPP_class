@@ -60,4 +60,6 @@ void init_game(void);
 void get_name();
 int game(void);
 void game_over();
+void save_high_score();
+void display_high_score();
 /* game.hpp ends here */

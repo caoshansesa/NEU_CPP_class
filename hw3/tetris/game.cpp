@@ -40,6 +40,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
+#include <fstream>
+#include <iostream>
 #include <string>
 
 #include "key.hpp"
@@ -47,6 +49,7 @@
 #include "tetromino.hpp"
 #include "well.hpp"
 
+using namespace std;
 char str[80] = {0};
 int lives = 1;
 time_t time_start = time(NULL);
@@ -119,7 +122,7 @@ int game(void) {
         prune_well(w);
         if (next) {
           undisplay_tetromino(next);  // need to alwar
-          move_timeout = 500;  // Random drop rate for each piece
+          move_timeout = 500;         // Random drop rate for each piece
           next->upper_left_x = w->width / 2 + w->upper_left_x;
           next->upper_left_y = w->upper_left_y;
           current = next;
@@ -246,4 +249,14 @@ int game(void) {
   }
 }
 
+void save_high_score() {}
+void display_high_score() {
+  ifstream infile("highscores.txt");
+  ofstream outfile("highscores.txt");
+
+  for (string line; getline(infile, line);) 
+  {
+
+  }
+}
 /* game.cpp ends here */
