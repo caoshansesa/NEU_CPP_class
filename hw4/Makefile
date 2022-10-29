@@ -1,6 +1,6 @@
-IDIR =../inc
+IDIR =./
 CC=g++
-CFLAGS= -I$(IDIR) -g -O0 -std=c++11
+CFLAGS= -I$(IDIR) -g -O0 -std=c++11 
 
 ODIR=.
 
