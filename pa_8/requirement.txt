@@ -1,0 +1,32 @@
+iPractice Activity 8 
+This is an individual assignment. Let's start by reviewing the nested container example given on page 397 of Murach textbook. We will extend that example for this scenario:
+
+Assume that you are teaching a class with 5 students. During the semester you assigned 7 weekly assignments. Each assignment was worth 50 points. Create a nested container (perhaps a map of <string, vector<double> > or whatever is appropriate) to store each students' grades. To make things easy, use names of your friends as students and some random grades (you can prompt the user to provide the name and scores or use random number generator for scores). Note: we may have some students who did not submit all assignments and also some who may have scored more than 50 points (due to bonus questions). Here is how the Gradebook on Canvas looks like
+
+Name    HW1  HW2          HW3             HW4 ....
+Amy      10       51        49      0
+Bruce     49      49        37      52
+....
+
+Neatly display all student grades first as shown above.
+
+As an instructor, you are interested in the average grades for each assignment and average grade for each student.
+
+Neatly display the average grade for each assignment (in ascending order of the average grade).
+This might look like this:
+  Assignment3 Avg: 34.9
+  Assignment1 Avg: 48.5
+  ...
+
+Create a new container that stores student averages. Use an appropriate data structure to store each student's average across all assignments (It could be someContainerType <Student, double> where a student may be a structure with name (string), and all assignment grades (vector or list) ). NOW, update (or re-arrange) elements of this container to store students in descending order of their average grades (i.e., student with highest average grade will be stored first) and then print the container contents.
+It might look like this:
+Bruce, Grades: 49, 49, 37, 52, ... Average: 49.8
+Amy, Grades: 10, 51, 49, 0, ... Average: 45.3
+...
+
+You can display your data using for_each algorithm using a function object like print (as we used in the lecture). You can also use a Lamda expression in your code (perhaps to sort the students by average grade or wherever appropriate). Use of either function object or Lamda expression is required.
+
+Submit your working code on github along with Makefile (under folder "pa8" and submit a commit link on Canvas) by Monday (10/31) midnight
+
+Expected time commitment: We anticipate that you will need around 1-2 hour to complete this activity!
+
