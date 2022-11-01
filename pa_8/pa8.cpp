@@ -12,6 +12,43 @@
 using namespace std;
 int index_vector = 0;
 
+map<string, double> map_asseding;
+map<string, double> map_desseding;
+
+bool cmp_assending(pair<string, double>& a, pair<string, double>& b) {
+  return a.second < b.second;
+}
+
+
+bool cmp_dessending(pair<string, double>& a, pair<string, double>& b) {
+  return a.second < b.second;
+}
+
+void sort_assending(map<string, double>& M) {
+  vector<pair<string, double> > A;
+  for (auto& it : M) {
+    A.push_back(it);
+  }
+
+  sort(A.begin(), A.end(), cmp_assending);
+  for (auto& it : A) {
+    cout << it.first << endl;
+  }
+}
+
+
+void sort_desending(map<string, double>& M) {
+  vector<pair<string, double> > A;
+  for (auto& it : M) {
+    A.push_back(it);
+  }
+
+  sort(A.begin(), A.end(), cmp_dessending);
+  for (auto& it : A) {
+    cout << it.first << endl;
+  }
+}
+
 void print_list_info(pair<string, vector<int> > _student_score) {
   cout << _student_score.first << ": ";
   for (int i = 0; i < 7; i += 1) {
@@ -24,6 +61,7 @@ void print_list_info(pair<string, vector<int> > _student_score) {
 double average[7] = {0};
 double sum[7] = {0};
 void print_each_HW_avarage(pair<string, vector<int> > _student_score) {
+    string local_buffer;
   index_vector++;
   for (int i = 0; i < 7; i += 1) {
     sum[i] += _student_score.second.at(i);
@@ -31,20 +69,35 @@ void print_each_HW_avarage(pair<string, vector<int> > _student_score) {
   if (index_vector == 5) {
     for (int i = 0; i < 7; i += 1) {
       average[i] = sum[i] / 5;
-      cout << "Assignment " << i + 1 << " average is :" << average[i] << endl;
+      local_buffer.append(" Assignment ");
+      local_buffer.append(to_string(i+1));
+      local_buffer.append(" average is ");
+      local_buffer.append(to_string(average[i]));
+      local_buffer.append("\n");
     }
   }
+
+      cout << local_buffer << endl;
 }
+
 void print_each_student_average(pair<string, vector<int> > _student_score) {
+  string local_buffer;
   double sum_local = 0;
   for (int i = 0; i < 7; i++) {
     sum_local += _student_score.second.at(i);
   }
-  cout << _student_score.first << ", Grade: ";
+  local_buffer.append(_student_score.first);
+  local_buffer.append(", Grade:");
   for (int i = 0; i < 7; i++) {
-    cout << _student_score.second.at(i) << " ";
+    local_buffer.append(to_string(_student_score.second.at(i)));
+    local_buffer.append(" ");
   }
-  cout << "average: " << sum_local / 7 << endl;
+  local_buffer.append("average : ");
+  local_buffer.append(to_string(sum_local / 7));
+  map_asseding.insert(pair<string, double>(local_buffer, sum_local / 7));
+  if (map_asseding.size() == 5) {
+    sort_assending(map_asseding);
+  }
 }
 
 int main() {
