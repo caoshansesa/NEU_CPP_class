@@ -15,11 +15,11 @@ int index_vector = 0;
 map<string, double> student_avg_dessending;
 map<string, double> hw_assending_map;
 
-bool cmp_assending(pair<string, double>& a, pair<string, double>& b) {
+bool cmp_assending(const pair<string, double>& a,const pair<string, double>& b) {
   return a.second < b.second;
 }
 
-bool cmp_dessending(pair<string, double>& a, pair<string, double>& b) {
+bool cmp_dessending(const pair<string, double>& a,const pair<string, double>& b) {
   return a.second > b.second;
 }
 
