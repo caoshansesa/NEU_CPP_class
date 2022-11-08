@@ -87,12 +87,13 @@ GROUP& Course::operator/(const int& NumOfGroups) {
   for (int i = 0; i < NumOfGroups; i++) {
 
     printf("\n");
-    string group_name = "group" + to_string(i+1);
+    string group_name = "group" + to_string(i+1) + ": ";
     printf(group_name.c_str());
 
-    printf("\n");
+    printf("\n\n");
     for (int j = 0; j < num_per_group; j++) {
       cout << this->student_Enroll_in_course.back() << "  ";
+      printf("\n\n");
       this->student_Enroll_in_course.pop_back();
     }
   }
@@ -118,5 +119,10 @@ int main() {
   cin >> _num_of_group;
   _group = cs3520 / _num_of_group;
 
+  cout << endl;
+  cout << endl;
+  cout << endl;
+  cout << endl;
+  cout << endl;
   cout << endl;
 }
