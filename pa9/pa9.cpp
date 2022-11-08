@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <iterator>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -86,12 +87,12 @@ GROUP& Course::operator/(const int& NumOfGroups) {
   for (int i = 0; i < NumOfGroups; i++) {
 
     printf("\n");
-    string group_name = "group" + to_string(i);
+    string group_name = "group" + to_string(i+1);
     printf(group_name.c_str());
 
     printf("\n");
     for (int j = 0; j < num_per_group; j++) {
-      cout << this->student_Enroll_in_course.back();
+      cout << this->student_Enroll_in_course.back() << "  ";
       this->student_Enroll_in_course.pop_back();
     }
   }
@@ -102,10 +103,10 @@ int main() {
   Course cs3520("cs3520", 3520, 111);
   GROUP _group;
   string _name[15] = {
-      "Oluwatobiloba Cortes", "Brandy Mata", "Kiera Moran",    "Lyla Sosa",
-      "Alysia Abbott",        "Cian Barr",   "Hugh O'Connor",  "Lukasz Curran",
-      "Rachelle Bishop",      "Lorcan Drew", "Anwen",          "Baxter Nelson",
-      "Weston Anabella",      "Park Isaac",  "Kurtis Paterson"};
+      "Oluwatobiloba_Cortes", "Brandy_Mata", "Kiera_Moran",    "Lyla_Sosa",
+      "Alysia_Abbott",        "Cian_Barr",   "Hugh_O'Connor",  "Lukasz_Curran",
+      "Rachelle_Bishop",      "Lorcan_Drew", "Anwen",          "Baxter_Nelson",
+      "Weston_Anabella",      "Park_Isaac",  "Kurtis_Paterson"};
   for (int i = 0; i < 15; i++) {
     Student _student;
     _student.set_student_name(_name[i]);
@@ -116,4 +117,6 @@ int main() {
   cout << "we have 15 people, input group you want" << endl;
   cin >> _num_of_group;
   _group = cs3520 / _num_of_group;
+
+  cout << endl;
 }
