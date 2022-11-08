@@ -1,5 +1,6 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+
 #include <iostream>
 #include <list>
 #include <string>
@@ -51,7 +52,7 @@ class GROUP {
 string GROUP::get_group_name() { return group_name; }
 void GROUP::set_group_name(string _group_name) { group_name = _group_name; }
 string GROUP::get_course_name() { return course_name; }
-void GROUP::set_course_name(string _course_name) {}
+void GROUP::set_course_name(string _course_name) { course_name = _course_name; }
 
 class Course {
  private:
@@ -87,6 +88,7 @@ GROUP& Course::operator/(const int& NumOfGroups) {
       this->student_Enroll_in_course.pop_back();
     }
   }
+  return group_obj;
 }
 
 int main() {
