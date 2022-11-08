@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -83,8 +84,12 @@ GROUP& Course::operator/(const int& NumOfGroups) {
   int student_total = this->student_Enroll_in_course.size();
   int num_per_group = student_total / NumOfGroups;
   for (int i = 0; i < NumOfGroups; i++) {
+
+    printf("\n");
     string group_name = "group" + to_string(i);
-    cout << group_name;
+    printf(group_name.c_str());
+
+    printf("\n");
     for (int j = 0; j < num_per_group; j++) {
       cout << this->student_Enroll_in_course.back();
       this->student_Enroll_in_course.pop_back();
