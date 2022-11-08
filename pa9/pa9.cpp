@@ -112,6 +112,8 @@ int main() {
     cs3520.student_Enroll_in_course.push_back(_student);
   }
 
-  int _num_of_group = 3;
+  int _num_of_group = 0;
+  cout << "we have 15 people, input group you want" << endl;
+  cin >> _num_of_group;
   _group = cs3520 / _num_of_group;
 }
