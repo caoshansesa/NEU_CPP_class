@@ -1,5 +1,6 @@
 #include <stdlib.h>
-
+#include <stdio.h>
+#include <iostream>
 #include <list>
 #include <string>
 
@@ -65,26 +66,32 @@ class Course {
     _course_number = course_number;
     _unique_course_number = unique_course_number;
   };
-  void operator<<(const Student& student_list);
+  friend std::ostream& operator<<(ostream& os, Student& student_list);
 
-  list<GROUP>& operator/(const int& NumOfGroups);
+  GROUP& operator/(const int& NumOfGroups);
 };
 
-list<GROUP>& Course::operator/(const int& NumOfGroups) {
+std::ostream& operator<<(ostream& os, Student& _student) {
+  os << _student.get_student_name();
+  return os;
+}
+
+GROUP& Course::operator/(const int& NumOfGroups) {
   int student_total = this->student_Enroll_in_course.size();
   int num_per_group = student_total / NumOfGroups;
   GROUP group_obj;
   for (int i = 0; i < NumOfGroups; i++) {
     string group_name = "group" + to_string(i);
     for (int j = 0; j < num_per_group; j++) {
+      cout << this->student_Enroll_in_course.back();
+      this->student_Enroll_in_course.pop_back();
     }
   }
 }
 
-void Course::operator<<(const Student& student_list) {}
-
 int main() {
   Course cs3520("cs3520", 3520, 111);
+  GROUP _group;
   string _name[15] = {
       "Oluwatobiloba Cortes", "Brandy Mata", "Kiera Moran",    "Lyla Sosa",
       "Alysia Abbott",        "Cian Barr",   "Hugh O'Connor",  "Lukasz Curran",
@@ -95,4 +102,7 @@ int main() {
     _student.set_student_name(_name[i]);
     cs3520.student_Enroll_in_course.push_back(_student);
   }
+
+  int _num_of_group = 3;
+  _group = cs3520 / _num_of_group;
 }
