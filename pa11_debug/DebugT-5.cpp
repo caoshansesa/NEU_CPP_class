@@ -18,17 +18,23 @@ class car
 private:
     string name;
     int    modelYear;
-    void   assign(const car& c)
+
+public:
+    void assign(const car& c)
     {
         name      = c.name;
         modelYear = c.modelYear;
     }
 
-public:
     car(const string& n, const int my)
         : name(n)
         , modelYear(my)
     {}
+
+
+    string const get_car_name() const { return name; }
+
+    int const get_model_of_year() const { return modelYear; }
 
     virtual void print() const { cout << "Name: " << name << " model Year: " << modelYear << endl; }
 
@@ -51,9 +57,10 @@ public:
         , mileage(m)
     {}
 
-    virtual void print() const
+    void print() const
     {
-        cout << "Name: " << name << " model Year: " << modelYear << " Mileage: " << mileage << endl;
+        cout << "Name: " << get_car_name() << " model Year: " << get_model_of_year()
+             << " Mileage: " << mileage << endl;
     }
 };
 
@@ -63,13 +70,14 @@ class suv : public car
 
 public:
     suv(const string& n, const int my, const int m)
-        : miles(m)
+        : car(n, my)
+        , miles(m)
     {}
 
     virtual void print() const
     {
-        cout << "Name: " << name << " model Year: " << modelYear << " Miles driven: " << miles
-             << endl;
+        cout << "Name: " << get_car_name() << " model Year: " << get_model_of_year()
+             << " Miles driven: " << miles << endl;
     }
 
     virtual const suv& operator=(const car c)
