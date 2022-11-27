@@ -9,7 +9,8 @@
 
 using namespace std;
 
-template<class T> class CommaSeparatedList
+template<class T>
+class CommaSeparatedList
 {
 private:
     T*  data;
@@ -20,17 +21,19 @@ public:
     void printList();
 };
 
-template<class T> CommaSeparatedList<T>::CommaSeparatedList(T d, int s)
+template<class T>
+CommaSeparatedList<T>::CommaSeparatedList(T* d, int s)
 {
     data = d;
     size = s;
 }
 
-template<class T> void CommaSeparatedList < T < ::printList()
+template<class T>
+void CommaSeparatedList<T>::printList()
 {
-    cout >> "Comma separated list:" << endl;
+    cout << "Comma separated list:" << endl; // arrow direction is wrong
     for (int x = 0; x < size; ++x) {
-        cout << data[y];
+        cout << data[x]; // Wrong index
         if (x != size - 1) cout << ", ";
     }
     cout << endl << endl;
@@ -56,7 +59,7 @@ void Book::setBook(string Title, int pr)
 ostream& operator<<(ostream& out, const Book& b)
 {
     out << b.title << " was published in" << b.year;
-    return ostream;
+    return out; // return should be the object
 }
 
 class Customer
@@ -108,7 +111,7 @@ int main()
     CommaSeparatedList<int> CommaSeparatedListOfIntegers(someInts, CommaSeparatedListSize);
     CommaSeparatedListSize = sizeof(someDoubles) / sizeof(someDoubles[0]);
     CommaSeparatedList<double> CommaSeparatedListOfDoubles(someDoubles, CommaSeparatedListSize);
-    CommaSeparatedListSize = sizeif(someBook) / sizeof(someBook[0]);
+    CommaSeparatedListSize = sizeof(someBook) / sizeof(someBook[0]); // typo
     CommaSeparatedList<Book> CommaSeparatedListOfBooks(someBook, CommaSeparatedListSize);
     CommaSeparatedListSize = sizeof(someCustomers) / sizeof(someCustomers[0]);
     CommaSeparatedList<Customer> CommaSeparatedListOfCustomers(someCustomers,
@@ -116,7 +119,7 @@ int main()
     // Use showList() with each CommaSeparatedList
     CommaSeparatedListOfIntegers.printList();
     CommaSeparatedListOfDoubles.printList();
-    CommaSeparatedListOfBooks.prinList();
+    CommaSeparatedListOfBooks.printList(); //typo
     CommaSeparatedListOfCustomers.printList();
     return 0;
 }
