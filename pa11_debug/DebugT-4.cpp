@@ -10,8 +10,9 @@
 #include <iostream>
 
 using namespace std;
+
 // class to perform various operations on two variables of type T
-template <class T>
+template<class T>
 class Calculator
 {
 private:
@@ -20,46 +21,46 @@ private:
 
 public:
     Calculator(T n1, T n2);
-    T add();
-    T subtract();
-    T multiply();
-    T divide();
+    T    add();
+    T    subtract();
+    T    multiply();
+    T    divide();
     bool isgreater();
 };
 
-template <class T>
-Calculator<T>::Calculator(T n1, int n2)
+template<class T>
+Calculator<T>::Calculator(T n1, T n2) // wrong parameter type
 {
     num1 = n1;
     num2 = n2;
 }
 
-template <class T>
-Calculator<T>::add()
+template<class T>
+T Calculator<T>::add() // missing return  type
 {
     return num1 + num2;
 }
 
-template <class T>
-Calculator<T>::subtract()
+template<class T>
+T Calculator<T>::subtract() // missing return type
 {
     return num1 - num2;
 }
 
-template <class T>
-T Calculator<T>::multiply(T n1, T n2)
+template<class T>
+T Calculator<T>::multiply()
 {
-    return n1 * n2;
+    return num1 * num2; // Wrong varibales used
 }
 
-template <class T>
+template<class T>
 T Calculator<T>::divide()
 {
-    return num1 % num2;
+    return num1 / num2; // Wrong operator
 }
 
-template <class T>
-T Calculator<T>::isgreater()
+template<class T>
+bool Calculator<T>::isgreater() // Return type bug
 {
     if (num1 > num2)
         return true;
@@ -69,21 +70,21 @@ T Calculator<T>::isgreater()
 
 int main()
 {
-    Calculator<int> calc(10, 4); // int operations
+    Calculator<int> calc(10, 4);   // int operations
     cout << calc.add() << endl;
     cout << calc.subtract() << endl;
     cout << calc.multiply() << endl;
     cout << calc.divide() << endl;
     cout << std::boolalpha << calc.isgreater() << endl;
 
-    Calculator<double> calc2(10.234, 4.235); // double operations
+    Calculator<double> calc2(10.234, 4.235);   // double operations
     cout << calc2.add() << endl;
     cout << calc2.subtract() << endl;
     cout << calc2.multiply() << endl;
     cout << calc2.divide() << endl;
     cout << std::boolalpha << calc2.isgreater() << endl;
 
-    Calculator<string> calc3("Hello", 1); // string operations
+    Calculator<string> calc3("Hello", "world");   // string operations, Wrong types of constructor
     cout << calc3.add() << endl;
     cout << std::boolalpha << calc3.isgreater() << endl;
     return 0;
