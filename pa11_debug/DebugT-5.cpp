@@ -96,24 +96,24 @@ protected:
     }
 };
 
-void printCarInfo(const car c)
+void printCarInfo(const car& c)
 {
     c.print();
 }
 
 int main()
 {
-    car   tesla   = car("tesla", 2019);
-    sedan hyundai = sedan("Hyundai", 2020, 23);
-    suv   ford    = suv("Ford", 2012, 20000);
+    car    tesla   = car("tesla", 2019);
+    sedan* hyundai = new sedan("Hyundai", 2020, 23); // pass new obj as reference, to avoid obj slicing
+    suv*   ford    = new suv("Ford", 2012, 20000); // pass new obj as reference, to avoid obj slicing
 
     printCarInfo(tesla);
-    printCarInfo(hyundai);
+    printCarInfo(*hyundai);
 
-    car& ref = ford;
-    printCarInfo(ref);
-    suv ford2 = suv("Ford", 2017, 10000);
-    ref       = ford2;
-    printCarInfo(ref);
+    car* ref = ford;
+    printCarInfo(*ref);
+    suv* ford2 = new suv("Ford", 2017, 10000);// pass new obj as reference, to avoid obj slicing
+    ref        = ford2;
+    printCarInfo(*ref);
     return 0;
 }
