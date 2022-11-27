@@ -20,7 +20,7 @@ private:
     int    modelYear;
 
 public:
-    void assign(const car& c)
+    void assign(const car& c)   // move to public
     {
         name      = c.name;
         modelYear = c.modelYear;
@@ -32,7 +32,7 @@ public:
     {}
 
 
-    string const get_car_name() const { return name; }
+    string const get_car_name() const { return name; }   // add return of private variable
 
     int const get_model_of_year() const { return modelYear; }
 
@@ -70,14 +70,14 @@ class suv : public car
 
 public:
     suv(const string& n, const int my, const int m)
-        : car(n, my)
+        : car(n, my)   // add base class default constructor
         , miles(m)
     {}
 
     virtual void print() const
     {
         cout << "Name: " << get_car_name() << " model Year: " << get_model_of_year()
-             << " Miles driven: " << miles << endl;
+             << " Miles driven: " << miles << endl;   // fix private return
     }
 
     virtual const suv& operator=(const car c)
