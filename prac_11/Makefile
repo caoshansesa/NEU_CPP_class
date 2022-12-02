@@ -9,32 +9,17 @@ LIBS=-lncurses
 _DEPS = 
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ1 = DebugT-1.o
-_OBJ2 = DebugT-2.o
-_OBJ3 = DebugT-3.o
-_OBJ4 = DebugT-4.o
-_OBJ5 = DebugT-5.o
+_OBJ1 = prac_11.o
 
 $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-all: file1 file2 file3 file4 file5
+all: file1 
 
 	
 file1: $(_OBJ1)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
-file2: $(_OBJ2)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
-
-file3: $(_OBJ3)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
-
-file4: $(_OBJ4)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
-
-file5: $(_OBJ5)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 .PHONY: clean
 
 clean:
