@@ -16,10 +16,12 @@ int group_n = 0;
 
 int c = 10, gdb = 5, algo = 5;
 
-map<string, int> student_has_no_devil_list; // every student with out a devil list and
-                                            // their weighted score
-map<string, int> student_has_a_devil_list;  // student with  a devil list and their wighted score
-map<string, int> student_groups;            // every student and their team assigned
+map<string, int> student_non_dev; // every student with out a devil list and
+                                  // their weighted score
+map<string, int> student_dev;     // student with  a devil list and their wighted score
+map<string, int> student_groups;  // every student and their team assigned
+
+map<string, int>::iterator finder;
 
 int w_sum(const student_info &s)
 {
@@ -38,13 +40,13 @@ void print_team_info(map<string, int> students_str)
             if (it->second == i)
             {
                 cout << it->first << " ";
-                if (student_has_no_devil_list.find(it->first) != student_has_no_devil_list.end())
+                if (student_non_dev.find(it->first) != student_non_dev.end())
                 {
-                    team_sum += student_has_no_devil_list.find(it->first)->second;
+                    team_sum += student_non_dev.find(it->first)->second;
                 }
                 else
                 {
-                    team_sum += student_has_a_devil_list.find(it->first)->second;
+                    team_sum += student_dev.find(it->first)->second;
                 }
             }
             it++;
@@ -85,23 +87,23 @@ int group_students(Student_info_container students)
         auto value = students[key];
         if (value.devil.empty())
         {
-            student_has_no_devil_list[key] = w_sum(value); // add to non_dev map
+            student_non_dev[key] = w_sum(value); // add to non_dev map
         }
         else
         {
-            student_has_a_devil_list[key] = w_sum(value);
+            student_dev[key] = w_sum(value);
         }                 // add to dev map
         total_students++; // total number of students in container
     }
     group_n = total_students / max_per_group;
     // sort maps
-    sort_m(student_has_no_devil_list);
-    sort_m(student_has_a_devil_list);
+    sort_m(student_non_dev);
+    sort_m(student_dev);
 
     // assign every student__dev first
-    auto it = student_has_a_devil_list.begin();
+    auto it = student_dev.begin();
     int n = 0;
-    while (n < group_n && it != student_has_a_devil_list.end())
+    while (n < group_n && it != student_dev.end())
     {
         student_groups[it->first] = n;
         n++;
@@ -111,9 +113,9 @@ int group_students(Student_info_container students)
     int r = 0;
     while (r < max_per_group)
     {
-        // assign the rest of students in student_has_a_devil_list
+        // assign the rest of students in student_dev
         n = 0;
-        while (n < group_n && it != student_has_a_devil_list.end())
+        while (n < group_n && it != student_dev.end())
         {
             int curr_g = 0, prev_g = 0;
             bool found_dev = false;
@@ -156,12 +158,12 @@ int group_students(Student_info_container students)
 
     r = 0;
 
-    it = student_has_no_devil_list.begin();
+    it = student_non_dev.begin();
     while (r < max_per_group)
     {
-        // assign the rest of students in student_has_a_devil_list
+        // assign the rest of students in student_dev
         n = 0;
-        while (n < group_n && it != student_has_no_devil_list.end())
+        while (n < group_n && it != student_non_dev.end())
         {
             int curr_g = 0, prev_g = 0;
             bool found_dev = false;

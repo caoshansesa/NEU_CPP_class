@@ -1,9 +1,8 @@
 /*header.hpp*/
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-
 
 using namespace std;
 
@@ -16,9 +15,10 @@ struct student_info
     vector<string> angel;
 };
 
-typedef  map<string, struct student_info> Student_info_container;
+
+typedef map<string, struct student_info> Student_info_container;
 
 int group_students(Student_info_container students);
-Student_info_container load_data_from_csv_into_file(const string& filename);
 
+Student_info_container load_data_from_csv_into_file(const string &filename);
 
