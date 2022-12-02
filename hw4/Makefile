@@ -1,27 +1,15 @@
-IDIR =./
-CC=g++
-CFLAGS= -I$(IDIR) -g -O0 -std=c++11 
+ll: main
 
-ODIR=.
+CXX = clang++
+override CXXFLAGS += -g -Wno-everything -std=c++11
 
-LIBS=-lncurses
+SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.cpp' -print | sed -e 's/ /\\ /g')
 
-_DEPS =
-DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
+main: $(SRCS)
+	$(CXX) $(CXXFLAGS) $(SRCS) -o "$@"
 
-_OBJ = hw4.o
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
-
-$(ODIR)/%.o: %.cpp $(DEPS)
-	$(CC)  -c -o $@ $< $(CFLAGS)
-
-hw4: $(OBJ)
-	$(CC) -o  $@ $^ $(CFLAGS) $(LIBS)
-
-.PHONY: clean
+main-debug: $(SRCS)
+	$(CXX) $(CXXFLAGS) -O0 $(SRCS) -o "$@"
 
 clean:
-	rm -f *~ core $(INCDIR)/*~
-	rm -f hw4
-	rm -f *.o
-
+	rm -rf main main-debug main.d*
