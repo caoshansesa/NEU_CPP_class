@@ -240,7 +240,6 @@ int group_students(Student_info_container students)
             while (it != student_groups.end())
             {
                 it++;
-                if (agl == it->first)
                 {
                     auto new_it = it;
                     int temp = it->second;
