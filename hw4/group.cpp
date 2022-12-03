@@ -3,7 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <map>
-#include <sstream>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -54,6 +54,38 @@ void print_team_info(map<string, int> students_str)
         cout << "group_score is " << team_sum << endl;
         cout << endl;
     }
+}
+
+
+void save_team_into_csv(map<string, int> students_str)
+{
+    ofstream myfile;
+    myfile.open ("Saved_team.csv");
+    for (int i = 0; i < group_n; i++)
+    {
+        int team_sum = 0;
+        auto it = students_str.begin();
+        myfile << "This is group " << i << "\n";
+        while (it != students_str.end())
+        {
+            if (it->second == i)
+            {
+                myfile << it->first << " ";
+                if (student_non_dev.find(it->first) != student_non_dev.end())
+                {
+                    team_sum += student_non_dev.find(it->first)->second;
+                }
+                else
+                {
+                    team_sum += student_dev.find(it->first)->second;
+                }
+            }
+            it++;
+        }
+        myfile << "group_score is " << team_sum << endl;
+        myfile << endl;
+    }
+    myfile.close();
 }
 
 bool compare_v(const pair<string, int> &a, const pair<string, int> &b)
@@ -200,6 +232,7 @@ int group_students(Student_info_container students)
     }
 
     print_team_info(student_groups);
+    save_team_into_csv(student_groups);
 
     return 0;
 }
