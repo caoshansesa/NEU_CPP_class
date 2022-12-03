@@ -3,7 +3,6 @@
 #include <fstream>
 #include <iostream>
 #include <map>
-#include <fstream>
 #include <string>
 #include <vector>
 
@@ -56,11 +55,10 @@ void print_team_info(map<string, int> students_str)
     }
 }
 
-
 void save_team_into_csv(map<string, int> students_str)
 {
     ofstream myfile;
-    myfile.open ("Saved_team.csv");
+    myfile.open("Saved_team.csv");
     for (int i = 0; i < group_n; i++)
     {
         int team_sum = 0;
@@ -193,6 +191,7 @@ int group_students(Student_info_container students)
     it = student_non_dev.begin();
     while (r < max_per_group)
     {
+        r++;
         // assign the rest of students in student_dev
         n = 0;
         while (n < group_n && it != student_non_dev.end())
@@ -223,14 +222,57 @@ int group_students(Student_info_container students)
                     }
                 }
             }
+            n++;
+
             student_groups[it->first] = n;
             prev_g = curr_g;
             it++;
-            n++;
         }
-        r++;
     }
 
+    // update the already assigned group, based on the group member's Angel list, which is the person they wan workwith
+    // honoring student’s request to work with someone
+    for (auto p : students)
+    {
+        for (auto agl : p.second.angel)
+        {
+            auto it = student_groups.begin();
+            while (it != student_groups.end())
+            {
+                it++;
+                if (agl == it->first)
+                {
+                    auto new_it = it;
+                    int temp = it->second;
+                    new_it++;
+                    it->second = new_it->second;
+                    new_it->second = temp;
+                    break;
+                }
+            }
+        }
+    }
+
+    {
+
+        for (int i = 0; i < group_n; i++)
+        {
+            int num_people_in_group = 0;
+            auto it = student_groups.begin();
+            while (it != student_groups.end())
+            {
+                if(it->second == i)
+                {
+                   num_people_in_group++; 
+
+                }
+                it++;
+            }
+            if (num_people_in_group> max_per_group) {
+                
+            }
+        }
+    }
     print_team_info(student_groups);
     save_team_into_csv(student_groups);
 
