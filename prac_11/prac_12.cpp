@@ -17,16 +17,31 @@ public:
 unsigned long long int fibonacci(unsigned int n);        // function prototype
 ThreadData             startFibonacci(unsigned int n);   // function prototype
 
+int read()
+{
+    int x;
+    cin >> x;
+    while (cin.fail()) {
+        cout << "Error" << endl;
+        cin.clear();
+        cin.ignore(256, '\n');
+        cin >> x;
+    }
+    return x;
+}
 int main()
 {
     cout << fixed << setprecision(6);
-    cout << " input 4 interger number for the fibonaqi input in separate threads" << endl;
+    cout << " input 5 interger number, 1 for sequential 4 for threads" << endl; 
 
-    int num1, num2, num3, num4 = 0;
-    cin >> num1;
-    cin >> num2;
-    cin >> num3;
-    cin >> num4;
+    int num0, num1, num2, num3, num4 = 0;
+    num0 = read();
+    num1 = read();
+    num2 = read();
+    num3 = read();
+    num4 = read();
+
+    startFibonacci(num0);
 
     auto futureResult1 = async(launch::async, startFibonacci, num1);
     auto futureResult2 = async(launch::async, startFibonacci, num2);
@@ -40,7 +55,8 @@ int main()
     ThreadData result4 = futureResult4.get();
 
     // determine time that first thread started
-    time_t startTime = (result1.startTime < result2.startTime) ? result1.startTime : result2.startTime;
+    time_t startTime =
+        (result1.startTime < result2.startTime) ? result1.startTime : result2.startTime;
     startTime = (startTime < result3.startTime) ? startTime : result3.startTime;
     startTime = (startTime < result4.startTime) ? startTime : result4.startTime;
 
