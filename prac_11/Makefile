@@ -9,7 +9,7 @@ LIBS=-lncurses
 _DEPS = 
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ1 = prac_11.o
+_OBJ1 = prac_12.o
 
 $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
