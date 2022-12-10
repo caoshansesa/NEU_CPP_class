@@ -3,12 +3,10 @@
 #define CMD_H
 
 #include "state_def.hpp"
-/*
- * ===  FUNCTION  ======================================================================
- *         Name:  take_in_user_cmd
- *  Description: Take in user command line input and udpate object accordingly
- * =====================================================================================
- */
 
+/* 
+ * @brief render printout for available state
+ * */
+void render_commands(enum VIEW_STATE state);
 void take_in_user_cmd();
 #endif
