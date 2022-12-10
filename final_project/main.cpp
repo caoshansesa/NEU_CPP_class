@@ -1,17 +1,9 @@
+#include "login_view.hpp"
+#include "cmd.hpp"
 #include <iostream>
 
 using namespace std;
 
-enum VIEW_STATE
-{
-    INIT = 0,
-    LOGIN_VIEW,
-    MAKE_SELECT_VIEW,
-    CURRENT_STATUS_VIEW,
-    MY_BOARD_VIEW,
-    MY_PROJECT_VIEW,
-    MY_TASKVIEW
-};
 
 int main()
 {
@@ -19,7 +11,13 @@ int main()
     while (1) {
         switch (next_view) {
 
-        case INIT: break;
+        case INIT:
+            config_state_login();
+            constrcut_login_view();
+            take_in_user_cmd();
+            update_login_view();
+
+            break;
         case LOGIN_VIEW: break;
         case MAKE_SELECT_VIEW: break;
         case CURRENT_STATUS_VIEW: break;
