@@ -1,7 +1,7 @@
 ll: main
 
 CXX = clang++
-override CXXFLAGS += -g -Wno-everything -std=c++11
+override CXXFLAGS += -g -Wno-everything -std=c++11 -lncurses
 
 SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.cpp' -print | sed -e 's/ /\\ /g')
 
