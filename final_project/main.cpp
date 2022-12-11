@@ -65,7 +65,7 @@ int main()
             break;
         case MY_PROJECT_VIEW:
             clear();
-            mvprintw(grid_local->upper_left_y, 0, " Enter MY_PROJECT_VIEW  state");
+            mvprintw(grid_local->upper_left_y, 0, " Enter MY_PROJECT_VIEW state");
             render_commands(MY_PROJECT_VIEW, grid_local);
             take_in_user_cmd(grid_local);
             next_view = MY_TASKVIEW;

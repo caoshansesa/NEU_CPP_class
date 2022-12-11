@@ -17,6 +17,36 @@ int read_escape(int *read_char)
 }
 
 /*
+ * @brief Show my task view
+ * */
+void show_my_task_view()
+{
+    mvprintw(5, 5, "My Task View");
+    grid_t *my_current_status_grid = init_grid(26, 5, 80, 40);
+    draw_grid(my_current_status_grid);
+}
+
+/*
+ * @brief Show my proejct summary view
+ * */
+void show_my_project_summary_view()
+{
+    mvprintw(5, 5, "My Proejct Summary");
+    grid_t *my_current_status_grid = init_grid(26, 5, 80, 40);
+    draw_grid(my_current_status_grid);
+}
+
+/*
+ * @brief Show the current status View
+ * */
+void show_my_current_status_view()
+{
+    mvprintw(5, 5, "Current Status");
+    grid_t *my_current_status_grid = init_grid(26, 5, 80, 40);
+    draw_grid(my_current_status_grid);
+}
+
+/*
  * @brief construct static my board view
  * */
 void show_static_my_board_summary_view()
@@ -46,7 +76,6 @@ void show_static_view_of_login()
  * */
 void show_static_view_of_selection()
 {
-
     mvprintw(20, 100, "1. View/Manage My Board");
     mvprintw(21, 100, "2. View My Projects");
     mvprintw(22, 100, "3. View/Edit Current Status");
@@ -61,7 +90,6 @@ void render_commands(enum VIEW_STATE state, grid_t *grid)
     switch (state)
     {
     case INIT:
-        cout << "a: Add new task\n" << endl;
         break;
     case LOGIN_VIEW:
         show_static_view_of_login();
@@ -70,13 +98,16 @@ void render_commands(enum VIEW_STATE state, grid_t *grid)
         show_static_view_of_selection();
         break;
     case CURRENT_STATUS_VIEW:
+        show_my_current_status_view();
         break;
     case MY_BOARD_VIEW:
         show_static_my_board_summary_view();
         break;
     case MY_PROJECT_VIEW:
+        show_my_project_summary_view();
         break;
     case MY_TASKVIEW:
+        show_my_task_view();
         break;
     }
 }
