@@ -83,9 +83,9 @@ void show_static_view_of_selection()
 
 /**
  *
- * Renders the command list
+ * Renders the command list and staic frame of each view
  **/
-void render_commands(enum VIEW_STATE state, grid_t *grid)
+void render_commands_list(enum VIEW_STATE state, grid_t *grid)
 {
     switch (state)
     {
