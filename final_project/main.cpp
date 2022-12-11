@@ -48,6 +48,13 @@ int main()
             take_in_user_cmd(grid_local);
             next_view = CURRENT_STATUS_VIEW;
             break;
+        case MY_BOARD_VIEW:
+            clear();
+            mvprintw(grid_local->upper_left_y, 0, " Enter MY_BOARD_VIEW state");
+            render_commands(MY_BOARD_VIEW, grid_local);
+            take_in_user_cmd(grid_local);
+            next_view = MY_PROJECT_VIEW;
+            break;
         case CURRENT_STATUS_VIEW:
             clear();
             mvprintw(grid_local->upper_left_y, 0, " Enter CURRENT_STATUS_VIEW state");
@@ -56,21 +63,17 @@ int main()
             draw_grid(grid_local);
             next_view = MY_BOARD_VIEW;
             break;
-        case MY_BOARD_VIEW:
-            clear();
-            mvprintw(grid_local->upper_left_y, 0, " Enter MY_BOARD_VIEW state");
-            take_in_user_cmd(grid_local);
-            next_view = MY_PROJECT_VIEW;
-            break;
         case MY_PROJECT_VIEW:
             clear();
             mvprintw(grid_local->upper_left_y, 0, " Enter MY_PROJECT_VIEW  state");
+            render_commands(MY_PROJECT_VIEW, grid_local);
             take_in_user_cmd(grid_local);
             next_view = MY_TASKVIEW;
             break;
         case MY_TASKVIEW:
             clear();
             mvprintw(grid_local->upper_left_y, 0, " Enter MY_TASKVIEW state");
+            render_commands(MY_TASKVIEW, grid_local);
             take_in_user_cmd(grid_local);
             next_view = LOGIN_VIEW;
             break;

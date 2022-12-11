@@ -17,14 +17,14 @@ int read_escape(int *read_char)
 }
 
 /*
- * @brief construct static current status view
+ * @brief construct static my board view
  * */
-void show_static_view_of_current_status()
+void show_static_my_board_summary_view()
 {
     grid_t *todo_grid = init_grid(25, 6, 49, 40);
     grid_t *ongoing_grid = init_grid(75, 6, 49, 40);
     grid_t *done_grid = init_grid(125, 6, 49, 40);
-    
+
     draw_grid(todo_grid);
     draw_grid(ongoing_grid);
     draw_grid(done_grid);
@@ -70,9 +70,9 @@ void render_commands(enum VIEW_STATE state, grid_t *grid)
         show_static_view_of_selection();
         break;
     case CURRENT_STATUS_VIEW:
-        show_static_view_of_current_status();
         break;
     case MY_BOARD_VIEW:
+        show_static_my_board_summary_view();
         break;
     case MY_PROJECT_VIEW:
         break;
