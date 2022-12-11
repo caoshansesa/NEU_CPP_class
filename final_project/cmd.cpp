@@ -64,7 +64,6 @@ void take_in_user_cmd(grid_t *grid)
             mvprintw(2, 2, "Insert q to quit");
             refresh();
             read_escape(&keyboard_input);
-
             if (keyboard_input == 'q')
             {
                 next_state = EXIT;

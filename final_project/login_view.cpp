@@ -2,7 +2,6 @@
 /*
  * @brief configuraration for Login state
  * */
-
 void config_state_login() {}
 
 /*
