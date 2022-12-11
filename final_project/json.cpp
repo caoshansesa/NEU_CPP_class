@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
-#include "project.h"
-#include "user.h"
-#include "json.hpp"
+#include "json.h"
 
 using namespace std;
 
@@ -12,16 +10,8 @@ vector <Task> tasks_from_project_json(Json::Value tasks_json) {
 
     for (int i = 0; i < tasks_json.size(); i++) {
         Task temp_task;
-        vector <string> assignees,issues;
-        Json::Value assignees_json = tasks_json[i]["assignees"];
-        Json::Value issues_json = tasks_json[i]["issues"];
-
-        for (int j = 0; j < assignees_json.size(); j++) assignees.push_back(assignees_json[j].asString());
-        for (int k = 0; k < issues_json.size(); k++) issues.push_back(issues_json[k].asString());
-
-        temp_task.assignees = assignees;
-        temp_task.issues = issues;
-
+        //temp_task.assignees = tasks_json[i]["assignees"].asString();
+        //temp_task.issues = tasks_json[i]["issues"].asString();
         temp_task.id = tasks_json[i]["id"].asInt();
         temp_task.type = tasks_json[i]["type"].asString();
         temp_task.priority = tasks_json[i]["priority"].asInt();
@@ -203,7 +193,7 @@ int users_to_json(vector<User> users) {
     file.close();
 
     for (int i = 0; i < users.size(); i++)
-    root_group.append(users[i].toJson());
+        root_group.append(users[i].toJson());
 
     file.open("user.json", ios::out);
     file << root_group.toStyledString();
@@ -282,11 +272,4 @@ vector <User> json_to_users() {
 
     return idx;
 
-}
-
-int main(void) {
-    vector <Project> test_projects = json_to_projects();//project.json
-    projects_to_json(test_projects, "projects_test.json");
-
-    return 0;
 }
