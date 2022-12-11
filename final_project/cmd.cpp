@@ -16,6 +16,35 @@ int read_escape(int *read_char)
     return 0;
 }
 
+/*
+ * @brief construct static current status view
+ * */
+void show_static_view_of_current_status()
+{
+    mvprintw(20, 50, "TODO:");
+    mvprintw(20, 100, "DOING:");
+    mvprintw(20, 150, "DONE:");
+}
+
+/*
+ * @brief construct static view of LOGIN_VIEW
+ * */
+void show_static_view_of_login()
+{
+    mvprintw(20, 100, "Login:");
+    mvprintw(40, 0, " Enter LOGIN_VIEW state");
+}
+
+/* @brief construct static view of MAKE_SELECT_VIEW
+ * */
+void show_static_view_of_selection()
+{
+
+    mvprintw(20, 100, "1. View/Manage My Board");
+    mvprintw(21, 100, "2. View My Projects");
+    mvprintw(22, 100, "3. View/Edit Current Status");
+}
+
 /**
  *
  * Renders the command list
@@ -28,11 +57,13 @@ void render_commands(enum VIEW_STATE state, grid_t *grid)
         cout << "a: Add new task\n" << endl;
         break;
     case LOGIN_VIEW:
-        mvprintw(0, 0, "Login:");
+        show_static_view_of_login();
         break;
     case MAKE_SELECT_VIEW:
+        show_static_view_of_selection();
         break;
     case CURRENT_STATUS_VIEW:
+        show_static_view_of_current_status();
         break;
     case MY_BOARD_VIEW:
         break;

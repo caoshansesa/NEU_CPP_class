@@ -3,6 +3,7 @@
 
 #include <string>
 
+static int terminal_x, terminal_y = 0;
 using namespace std;
 
 class User

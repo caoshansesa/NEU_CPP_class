@@ -11,9 +11,6 @@ grid_t *init_grid(int upper_left_x, int upper_left_y, int width, int height)
     grid->width = width;
     grid->height = height;
     grid->draw_char = '#';
-    grid->color[0] = 0;
-    grid->color[1] = 0;
-    grid->color[2] = 0;
     return (grid);
 }
 

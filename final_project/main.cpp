@@ -18,13 +18,12 @@ void init_game(void)
 int main()
 {
     grid_t *grid_local;
-    int x, y = 0;
     initscr();
-    nodelay(stdscr, TRUE);  // Do not wait for characters using getch.
-    noecho();               // Do not echo input characters
-    getmaxyx(stdscr, y, x); // Get the screen dimensions
-    grid_local = init_grid(x / 2, 0, WELL_WIDTH, WELL_HEIGHT);
-    draw_grid(grid_local);
+    nodelay(stdscr, TRUE);                    // Do not wait for characters using getch.
+    noecho();                                 // Do not echo input characters
+    getmaxyx(stdscr, terminal_y, terminal_x); // Get the screen dimensions
+    grid_local = init_grid(terminal_y / 2, terminal_x / 2, WELL_WIDTH, WELL_HEIGHT);
+    grid_local = init_grid(((terminal_x / 2) - (WELL_WIDTH / 2)), 1, WELL_WIDTH, WELL_HEIGHT);
     while (1)
     {
         switch (next_view)
@@ -35,24 +34,26 @@ int main()
             break;
         case LOGIN_VIEW:
             clear();
-            mvprintw(grid_local->upper_left_y, 0, " Enter LOGIN_VIEW state");
-            config_state_login();
             render_commands(LOGIN_VIEW, grid_local);
-            constrcut_login_view();
+            // read in json
             take_in_user_cmd(grid_local);
+            // dump to json
             update_login_view();
             next_view = MAKE_SELECT_VIEW;
             break;
         case MAKE_SELECT_VIEW:
             clear();
             mvprintw(grid_local->upper_left_y, 0, " Enter LOGIN_VIEW state");
+            render_commands(MAKE_SELECT_VIEW, grid_local);
             take_in_user_cmd(grid_local);
             next_view = CURRENT_STATUS_VIEW;
             break;
         case CURRENT_STATUS_VIEW:
             clear();
             mvprintw(grid_local->upper_left_y, 0, " Enter CURRENT_STATUS_VIEW state");
+            render_commands(CURRENT_STATUS_VIEW, grid_local);
             take_in_user_cmd(grid_local);
+            draw_grid(grid_local);
             next_view = MY_BOARD_VIEW;
             break;
         case MY_BOARD_VIEW:
