@@ -24,7 +24,6 @@ int main()
     noecho();               // Do not echo input characters
     getmaxyx(stdscr, y, x); // Get the screen dimensions
     grid_local = init_grid(x / 2, 0, WELL_WIDTH, WELL_HEIGHT);
-    enum VIEW_STATE next_view = INIT;
     draw_grid(grid_local);
     while (1)
     {
@@ -45,19 +44,34 @@ int main()
             next_view = MAKE_SELECT_VIEW;
             break;
         case MAKE_SELECT_VIEW:
-            cout << "Enter MAKE_SELECT_VIEW state" << endl;
+            clear();
+            mvprintw(grid_local->upper_left_y, 0, " Enter LOGIN_VIEW state");
+            take_in_user_cmd(grid_local);
+            next_view = CURRENT_STATUS_VIEW;
             break;
         case CURRENT_STATUS_VIEW:
-            cout << "Enter CURRENT_STATUS_VIEW state" << endl;
+            clear();
+            mvprintw(grid_local->upper_left_y, 0, " Enter CURRENT_STATUS_VIEW state");
+            take_in_user_cmd(grid_local);
+            next_view = MY_BOARD_VIEW;
             break;
         case MY_BOARD_VIEW:
-            cout << "Enter MY_BOARD_VIEW state" << endl;
+            clear();
+            mvprintw(grid_local->upper_left_y, 0, " Enter MY_BOARD_VIEW state");
+            take_in_user_cmd(grid_local);
+            next_view = MY_PROJECT_VIEW;
             break;
         case MY_PROJECT_VIEW:
-            cout << "Enter MY_TASKVIEW state" << endl;
+            clear();
+            mvprintw(grid_local->upper_left_y, 0, " Enter MY_PROJECT_VIEW  state");
+            take_in_user_cmd(grid_local);
+            next_view = MY_TASKVIEW;
             break;
         case MY_TASKVIEW:
-            cout << "Enter MY_TASKVIEW state" << endl;
+            clear();
+            mvprintw(grid_local->upper_left_y, 0, " Enter MY_TASKVIEW state");
+            take_in_user_cmd(grid_local);
+            next_view = LOGIN_VIEW;
             break;
         }
         refresh();

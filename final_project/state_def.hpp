@@ -1,12 +1,12 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-// Define user command line state, 
+// Define user command line state,
 enum CMD_STATE
 {
     CMD_INIT = 0,
-    RUNNING,  // RUNNING state, keep taking user input, update json
-    EXIT // EXIT state, exit user command line input, goto next view
+    RUNNING, // RUNNING state, keep taking user input, update json
+    EXIT     // EXIT state, exit user command line input, goto next view
 };
 
 enum VIEW_STATE
@@ -19,5 +19,7 @@ enum VIEW_STATE
     MY_PROJECT_VIEW,
     MY_TASKVIEW
 };
+
+static enum VIEW_STATE next_view = INIT;
 
 #endif

@@ -54,11 +54,7 @@ void take_in_user_cmd(grid_t *grid)
 {
     enum CMD_STATE next_state = CMD_INIT;
     int break_loop = 1;
-    int user_input = 1;
-    string chosen_command;
-    int items_read = 0;
     int keyboard_input = 0;
-    string user_cmd;
     while (break_loop)
     {
         switch (next_state)
