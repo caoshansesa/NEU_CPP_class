@@ -155,7 +155,6 @@ void show_static_my_board_summary_view()
     mvprintw(5, 50, "TODO:");
     mvprintw(5, 100, "DOING:");
     mvprintw(5, 150, "DONE:");
-    render_my_board
 }
 
 /*
