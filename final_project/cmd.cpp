@@ -16,6 +16,45 @@ int read_escape(int *read_char)
     return 0;
 }
 
+/* *
+ * @brief read in a string and return the string
+ * */
+string getstring()
+{
+    string input;
+    echo();
+    // this reads from buffer after <ENTER>, not "raw"
+    // so any backspacing etc. has already been taken care of
+    int ch = getch();
+    while (ch != '\n')
+    {
+        input.push_back(ch);
+        ch = getch();
+    }
+    return input;
+}
+
+/* *
+ * @brief, Add the login readline, read in a string which used as username
+ * */
+void get_name_from_login()
+{
+    // start get user name: new window
+    char mesg[] = "Please input your username ";
+    int x, y;
+    initscr();
+    getmaxyx(stdscr, y, x);
+    mvprintw(y / 2, (x - strlen(mesg)) / 2, "%s", mesg);
+    refresh();
+    username = getstring();
+    nodelay(stdscr, true);
+    noecho();
+    endwin();
+    refresh();
+}
+
+
+
 /*
  * @brief Show my task view
  * */
@@ -43,7 +82,7 @@ void show_my_project_summary_view()
  * */
 void show_my_current_status_view()
 {
-    mvprintw(5, 5, "Current Status");
+    mvprintw(0, 5, "Current Status");
     grid_t *my_current_status_grid = init_grid(26, 5, 80, 40);
     draw_grid(my_current_status_grid);
 }
@@ -53,6 +92,10 @@ void show_my_current_status_view()
  * */
 void show_static_my_board_summary_view()
 {
+    mvprintw(30, 0, "a: Add new task\n");
+    mvprintw(31, 0, "m: Move task to doing\n");
+    mvprintw(32, 0, "r: Remove task\n");
+
     grid_t *todo_grid = init_grid(25, 6, 49, 40);
     grid_t *ongoing_grid = init_grid(75, 6, 49, 40);
     grid_t *done_grid = init_grid(125, 6, 49, 40);
@@ -63,37 +106,7 @@ void show_static_my_board_summary_view()
     mvprintw(5, 50, "TODO:");
     mvprintw(5, 100, "DOING:");
     mvprintw(5, 150, "DONE:");
-}
-
-string getstring()
-{
-    string input;
-    echo();
-    // this reads from buffer after <ENTER>, not "raw"
-    // so any backspacing etc. has already been taken care of
-    int ch = getch();
-    while (ch != '\n')
-    {
-        input.push_back(ch);
-        ch = getch();
-    }
-    return input;
-}
-
-string get_name_from_login()
-{
-    // start get user name: new window
-    char mesg[] = "Please input your username ";
-    int x, y;
-    initscr();
-    getmaxyx(stdscr, y, x);
-    mvprintw(y / 2, (x - strlen(mesg)) / 2, "%s", mesg);
-    refresh();
-    username = getstring();
-    nodelay(stdscr, true);
-    noecho();
-    endwin();
-    refresh();
+    move(35, 0);
 }
 
 /*
@@ -101,10 +114,9 @@ string get_name_from_login()
  * */
 void show_static_view_of_login()
 {
-    mvprintw(40, 0, " Enter LOGIN_VIEW state");
+    mvprintw(0, 0, " Enter LOGIN_VIEW state");
     get_name_from_login();
-    // handle the username global variables here to verify the name and 
-
+    // handle the username global variables here to verify the name and
 }
 
 /* @brief construct static view of MAKE_SELECT_VIEW
