@@ -121,7 +121,7 @@ void show_my_project_summary_view()
 {
     mvprintw(5, 5, "My Proejct Summary");
     prj_summary_window = create_newwin(40, 80, 6, 25);
-    mvwprintw(prj_summary_window, 2, 2, "this is a box");
+    //mvwprintw(prj_summary_window, 2, 2, "this is a box");
     wrefresh(prj_summary_window);
 }
 
@@ -145,9 +145,9 @@ void show_static_my_board_summary_view()
     ongoing_window = create_newwin(40, 49, 6, 75);
     done_window = create_newwin(40, 49, 6, 125);
 
-    mvwprintw(todo_window, 2, 2, "this is a box");
-    mvwprintw(ongoing_window, 2, 2, "this is a box");
-    mvwprintw(done_window, 2, 2, "this is a box");
+    //mvwprintw(todo_window, 2, 2, "this is a box");
+    //mvwprintw(ongoing_window, 2, 2, "this is a box");
+    //mvwprintw(done_window, 2, 2, "this is a box");
     
     wrefresh(todo_window);
     wrefresh(ongoing_window);
@@ -298,7 +298,7 @@ void render_my_project_view_data_region()
     for (auto &prj_idx : global_projects_vector) // access by reference to avoid copying
     {
         mvwprintw(prj_summary_window, i+ 2, 2, prj_idx.name.c_str());
-        i= i+10;
+        i= i+3;
     }
 
     wrefresh(prj_summary_window);
