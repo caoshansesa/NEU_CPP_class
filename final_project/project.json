@@ -30,8 +30,20 @@
 				"id" : 1,
 				"issues" : "missing documentation",
 				"priority" : 2,
-				"status" : "DONE",
+				"status" : "TODO",
 				"title" : "CS Brick integration",
+				"type" : "testing"
+			},
+			{
+				"assignDate" : "Jan-19-2021",
+				"assignees" : "mark",
+				"completionDate" : "Jan-20-2021",
+				"dueDate" : "Jan-21-2021",
+				"id" : 1,
+				"issues" : "missing documentation",
+				"priority" : 2,
+				"status" : "ONGOING",
+				"title" : "opcua pubsub testing",
 				"type" : "testing"
 			}
 		]

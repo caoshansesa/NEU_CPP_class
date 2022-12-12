@@ -230,6 +230,8 @@ void render_Make_selection_view_data_region()
 /*
  * rendering current status view data region
  * */
+
+//AMEL START EDIT
 void render_curent_status_view_data_region()
 {
 
@@ -251,10 +253,39 @@ void render_curent_status_view_data_region()
 /*
  * rendering my board view data region
  * */
+//AMEL EDIT HERE 1.
 void render_my_board_view_data_region()
 {
-}
+    todo_window;
+    ongoing_window;
+    done_window;
+    int x,y,z = 2;
+    Task tasks= global_projects_vector[0].tasks;
+    for (auto &task_idx : tasks) // access by reference to avoid copying
+    {
+        if(task_idx.status == "TODO"){
+        mvwprintw(todo_window, x, 2, task_idx.title.c_str());
+        x+2;
+        }
+        if(task_idx.status == "ONGOING"){
+            mvwprintw(ongoing_window, y + 2, 2, task_idx.title.c_str());
+            y+2;
+        }
+        if(task_idx.status == "DOING"){
+            mvwprintw(done_window, z, 2, task_idx.title.c_str());
+            z+2;
+        }
+    }
 
+    wrefresh(todo_window);
+    wrefresh(ongoing_window);
+    wrefresh(done_window);
+    // for window_myboard
+    // doing, to do, done windows
+    // loop for 1 project
+    // make it look for task which belongs to each "status" : to do, doing, done
+    // print each of the tasks into 3 different windows with task name only
+}
 /*
  * rendering my project view data region
  * */
