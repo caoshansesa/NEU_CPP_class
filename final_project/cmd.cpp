@@ -8,6 +8,13 @@
 
 using namespace std;
 
+WINDOW *todo_window;
+WINDOW *ongoing_window;
+WINDOW *done_window;
+WINDOW *current_status_win;
+WINDOW *my_task_window;
+WINDOW *prj_summary_window;
+
 /* *
  *@brief Draw a window inside the current view based on the size
  * */
@@ -60,8 +67,6 @@ string getstring()
 {
     string input;
     echo();
-    // this reads from buffer after <ENTER>, not "raw"
-    // so any backspacing etc. has already been taken care of
     int ch = getch();
     while (ch != '\n')
     {
@@ -98,9 +103,9 @@ void show_my_task_view()
     attron(A_REVERSE | A_BOLD);
     mvprintw(5, 5, "My Task View");
     attroff(A_REVERSE | A_BOLD);
-    WINDOW *summary_window = create_newwin(40, 80, 6, 25);
-    mvwprintw(summary_window, 2, 2, "this is a box");
-    wrefresh(summary_window);
+    my_task_window = create_newwin(40, 80, 6, 25);
+    mvwprintw(my_task_window, 2, 2, "this is a box");
+    wrefresh(my_task_window);
 }
 
 /*
@@ -109,9 +114,9 @@ void show_my_task_view()
 void show_my_project_summary_view()
 {
     mvprintw(5, 5, "My Proejct Summary");
-    WINDOW *summary_window = create_newwin(40, 80, 6, 25);
-    mvwprintw(summary_window, 2, 2, "this is a box");
-    wrefresh(summary_window);
+    prj_summary_window = create_newwin(40, 80, 6, 25);
+    mvwprintw(prj_summary_window, 2, 2, "this is a box");
+    wrefresh(prj_summary_window);
 }
 
 /*
@@ -119,12 +124,6 @@ void show_my_project_summary_view()
  * */
 void show_my_current_status_view()
 {
-    mvprintw(0, 5, "Current Status");
-    grid_t *my_current_status_grid = init_grid(26, 5, 80, 40);
-    // draw_grid(my_current_status_grid);
-    WINDOW *local_win = create_newwin(40, 80, 5, 26);
-    mvwprintw(local_win, 1, 1, "this is a box");
-    wrefresh(local_win);
 }
 
 /*
@@ -136,9 +135,9 @@ void show_static_my_board_summary_view()
     mvprintw(31, 0, "m: Move task to doing\n");
     mvprintw(32, 0, "r: Remove task\n");
 
-    WINDOW *todo_window = create_newwin(40, 49, 6, 25);
-    WINDOW *ongoing_window = create_newwin(40, 49, 6, 75);
-    WINDOW *done_window = create_newwin(40, 49, 6, 125);
+    todo_window = create_newwin(40, 49, 6, 25);
+    ongoing_window = create_newwin(40, 49, 6, 75);
+    done_window = create_newwin(40, 49, 6, 125);
 
     mvwprintw(todo_window, 2, 2, "this is a box");
     mvwprintw(ongoing_window, 2, 2, "this is a box");
@@ -166,6 +165,8 @@ void show_static_view_of_login()
  * */
 void show_static_view_of_selection()
 {
+    clear();
+    mvprintw(0, 0, " Enter Slection View State");
     attron(A_REVERSE | A_BOLD);
     mvprintw(20, 70, "1. View/Manage My Board");
     mvprintw(22, 70, "2. View My Projects");
@@ -173,6 +174,7 @@ void show_static_view_of_selection()
     attroff(A_REVERSE | A_BOLD);
     attron(A_BOLD | A_BLINK);
     mvprintw(30, 65, "Please choose your view here");
+    noecho();
     attroff(A_BOLD | A_BLINK);
 }
 
@@ -227,6 +229,22 @@ void render_Make_selection_view_data_region()
  * */
 void render_curent_status_view_data_region()
 {
+
+    current_status_win = create_newwin(40, 80, 5, 26);
+    int i = 0;
+    for (auto &prj_idx : global_projects_vector) // access by reference to avoid copying
+    {
+        mvwprintw(current_status_win, 5+ i, 1, "this is a box");
+        mvwprintw(current_status_win, 0, 2, prj_idx.name.c_str());
+        mvwprintw(current_status_win, 1, 2, prj_idx.projectManagerUserName.c_str());
+        mvwprintw(current_status_win, 2, 2, prj_idx.assignDate.c_str());
+        mvwprintw(current_status_win, 3, 2, prj_idx.dueDate.c_str());
+        mvwprintw(current_status_win, 4, 2, prj_idx.description.c_str());
+        i++;
+    }
+
+    mvwprintw(current_status_win, 2, 2, "this is a test box");
+    wrefresh(current_status_win);
 }
 
 /*
@@ -264,6 +282,7 @@ void render_data_region(enum VIEW_STATE state, grid_t *grid)
     case MAKE_SELECT_VIEW:
         break;
     case CURRENT_STATUS_VIEW:
+        render_curent_status_view_data_region();
         break;
     case MY_BOARD_VIEW:
         break;
