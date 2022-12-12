@@ -1,11 +1,76 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <ostream>
+#include <map>
 #include "json.hpp"
 #include "state_def.hpp"
 
 using namespace std;
 
+//main API
+
+int deserialize(string filename){
+	global_projects_vector = json_to_projects(filename);
+
+	return 0;
+
+}
+
+
+int serialize(string filename){
+	ofstream ofs;
+	ofs.open(filename,ofstream::out | ofstream::trunc);
+	ofs.close();
+	projects_to_json(global_projects_vector, filename);
+
+	return 0;
+}
+
+
+map<string, string> read_people(string filename){
+	map<string,string> temp_map;
+	Json::CharReaderBuilder rbuilder;
+	rbuilder["collectComments"] = false;
+	Json::Value root_group;
+	JSONCPP_STRING errs;
+
+	fstream file;
+	file.open(filename, ios::in);
+	if(!file.is_open()){
+		cout << "Open json file error!" <<endl;
+	}
+
+	Json::parseFromStream(rbuilder, file, &root_group, &errs);
+	
+	for(int i = 0; i < root_group.size(); i++){
+		string name, role;
+		
+		name = root_group[i]["name"].asString();
+		role = root_group[i]["role"].asString();
+	//	cout << name << ": " <<role <<endl;	
+		//people_map.insert(make_pair(name, role));
+		temp_map[name] = role;
+
+	}
+
+	auto it = temp_map.begin();
+	while(it!= temp_map.end()){
+		string name = it->first;
+		string role = it->second;
+		cout << name <<": " <<role <<endl;
+		it++;
+
+	}
+	file.close();
+
+	return temp_map;
+}
+
+
+
+
+//helper functions 
 /*TASKS TO JSON FILE*/
 vector <Task> tasks_from_project_json(Json::Value tasks_json) {
     vector <Task> tasks;
@@ -30,7 +95,7 @@ vector <Task> tasks_from_project_json(Json::Value tasks_json) {
 }
 
 /*1. PROJECT TO JSON*/
-int project_to_json(Project project) {
+int project_to_json(Project project,string filename) {
 
     Json::CharReaderBuilder rbuilder;
     rbuilder["collectComments"] = false;
@@ -38,7 +103,7 @@ int project_to_json(Project project) {
     JSONCPP_STRING errs;
 
     fstream file;
-    file.open("project.json");
+    file.open(filename);
     if (!file.is_open()) {
         cout << "Open json file error!" << endl;
     }
@@ -49,7 +114,7 @@ int project_to_json(Project project) {
 
     root_group.append(project.toJson());
 
-    file.open("project.json", ios::out);
+    file.open(filename, ios::out);
     file << root_group.toStyledString();
     file.close();
 
@@ -83,14 +148,14 @@ int projects_to_json(vector <Project> projects, string filename) {
 
 
 /*3.JSON TO PROJECT*/
-Project json_to_project(int i) {
+Project json_to_project(int i,string filename) {
     Json::CharReaderBuilder rbuilder;
     rbuilder["collectComments"] = false;
     Json::Value root_group;
     JSONCPP_STRING errs;
 
     fstream f;
-    f.open("project.json", ios::in);
+    f.open(filename, ios::in);
     if (!f.is_open()) {
         cout << "Open json file error!" << endl;
     }
@@ -115,7 +180,7 @@ Project json_to_project(int i) {
 }
 
 /*4.JSON TO PROJECT VECTOR*/
-vector <Project> json_to_projects() {
+vector <Project> json_to_projects(string filename) {
     vector <Project> idx;
     Json::CharReaderBuilder rbuilder;
     rbuilder["collectComments"] = false;
@@ -123,7 +188,7 @@ vector <Project> json_to_projects() {
     JSONCPP_STRING errs;
 
     fstream f;
-    f.open("project.json", ios::in);
+    f.open(filename, ios::in);
     if (!f.is_open()) {
         cout << "Open json file error!" << endl;
     }
@@ -153,14 +218,14 @@ vector <Project> json_to_projects() {
 }
 
 /*1 USER TO JSON*/
-int user_to_json(User user) {
+int user_to_json(User user, string filename) {
     Json::CharReaderBuilder rbuilder;
     rbuilder["collectComments"] = false;
     Json::Value root_group;
     JSONCPP_STRING errs;
 
     fstream file;
-    file.open("user.json");
+    file.open(filename);
     if (!file.is_open()) {
         cout << "Open json file error!" << endl;
     }
@@ -178,14 +243,14 @@ int user_to_json(User user) {
 
 }
 /*2. USER VECTOR TO JSON*/
-int users_to_json(vector<User> users) {
+int users_to_json(vector<User> users,string filename) {
     Json::CharReaderBuilder rbuilder;
     rbuilder["collectComments"] = false;
     Json::Value root_group;
     JSONCPP_STRING errs;
 
     fstream file;
-    file.open("user.json");
+    file.open(filename);
     if (!file.is_open()) {
         cout << "Open json file error!" << endl;
     }
@@ -197,7 +262,7 @@ int users_to_json(vector<User> users) {
     for (int i = 0; i < users.size(); i++)
         root_group.append(users[i].toJson());
 
-    file.open("user.json", ios::out);
+    file.open(filename, ios::out);
     file << root_group.toStyledString();
     file.close();
 
@@ -206,7 +271,7 @@ int users_to_json(vector<User> users) {
 
 
 /*3 JSON TO USER*/
-User json_to_user(int i) {
+User json_to_user(int i, string filename) {
 
     Json::CharReaderBuilder rbuilder;
     rbuilder["collectComments"] = false;
@@ -214,7 +279,7 @@ User json_to_user(int i) {
     JSONCPP_STRING errs;
 
     fstream f;
-    f.open("user.json", ios::in);
+    f.open(filename, ios::in);
     if (!f.is_open()) {
         cout << "Open json file error!" << endl;
     }
@@ -240,7 +305,7 @@ User json_to_user(int i) {
 }
 
 /*4 JSON TO USER VECTOR*/
-vector <User> json_to_users() {
+vector <User> json_to_users(string filename) {
     vector <User> idx;
     Json::CharReaderBuilder rbuilder;
     rbuilder["collectComments"] = false;
@@ -248,7 +313,7 @@ vector <User> json_to_users() {
     JSONCPP_STRING errs;
 
     fstream f;
-    f.open("user.json", ios::in);
+    f.open(filename, ios::in);
     if (!f.is_open()) {
         cout << "Open json file error!" << endl;
     }
@@ -275,3 +340,9 @@ vector <User> json_to_users() {
     return idx;
 
 }
+
+
+
+
+
+

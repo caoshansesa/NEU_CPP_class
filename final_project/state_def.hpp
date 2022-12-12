@@ -2,6 +2,8 @@
 #define MAIN_H
 
 #include <string>
+#include <vector>
+#include <map>
 #include "json/json.h"
 
 static int terminal_x, terminal_y = 0;
@@ -141,6 +143,12 @@ public:
 
 
 };
+
+static map<string, string> people_map;
+static vector<Project> global_projects_vector;
+
+
+
 
 // Define user command line state,
 enum CMD_STATE

@@ -16,7 +16,7 @@
 				"completionDate" : "Jan-19-2021",
 				"dueDate" : "Jan-30-2021",
 				"id" : 1,
-				"issues" :"firewall",
+				"issues" : "firewall",
 				"priority" : 2,
 				"status" : "DONE",
 				"title" : "MVS POC",
