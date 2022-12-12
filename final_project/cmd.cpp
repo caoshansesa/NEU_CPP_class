@@ -8,6 +8,43 @@
 
 using namespace std;
 
+/* *
+ *@brief Draw a window inside the current view based on the size
+ * */
+WINDOW *create_newwin(int height, int width, int starty, int startx)
+{
+
+    WINDOW *win = newwin(height, width, starty, startx);
+    refresh();
+    box(win, '-', '-');
+    wborder(win, '*', '*', '*', '*', '*', '*', '*', '*');
+    wrefresh(win);
+    return win;
+}
+
+void destroy_win(WINDOW *local_win)
+{
+    /* box(local_win, ' ', ' '); : This won't produce the desired
+     * result of erasing the window. It will leave it's four corners
+     * and so an ugly remnant of window.  */
+
+    wborder(local_win, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+
+    /* The parameters taken are
+     * 1. win: the window on which to operate
+     * 2. ls: character to be used for the left side of the window
+     * 3. rs: character to be used for the right side of the window
+     * 4. ts: character to be used for the top side of the window
+     * 5. bs: character to be used for the bottom side of the window
+     * 6. tl: character to be used for the top left corner of the window
+     * 7. tr: character to be used for the top right corner of the window
+     * 8. bl: character to be used for the bottom left corner of the window
+     * 9. br: character to be used for the bottom right corner of the window */
+
+    wrefresh(local_win);
+    delwin(local_win);
+}
+
 int read_escape(int *read_char)
 {
     int c;
@@ -53,8 +90,6 @@ void get_name_from_login()
     refresh();
 }
 
-
-
 /*
  * @brief Show my task view
  * */
@@ -63,8 +98,9 @@ void show_my_task_view()
     attron(A_REVERSE | A_BOLD);
     mvprintw(5, 5, "My Task View");
     attroff(A_REVERSE | A_BOLD);
-    grid_t *my_current_status_grid = init_grid(26, 5, 80, 40);
-    draw_grid(my_current_status_grid);
+    WINDOW *summary_window = create_newwin(40, 80, 6, 25);
+    mvwprintw(summary_window, 2, 2, "this is a box");
+    wrefresh(summary_window);
 }
 
 /*
@@ -73,8 +109,9 @@ void show_my_task_view()
 void show_my_project_summary_view()
 {
     mvprintw(5, 5, "My Proejct Summary");
-    grid_t *my_current_status_grid = init_grid(26, 5, 80, 40);
-    draw_grid(my_current_status_grid);
+    WINDOW *summary_window = create_newwin(40, 80, 6, 25);
+    mvwprintw(summary_window, 2, 2, "this is a box");
+    wrefresh(summary_window);
 }
 
 /*
@@ -84,7 +121,10 @@ void show_my_current_status_view()
 {
     mvprintw(0, 5, "Current Status");
     grid_t *my_current_status_grid = init_grid(26, 5, 80, 40);
-    draw_grid(my_current_status_grid);
+    // draw_grid(my_current_status_grid);
+    WINDOW *local_win = create_newwin(40, 80, 5, 26);
+    mvwprintw(local_win, 1, 1, "this is a box");
+    wrefresh(local_win);
 }
 
 /*
@@ -96,17 +136,20 @@ void show_static_my_board_summary_view()
     mvprintw(31, 0, "m: Move task to doing\n");
     mvprintw(32, 0, "r: Remove task\n");
 
-    grid_t *todo_grid = init_grid(25, 6, 49, 40);
-    grid_t *ongoing_grid = init_grid(75, 6, 49, 40);
-    grid_t *done_grid = init_grid(125, 6, 49, 40);
+    WINDOW *todo_window = create_newwin(40, 49, 6, 25);
+    WINDOW *ongoing_window = create_newwin(40, 49, 6, 75);
+    WINDOW *done_window = create_newwin(40, 49, 6, 125);
 
-    draw_grid(todo_grid);
-    draw_grid(ongoing_grid);
-    draw_grid(done_grid);
+    mvwprintw(todo_window, 2, 2, "this is a box");
+    mvwprintw(ongoing_window, 2, 2, "this is a box");
+    mvwprintw(done_window, 2, 2, "this is a box");
+    wrefresh(todo_window);
+    wrefresh(ongoing_window);
+    wrefresh(done_window);
+
     mvprintw(5, 50, "TODO:");
     mvprintw(5, 100, "DOING:");
     mvprintw(5, 150, "DONE:");
-    move(35, 0);
 }
 
 /*
@@ -128,9 +171,9 @@ void show_static_view_of_selection()
     mvprintw(22, 70, "2. View My Projects");
     mvprintw(24, 70, "3. View/Edit Current Status");
     attroff(A_REVERSE | A_BOLD);
-    attron(A_BOLD|A_BLINK);
-    mvprintw(30,65,"Please choose your view here"); 
-    attroff(A_BOLD|A_BLINK);
+    attron(A_BOLD | A_BLINK);
+    mvprintw(30, 65, "Please choose your view here");
+    attroff(A_BOLD | A_BLINK);
 }
 
 /**
@@ -168,6 +211,7 @@ void render_commands_list(enum VIEW_STATE state, grid_t *grid)
  * */
 void render_Login_view_data_region()
 {
+    // Empty, no data hand in login view
 }
 
 /*
@@ -175,6 +219,7 @@ void render_Login_view_data_region()
  * */
 void render_Make_selection_view_data_region()
 {
+    // Empty, no data hand in login view
 }
 
 /*

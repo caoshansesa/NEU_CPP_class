@@ -80,7 +80,7 @@ int main()
             mvprintw(grid_local->upper_left_y, 0, " Enter MY_TASKVIEW state");
             render_commands_list(MY_TASKVIEW, grid_local);
             take_in_user_cmd(grid_local);
-            next_view = LOGIN_VIEW;
+            next_view = MAKE_SELECT_VIEW;
             break;
         }
         refresh();
