@@ -2,6 +2,7 @@
 #define MAIN_H
 
 #include <string>
+#include "json/json.h"
 
 static int terminal_x, terminal_y = 0;
 using namespace std;
