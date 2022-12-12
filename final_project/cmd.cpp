@@ -152,6 +152,7 @@ void show_static_my_board_summary_view()
     mvprintw(5, 50, "TODO:");
     mvprintw(5, 100, "DOING:");
     mvprintw(5, 150, "DONE:");
+    render_my_board
 }
 
 /*
@@ -317,6 +318,7 @@ void render_data_region(enum VIEW_STATE state, grid_t *grid)
         render_curent_status_view_data_region();
         break;
     case MY_BOARD_VIEW:
+        render_my_board_view_data_region();
         break;
     case MY_PROJECT_VIEW:
         break;
