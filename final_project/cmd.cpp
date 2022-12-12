@@ -8,6 +8,10 @@
 
 using namespace std;
 
+map<string, string> people_map;
+vector<Project> global_projects_vector;
+
+
 WINDOW *todo_window;
 WINDOW *ongoing_window;
 WINDOW *done_window;
@@ -234,7 +238,7 @@ void render_curent_status_view_data_region()
     int i = 0;
     for (auto &prj_idx : global_projects_vector) // access by reference to avoid copying
     {
-        mvwprintw(current_status_win, 5+ i, 1, "this is a box");
+        mvwprintw(current_status_win, 5 + i, 1, "this is a box");
         mvwprintw(current_status_win, 0, 2, prj_idx.name.c_str());
         mvwprintw(current_status_win, 1, 2, prj_idx.projectManagerUserName.c_str());
         mvwprintw(current_status_win, 2, 2, prj_idx.assignDate.c_str());

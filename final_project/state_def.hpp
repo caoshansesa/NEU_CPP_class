@@ -152,8 +152,8 @@ class Project
 
 };
 
-static map<string, string> people_map;
-static vector<Project> global_projects_vector;
+extern map<string, string> people_map;
+extern vector<Project> global_projects_vector;
 
 
 

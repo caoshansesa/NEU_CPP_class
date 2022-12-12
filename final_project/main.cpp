@@ -12,6 +12,7 @@
 #define WELL_WIDTH 20
 #define WELL_HEIGHT 20
 
+static Project* global_addr;
 unsigned int microsecond = 1000000;
 
 using namespace std;
