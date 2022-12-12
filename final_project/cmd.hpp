@@ -19,7 +19,7 @@ int modify_project_duedate(int project_id, string dueDate);
 int modify_projectcompletiondate(int project_id, string completionDate);
 int modify_project_manager(int project_id, string new_manager);
 int modify_project_owner(int project_id, string new_owner);
-int delete_project(int project id);
+int delete_project(int project_id);
 
 int add_task(int project_id,Task new_task);
 int modify_task_priority(int task_id, int priority);
