@@ -21,7 +21,9 @@ int read_escape(int *read_char)
  * */
 void show_my_task_view()
 {
+    attron(A_REVERSE | A_BOLD);
     mvprintw(5, 5, "My Task View");
+    attroff(A_REVERSE | A_BOLD);
     grid_t *my_current_status_grid = init_grid(26, 5, 80, 40);
     draw_grid(my_current_status_grid);
 }
@@ -63,13 +65,46 @@ void show_static_my_board_summary_view()
     mvprintw(5, 150, "DONE:");
 }
 
+string getstring()
+{
+    string input;
+    echo();
+    // this reads from buffer after <ENTER>, not "raw"
+    // so any backspacing etc. has already been taken care of
+    int ch = getch();
+    while (ch != '\n')
+    {
+        input.push_back(ch);
+        ch = getch();
+    }
+    return input;
+}
+
+string get_name_from_login()
+{
+    // start get user name: new window
+    char mesg[] = "Please input your username ";
+    int x, y;
+    initscr();
+    getmaxyx(stdscr, y, x);
+    mvprintw(y / 2, (x - strlen(mesg)) / 2, "%s", mesg);
+    refresh();
+    username = getstring();
+    nodelay(stdscr, true);
+    noecho();
+    endwin();
+    refresh();
+}
+
 /*
  * @brief construct static view of LOGIN_VIEW
  * */
 void show_static_view_of_login()
 {
-    mvprintw(20, 100, "Login:");
     mvprintw(40, 0, " Enter LOGIN_VIEW state");
+    get_name_from_login();
+    // handle the username global variables here to verify the name and 
+
 }
 
 /* @brief construct static view of MAKE_SELECT_VIEW
@@ -111,6 +146,71 @@ void render_commands_list(enum VIEW_STATE state, grid_t *grid)
         break;
     }
 }
+/*
+ * rendering LOGIN_VIEW data region
+ * */
+void render_Login_view_data_region()
+{
+}
+
+/*
+ * rendering selction view data region
+ * */
+void render_Make_selection_view_data_region()
+{
+}
+
+/*
+ * rendering current status view data region
+ * */
+void render_curent_status_view_data_region()
+{
+}
+
+/*
+ * rendering my board view data region
+ * */
+void render_my_board_view_data_region()
+{
+}
+
+/*
+ * rendering my project view data region
+ * */
+void render_my_project_view_data_region()
+{
+}
+
+/*
+ * rendering my task view data region
+ * */
+void render_my_task_view_data_region()
+{
+}
+
+/*
+ *@ brief Render data region based on the Project and people objs
+ * */
+void render_data_region(enum VIEW_STATE state, grid_t *grid)
+{
+    switch (state)
+    {
+    case INIT:
+        break;
+    case LOGIN_VIEW:
+        break;
+    case MAKE_SELECT_VIEW:
+        break;
+    case CURRENT_STATUS_VIEW:
+        break;
+    case MY_BOARD_VIEW:
+        break;
+    case MY_PROJECT_VIEW:
+        break;
+    case MY_TASKVIEW:
+        break;
+    }
+}
 
 /** @brief
  *  in RUNNING state, take in user input, update current_user_obj, current_project_obj
@@ -130,7 +230,6 @@ void take_in_user_cmd(grid_t *grid)
         {
         case CMD_INIT:
         case RUNNING:
-            mvprintw(2, 2, "Insert q to quit");
             refresh();
             read_escape(&keyboard_input);
             if (keyboard_input == 'q')

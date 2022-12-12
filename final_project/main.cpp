@@ -19,11 +19,12 @@ int main()
 {
     grid_t *grid_local;
     initscr();
-    nodelay(stdscr, TRUE);                    // Do not wait for characters using getch.
-    noecho();                                 // Do not echo input characters
+    nodelay(stdscr, TRUE); // Do not wait for characters using getch.
+    cbreak();
     getmaxyx(stdscr, terminal_y, terminal_x); // Get the screen dimensions
     grid_local = init_grid(terminal_y / 2, terminal_x / 2, WELL_WIDTH, WELL_HEIGHT);
     grid_local = init_grid(((terminal_x / 2) - (WELL_WIDTH / 2)), 1, WELL_WIDTH, WELL_HEIGHT);
+
     while (1)
     {
         switch (next_view)

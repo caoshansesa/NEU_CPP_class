@@ -3,9 +3,10 @@
 
 #include <string>
 
-static int terminal_x, terminal_y = 0;
 using namespace std;
 
+static int terminal_x, terminal_y = 0;
+static string username;
 class User
 {
   public:
