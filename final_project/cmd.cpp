@@ -123,9 +123,14 @@ void show_static_view_of_login()
  * */
 void show_static_view_of_selection()
 {
-    mvprintw(20, 100, "1. View/Manage My Board");
-    mvprintw(21, 100, "2. View My Projects");
-    mvprintw(22, 100, "3. View/Edit Current Status");
+    attron(A_REVERSE | A_BOLD);
+    mvprintw(20, 70, "1. View/Manage My Board");
+    mvprintw(22, 70, "2. View My Projects");
+    mvprintw(24, 70, "3. View/Edit Current Status");
+    attroff(A_REVERSE | A_BOLD);
+    attron(A_BOLD|A_BLINK);
+    mvprintw(30,65,"Please choose your view here"); 
+    attroff(A_BOLD|A_BLINK);
 }
 
 /**
