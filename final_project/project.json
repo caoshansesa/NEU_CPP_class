@@ -12,21 +12,11 @@
 		[
 			{
 				"assignDate" : "Jan-19-2021",
-				"assignees" : 
-				[
-					"mark",
-					"jane", 
-					"ashley",
-					"jessica"
-				],
+				"assignees" : "joes",
 				"completionDate" : "Jan-19-2021",
 				"dueDate" : "Jan-30-2021",
 				"id" : 1,
-				"issues" : 
-				[
-					"firewall",
-					"network connectivity"
-				],
+				"issues" :"firewall",
 				"priority" : 2,
 				"status" : "DONE",
 				"title" : "MVS POC",
@@ -34,19 +24,11 @@
 			},
 			{
 				"assignDate" : "Jan-19-2021",
-				"assignees" : 
-				[
-					"mark",
-					"jane"
-				],
+				"assignees" : "mark",
 				"completionDate" : "Jan-20-2021",
 				"dueDate" : "Jan-21-2021",
 				"id" : 1,
-				"issues" : 
-				[
-					"missing library",
-					"missing documentation"
-				],
+				"issues" : "missing documentation",
 				"priority" : 2,
 				"status" : "DONE",
 				"title" : "CS Brick integration",
@@ -67,19 +49,11 @@
 		[
 			{
 				"assignDate" : "Jan-19-2021",
-				"assignees" : 
-				[
-					"sammy",
-					"jen"
-				],
+				"assignees" : "sammy",
 				"completionDate" : "Jan-19-2021",
 				"dueDate" : "Jan-30-2021",
 				"id" : 1,
-				"issues" : 
-				[
-					"firewall blocking MOJA",
-					"network"
-				],
+				"issues" : "network",
 				"priority" : 2,
 				"status" : "DOING",
 				"title" : "pubsub messages",

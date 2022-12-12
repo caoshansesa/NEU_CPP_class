@@ -10,8 +10,8 @@ vector <Task> tasks_from_project_json(Json::Value tasks_json) {
 
     for (int i = 0; i < tasks_json.size(); i++) {
         Task temp_task;
-        //temp_task.assignees = tasks_json[i]["assignees"].asString();
-        //temp_task.issues = tasks_json[i]["issues"].asString();
+        temp_task.assignees = tasks_json[i]["assignees"].asString();
+        temp_task.issues = tasks_json[i]["issues"].asString();
         temp_task.id = tasks_json[i]["id"].asInt();
         temp_task.type = tasks_json[i]["type"].asString();
         temp_task.priority = tasks_json[i]["priority"].asInt();
