@@ -9,6 +9,8 @@
 #define WELL_WIDTH 20
 #define WELL_HEIGHT 20
 
+unsigned int microsecond = 1000000;
+
 using namespace std;
 void init_game(void)
 {
@@ -61,7 +63,6 @@ int main()
             mvprintw(grid_local->upper_left_y, 0, " Enter CURRENT_STATUS_VIEW state");
             render_commands_list(CURRENT_STATUS_VIEW, grid_local);
             take_in_user_cmd(grid_local);
-            draw_grid(grid_local);
             next_view = MY_BOARD_VIEW;
             break;
         case MY_PROJECT_VIEW:
@@ -80,6 +81,7 @@ int main()
             break;
         }
         refresh();
+        mssleep(100);
     }
     return 0;
 }
