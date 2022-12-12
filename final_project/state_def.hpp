@@ -1,18 +1,19 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include "json/json.h"
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-#include "json/json.h"
 
 using namespace std;
 
 static int terminal_x, terminal_y = 0;
 static string username;
 
-class Task {
-public:
+class Task
+{
+  public:
     int id;
     string type;
     int priority;
@@ -24,7 +25,8 @@ public:
     string status;
     string issues;
 
-    Json::Value toJson() {
+    Json::Value toJson()
+    {
         Json::Value task_json;
         task_json["id"] = id;
         task_json["type"] = type;
@@ -38,7 +40,6 @@ public:
         task_json["issues"] = issues;
 
         return task_json;
-
     }
 };
 class User
@@ -53,7 +54,8 @@ class User
     bool canDeletePrj = true;
     bool canEditPrj = true;
     bool canAddPrj = true;
-Json::Value toJson() {
+    Json::Value toJson()
+    {
         Json::Value user_json;
         user_json["name"] = name;
         user_json["userName"] = userName;
@@ -113,7 +115,6 @@ class ProjectManager : User
     };
 };
 
-
 class Project
 {
   public:
@@ -123,11 +124,12 @@ class Project
     string assignDate;
     string dueDate;
     string completionDate;
-    vector <Task> tasks;
+    vector<Task> tasks;
     string projectOwnerUserName;
     string projectManagerUserName;
 
-    Json::Value toJson() {
+    Json::Value toJson()
+    {
         Json::Value proj_json;
         proj_json["id"] = id;
         proj_json["name"] = name;
@@ -136,27 +138,20 @@ class Project
         proj_json["dueDate"] = dueDate;
         proj_json["completionDate"] = completionDate;
 
-
         Json::Value tasks_json;
-        for (Task t: tasks) tasks_json.append(t.toJson());
+        for (Task t : tasks)
+            tasks_json.append(t.toJson());
         proj_json["tasks"] = tasks_json;
 
         proj_json["projectOwnerUserName"] = projectOwnerUserName;
         proj_json["projectManagerUserName"] = projectManagerUserName;
 
         return proj_json;
-
-
     }
-
-
 };
 
 extern map<string, string> people_map;
 extern vector<Project> global_projects_vector;
-
-
-
 
 // Define user command line state,
 enum CMD_STATE
