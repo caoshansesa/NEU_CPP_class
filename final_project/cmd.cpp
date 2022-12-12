@@ -148,6 +148,7 @@ void show_static_my_board_summary_view()
     mvwprintw(todo_window, 2, 2, "this is a box");
     mvwprintw(ongoing_window, 2, 2, "this is a box");
     mvwprintw(done_window, 2, 2, "this is a box");
+    //render_my_board_view_data_region();
     wrefresh(todo_window);
     wrefresh(ongoing_window);
     wrefresh(done_window);
@@ -259,24 +260,25 @@ void render_curent_status_view_data_region()
 //AMEL EDIT HERE 1.
 void render_my_board_view_data_region()
 {
-    todo_window;
-    ongoing_window;
-    done_window;
-    int x,y,z = 2;
+    todo_window = create_newwin(40, 49, 6, 25);
+    ongoing_window = create_newwin(40, 49, 6, 75);
+    done_window = create_newwin(40, 49, 6, 125);
+
+    int x,y,z = 5;
     vector<Task> tasks= global_projects_vector[0].tasks;
     for (auto &task_idx : tasks) // access by reference to avoid copying
     {
         if(task_idx.status == "TODO"){
         mvwprintw(todo_window, x, 2, task_idx.title.c_str());
-        x+2;
+        x+5;
         }
         if(task_idx.status == "ONGOING"){
-            mvwprintw(ongoing_window, y + 2, 2, task_idx.title.c_str());
-            y+2;
+            mvwprintw(ongoing_window, y, 2, task_idx.title.c_str());
+            y+5;
         }
         if(task_idx.status == "DOING"){
             mvwprintw(done_window, z, 2, task_idx.title.c_str());
-            z+2;
+            z+5;
         }
     }
 
