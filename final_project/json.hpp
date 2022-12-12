@@ -1,7 +1,6 @@
 #include <vector>
 #include "json/json.h"
-#include "user.h"
-#include "project.h"
+#include "state_def.hpp"
 
 vector<Task> tasks_from_project_json(Json::Value tasks_json);
 int project_to_json(Project project);
