@@ -263,7 +263,7 @@ void render_my_board_view_data_region()
     ongoing_window = create_newwin(40, 49, 6, 75);
     done_window = create_newwin(40, 49, 6, 125);
 
-    int x,y,z = 2;
+    int x,y,z = 3;
     vector<Task> tasks= global_projects_vector[0].tasks;
     for (auto &task_idx : tasks) // access by reference to avoid copying
     {
@@ -278,9 +278,8 @@ void render_my_board_view_data_region()
         if(task_idx.status == "DOING"){
             mvwprintw(done_window, z, 2, task_idx.title.c_str());
             z+2;
-        }
+        
     }
-
     wrefresh(todo_window);
     wrefresh(ongoing_window);
     wrefresh(done_window);

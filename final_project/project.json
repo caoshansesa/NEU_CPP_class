@@ -19,7 +19,7 @@
 				"issues" : "firewall",
 				"priority" : 2,
 				"status" : "TODO",
-				"title" : "MVS POC",
+				"title" : "MVS-POC",
 				"type" : "debugging"
 			},
 			{
@@ -31,7 +31,7 @@
 				"issues" : "missing documentation",
 				"priority" : 2,
 				"status" : "ONGOING",
-				"title" : "CS Brick integration",
+				"title" : "CS-Brick",
 				"type" : "testing"
 			},
 			{
@@ -43,7 +43,7 @@
 				"issues" : "missing documentation",
 				"priority" : 2,
 				"status" : "DOING",
-				"title" : "opcua pubsub testing",
+				"title" : "OPCUA",
 				"type" : "testing"
 			},
 			{
@@ -55,7 +55,7 @@
 				"issues" : "firewall",
 				"priority" : 2,
 				"status" : "TODO",
-				"title" : "Arch security PKI",
+				"title" : "PKI",
 				"type" : "debugging"
 			},
 			{
@@ -67,7 +67,7 @@
 				"issues" : "missing documentation",
 				"priority" : 2,
 				"status" : "ONGOING",
-				"title" : "Connection Manager",
+				"title" : "CM",
 				"type" : "testing"
 			},
 			{
@@ -79,7 +79,7 @@
 				"issues" : "missing documentation",
 				"priority" : 2,
 				"status" : "DOING",
-				"title" : "SKS security with S2OPC",
+				"title" : "SKS",
 				"type" : "testing"
 			},
 			{
@@ -91,7 +91,7 @@
 				"issues" : "firewall",
 				"priority" : 2,
 				"status" : "TODO",
-				"title" : "MVS POC 3.2",
+				"title" : "MVS",
 				"type" : "debugging"
 			},
 			{
@@ -103,7 +103,7 @@
 				"issues" : "missing documentation",
 				"priority" : 2,
 				"status" : "ONGOING",
-				"title" : "CS lab access",
+				"title" : "CS",
 				"type" : "testing"
 			},
 			{
@@ -115,7 +115,7 @@
 				"issues" : "missing documentation",
 				"priority" : 2,
 				"status" : "DOING",
-				"title" : "TSN performance test",
+				"title" : "TSN",
 				"type" : "testing"
 			}
 		]
