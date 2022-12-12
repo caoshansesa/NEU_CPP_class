@@ -1,6 +1,9 @@
 #include "cmd.hpp"
 #include "grid.hpp"
 #include "state_def.hpp"
+#include <vector>
+#include <cstring>
+#include <string>
 #include <cstdio>
 #include <iostream>
 #include <iterator>
@@ -261,7 +264,7 @@ void render_my_board_view_data_region()
     ongoing_window;
     done_window;
     int x,y,z = 2;
-    Task tasks= global_projects_vector[0].tasks;
+    vector<Task> tasks= global_projects_vector[0].tasks;
     for (auto &task_idx : tasks) // access by reference to avoid copying
     {
         if(task_idx.status == "TODO"){
