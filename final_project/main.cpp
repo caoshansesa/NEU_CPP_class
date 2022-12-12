@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 #include "json.hpp"
-
+#include "cmd.hpp"
 
 
 using namespace std;
@@ -23,5 +23,7 @@ int main(void) {
 	it++;
 	
 	}
+	modify_project_name(1,"this is a new name");
+	serialize("projects_test.json");
 	return 0;
 }
