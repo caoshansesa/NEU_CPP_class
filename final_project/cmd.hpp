@@ -7,8 +7,10 @@
 /* 
  * @brief render printout for available state
  * */
-void render_commands(enum VIEW_STATE state,  grid_t* grid);
+void render_commands_list(enum VIEW_STATE state, grid_t* grid);
 void take_in_user_cmd(grid_t* grid);
+void render_data_region(enum VIEW_STATE state, grid_t* grid);
+
 Project * find_project_by_id(int project_id);
 Task* find_task_by_id(Project *project,int task_id);
 
