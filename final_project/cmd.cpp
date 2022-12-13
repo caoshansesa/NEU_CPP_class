@@ -19,6 +19,51 @@ using namespace std;
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 #define CTRLD 4
 
+map<string, string> people_map;
+vector<Project> global_projects_vector;
+
+void change_task_status_pop_up(int prj_id){
+    int task_id;
+    string new_status;
+    //already done
+    // initscr();
+    move(20,0);
+    clrtoeol(); //clear current line
+    //mvprintw(20, 0, "Item selected is : %s", name); //print
+    mvprintw(20, 0, "Please Enter the task id:");
+    //mvprintw(row/2,(col-strlen(mesg))/2,"%s",mesg)
+    refresh();
+    //get task id
+    scanw("%d",&task_id);
+    Project * project = find_project_by_id(prj_id);
+    Task * task = find_task_by_id(project,task_id);
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Please print one of the options: "TODO","DOING","DONE" (case-sensistive)");
+    getstr(new_status);
+    refresh();
+    task->status = new_status;
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Task has been moved to : %s", new_status);
+    refresh();
+    //already done
+    //endwin();
+}
+
+#if 0
+void add_task_pop_up(){
+    move(20, 0);
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Item selected is : %s", name); //print
+
+    move(21, 0);
+    string temp = getstring();//read user input into task members, change task
+    mvprintw(20, 0, "Item selected is : %s", temp.c_str()); //print
+
+    //construct a Task
+    //ask user about task members,
+
+}
+#endif
 void goto_my_board_view(char *name)
 {
     /*do something here*/
@@ -107,9 +152,10 @@ enum VIEW_STATE control_menu_selection_view()
     return return_state;
 }
 
+//1. BOARD VIEW
 void control_menu_my_board_view()
 {
-    char const *choices[] = {"1. Add new task", "2. Move task", "3. Remove task", "Exit"};
+    char const *choices[] = {"1. Add new task", "2. Move task", "3. Remove task", "Exit"}; //CHANGE FOR ANOTHER MENU
     char const *return_index[] = {"1", "2", "3", "4"};
     ITEM **my_items;
     int c;
@@ -155,15 +201,20 @@ void control_menu_my_board_view()
             p = (void (*)(char *))item_userptr(cur);
             p((char *)item_name(cur));
             pos_menu_cursor(my_menu);
-
+//"1. Add new task", "2. Move task", "3. Remove task", "Exit"
             if ((item_name(cur)[0] == '1'))
             {
+                //check user access
+                //if user property=true
+                //Add new task
             }
             if ((item_name(cur)[0] == '2'))
             {
+                change_task_status_pop_up(0);
             }
             if ((item_name(cur)[0] == '3'))
             {
+                //Delete task
             }
             if ((item_name(cur)[0] == '3'))
             {
@@ -182,9 +233,6 @@ void control_menu_my_board_view()
     }
     free_menu(my_menu);
 }
-
-map<string, string> people_map;
-vector<Project> global_projects_vector;
 
 WINDOW *todo_window;
 WINDOW *ongoing_window;
@@ -283,7 +331,7 @@ bool get_name_from_login() {
 	}
     else{
         //get user role
-        string role = people_map[username];
+        string role = people_map[username]; //string
         //construct user with that role
         if(role == "Developer") Developer* currentuser = new Developer();
 	if(role == "QAEngineer") QAEngineer* currentuser = new QAEngineer();
