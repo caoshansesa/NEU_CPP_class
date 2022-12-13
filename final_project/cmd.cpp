@@ -1,6 +1,9 @@
 #include "cmd.hpp"
 #include "grid.hpp"
 #include "state_def.hpp"
+#include <vector>
+#include <cstring>
+#include <string>
 #include <cstdio>
 #include <cwchar>
 #include <iostream>
@@ -256,20 +259,40 @@ string getstring()
 /* *
  * @brief, Add the login readline, read in a string which used as username
  * */
-void get_name_from_login()
-{
+bool get_name_from_login() {
     // start get user name: new window
-    string mesg = "Please input your username ";
+    char mesg[] = "Please input your username ";
+    char errmsg[] ="You are not a registered user.";
+    char smsg[] = "You are logged in.";
     int x, y;
     initscr();
     getmaxyx(stdscr, y, x);
-    mvprintw(y / 2, (x - mesg.size()) / 2, "%s", mesg.c_str());
+    mvprintw(y / 2, (x - strlen(mesg)) / 2, "%s", mesg);
     refresh();
     username = getstring();
     nodelay(stdscr, true);
     noecho();
     endwin();
     refresh();
+
+    //find username in people_map
+    if(people_map.find(username) == people_map.end()){
+        mvprintw(y / 2 +2, (x - strlen(errmsg)) / 2, "%s", errmsg);
+	refresh();
+	return true;
+	}
+    else{
+        //get user role
+        string role = people_map[username];
+        //construct user with that role
+        if(role == "Developer") Developer* currentuser = new Developer();
+	if(role == "QAEngineer") QAEngineer* currentuser = new QAEngineer();
+	if(role == "Owner") ProjectOwner* currentuser = new ProjectOwner();
+	if(role == "Manager") ProjectManager* currentuser = new ProjectManager();
+        mvprintw(y/2 +2, (x-strlen(smsg))/2,"%s",smsg);
+	refresh();
+	return false;
+    }
 }
 
 /*
@@ -313,9 +336,9 @@ void show_static_my_board_summary_view()
     ongoing_window = create_newwin(40, 49, 6, 85);
     done_window = create_newwin(40, 49, 6, 135);
 
-    mvwprintw(todo_window, 2, 2, "this is a box");
-    mvwprintw(ongoing_window, 2, 2, "this is a box");
-    mvwprintw(done_window, 2, 2, "this is a box");
+    //mvwprintw(todo_window, 2, 2, "this is a box");
+    //mvwprintw(ongoing_window, 2, 2, "this is a box");
+    //mvwprintw(done_window, 2, 2, "this is a box");
 
     wrefresh(todo_window);
     wrefresh(ongoing_window);
@@ -412,47 +435,111 @@ void render_curent_status_view_data_region()
 /*
  * rendering my board view data region
  * */
-void render_my_board_view_data_region()
-{
-}
+//AMEL EDIT HERE 1.
+void render_my_board_view_data_region() {
+    todo_window = create_newwin(40, 49, 6, 25);
+    ongoing_window = create_newwin(40, 49, 6, 75);
+    done_window = create_newwin(40, 49, 6, 125);
 
+    int x = 2;
+    int y = 2;
+    int z = 2;
+
+    vector <Task> tasks = global_projects_vector[0].tasks;
+    for (auto &task_idx: tasks) // access by reference to avoid copying
+    {
+        if (task_idx.status == "TODO") {
+            mvwprintw(todo_window, x, 2, task_idx.title.c_str());
+            x += 2;
+        }
+        if (task_idx.status == "ONGOING") {
+            mvwprintw(ongoing_window, y, 2, task_idx.title.c_str());
+            y += 2;
+        }
+        if (task_idx.status == "DONE") {
+            mvwprintw(done_window, z, 2, task_idx.title.c_str());
+            z += 2;
+
+        }
+        wrefresh(todo_window);
+        wrefresh(ongoing_window);
+        wrefresh(done_window);
+        // for window_myboard
+        // doing, to do, done windows
+        // loop for 1 project
+        // make it look for task which belongs to each "status" : to do, doing, done
+        // print each of the tasks into 3 different windows with task name only
+    }
+}
 /*
  * rendering my project view data region
  * */
-void render_my_project_view_data_region()
-{
+//AMEL EDIT HERE 2.
+void render_my_project_view_data_region() {
+    int i = 0;
+    for (auto &prj_idx: global_projects_vector) // access by reference to avoid copying
+    {
+        mvwprintw(prj_summary_window, i + 2, 2, prj_idx.name.c_str());
+        i += 3;
+    }
+
+    wrefresh(prj_summary_window);
 }
 
 /*
  * rendering my task view data region
  * */
-void render_my_task_view_data_region()
-{
+//AMEL EDIT HERE 3.
+void render_my_task_view_data_region() {
+    vector<Task> tasks = global_projects_vector[0].tasks;
+    int i = 0;
+//   for (auto &task_idx: tasks) // access by reference to avoid copying
+//    {
+    	Task task_idx = tasks[0];
+	string id = to_string(task_idx.id);
+	string priority = to_string(task_idx.priority);
+        mvwprintw(my_task_window, i + 2, 2, "Task id: ");
+        mvwprintw(my_task_window, i + 2, 20, id.c_str());
+        mvwprintw(my_task_window, i + 3, 2, "Type: ");
+        mvwprintw(my_task_window, i + 3, 20, task_idx.type.c_str());
+        mvwprintw(my_task_window, i + 4, 2, "Assignee: ");
+        mvwprintw(my_task_window, i + 4, 20, task_idx.assignees.c_str());
+        mvwprintw(my_task_window, i + 5, 2, "Priority: ");
+        mvwprintw(my_task_window, i + 5, 20, priority.c_str());
+        mvwprintw(my_task_window, i + 6, 2, "Date Assigned: ");
+        mvwprintw(my_task_window, i + 6, 20, task_idx.assignDate.c_str());
+        mvwprintw(my_task_window, i + 7, 2, "Due Date: ");
+        mvwprintw(my_task_window, i + 7, 20, task_idx.dueDate.c_str());
+        i = i + 5;
+//    }
+
+    wrefresh(my_task_window);
 }
+
 
 /*
  *@ brief Render data region based on the Project and people objs
  * */
-void render_data_region(enum VIEW_STATE state, grid_t *grid)
-{
-    switch (state)
-    {
-    case INIT:
-        break;
-    case LOGIN_VIEW:
-        break;
-    case MAKE_SELECT_VIEW:
-        break;
-    case CURRENT_STATUS_VIEW:
-        render_curent_status_view_data_region();
-        break;
-    case MY_BOARD_VIEW:
-        render_my_board_view_data_region();
-        break;
-    case MY_PROJECT_VIEW:
-        break;
-    case MY_TASKVIEW:
-        break;
+void render_data_region(enum VIEW_STATE state, grid_t *grid) {
+    switch (state) {
+        case INIT:
+            break;
+        case LOGIN_VIEW:
+            break;
+        case MAKE_SELECT_VIEW:
+            break;
+        case CURRENT_STATUS_VIEW:
+            render_curent_status_view_data_region();
+            break;
+        case MY_BOARD_VIEW:
+            render_my_board_view_data_region();
+            break;
+        case MY_PROJECT_VIEW:
+            render_my_project_view_data_region();
+            break;
+        case MY_TASKVIEW:
+            render_my_task_view_data_region();
+            break;
     }
 }
 /* this command window will be constrauct for input cmd */
@@ -471,29 +558,25 @@ void cmd_window()
  *  in EXIT state, exit and goto next view
  *  @return void
  */
-void take_in_user_cmd(grid_t *grid)
-{
+void take_in_user_cmd(grid_t *grid) {
     enum CMD_STATE next_state = CMD_INIT;
     int break_loop = 1;
-    int keyboard_input;
-    while (break_loop)
-    {
-        switch (next_state)
-        {
-        case CMD_INIT:
-        case RUNNING:
-            refresh();
-            read_escape(&keyboard_input);
-            if (keyboard_input == 'q')
-            {
-                next_state = EXIT;
-            }
-            break;
-        case EXIT:
-            return;
+    int keyboard_input = 0;
+    while (break_loop) {
+        switch (next_state) {
+            case CMD_INIT:
+            case RUNNING:
+                refresh();
+                read_escape(&keyboard_input);
+                if (keyboard_input == 'q') {
+                    next_state = EXIT;
+                }
+                break;
+            case EXIT:
+                return;
 
-        default:
-            break;
+            default:
+                break;
         }
     }
 }

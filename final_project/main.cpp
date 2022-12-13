@@ -14,6 +14,8 @@
 
 static Project *global_addr;
 unsigned int microsecond = 1000000;
+//for testing:please remove
+User * currentuser;
 
 using namespace std;
 void init_game(void)
@@ -31,7 +33,7 @@ int main()
     grid_local = init_grid(terminal_y / 2, terminal_x / 2, WELL_WIDTH, WELL_HEIGHT);
     grid_local = init_grid(((terminal_x / 2) - (WELL_WIDTH / 2)), 1, WELL_WIDTH, WELL_HEIGHT);
     deserialize("project.json");
-
+    read_people("people.json");
     while (1)
     {
         switch (next_view)
