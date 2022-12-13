@@ -6,8 +6,55 @@
 #include <iostream>
 #include <iterator>
 #include <ncurses.h>
+#include <string>
 
 using namespace std;
+
+#define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
+#define CTRLD 4
+
+char *choices[] = {
+    "Choice 1", "Choice 2", "Choice 3", "Choice 4", "Exit",
+};
+
+void control_menu()
+{
+    ITEM **my_items;
+    int c;
+    MENU *my_menu;
+    int n_choices, i;
+    ITEM *cur_item;
+    initscr();
+    cbreak();
+    noecho();
+    keypad(stdscr, TRUE);
+    n_choices = ARRAY_SIZE(choices);
+    my_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
+    for (i = 0; i < n_choices; ++i)
+    {
+        my_items[i] = new_item(choices[i], choices[i]);
+    }
+    my_items[n_choices] = (ITEM *)NULL;
+    my_menu = new_menu((ITEM **)my_items);
+    post_menu(my_menu);
+    refresh();
+    while ((c = getch()) != KEY_F(1))
+    {
+        switch (c)
+        {
+        case KEY_DOWN:
+            menu_driver(my_menu, REQ_DOWN_ITEM);
+            break;
+        case KEY_UP:
+            menu_driver(my_menu, REQ_UP_ITEM);
+            break;
+        }
+    }
+    free_item(my_items[0]);
+    free_item(my_items[1]);
+    free_menu(my_menu);
+    endwin();
+}
 
 map<string, string> people_map;
 vector<Project> global_projects_vector;
@@ -307,7 +354,6 @@ void cmd_window()
     wrefresh(cmd_sumary_window);
 }
 
-
 /** @brief
  *  in RUNNING state, take in user input, update current_user_obj, current_project_obj
  *  and dump changes to json
@@ -372,7 +418,7 @@ void take_in_user_cmd(grid_t *grid)
 {
     enum CMD_STATE next_state = CMD_INIT;
     int break_loop = 1;
-    int keyboard_input = 0;
+    string keyboard_input;
     mvprintw(6, 2, "Enter non cmd mode");
     while (break_loop)
     {
@@ -380,10 +426,11 @@ void take_in_user_cmd(grid_t *grid)
         {
         case CMD_INIT:
         case RUNNING:
-            read_escape(&keyboard_input);
-            if (keyboard_input == 'm')
+            keyboard_input = getstring();
+            if (keyboard_input.compare("edit"))
             {
                 echo();
+                curs_set(1);
                 mvprintw(6, 2, "Enter cmd mode");
                 cmd_window(); // Open the cmd window
                 mvprintw(7, 2, "%: ");
@@ -392,11 +439,11 @@ void take_in_user_cmd(grid_t *grid)
                 getch();
                 mvprintw(6, 2, "Enter non cmd mode");
             }
-            else if (keyboard_input == 'q')
+            if (keyboard_input.compare("quit"))
             {
                 next_state = EXIT;
             }
-            else
+
             {
                 curs_set(0); // make cursor invinsible
                 clrtoeol();
