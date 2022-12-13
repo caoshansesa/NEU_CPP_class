@@ -103,7 +103,7 @@ void show_my_task_view() {
     mvprintw(5, 5, "My Task View");
     attroff(A_REVERSE | A_BOLD);
     my_task_window = create_newwin(40, 80, 6, 25);
-    mvwprintw(my_task_window, 2, 2, "this is a box");
+ //   mvwprintw(my_task_window, 2, 2, "this is a box");
     wrefresh(my_task_window);
 }
 
@@ -246,7 +246,9 @@ void render_my_board_view_data_region() {
     ongoing_window = create_newwin(40, 49, 6, 75);
     done_window = create_newwin(40, 49, 6, 125);
 
-    int x ,y, z = 4;
+    int x = 2;
+    int y = 2;
+    int z = 2;
 
     vector <Task> tasks = global_projects_vector[0].tasks;
     for (auto &task_idx: tasks) // access by reference to avoid copying
@@ -259,7 +261,7 @@ void render_my_board_view_data_region() {
             mvwprintw(ongoing_window, y, 2, task_idx.title.c_str());
             y += 2;
         }
-        if (task_idx.status == "DOING") {
+        if (task_idx.status == "DONE") {
             mvwprintw(done_window, z, 2, task_idx.title.c_str());
             z += 2;
 
@@ -296,23 +298,25 @@ void render_my_project_view_data_region() {
 void render_my_task_view_data_region() {
     vector<Task> tasks = global_projects_vector[0].tasks;
     int i = 0;
-    for (auto &task_idx: tasks) // access by reference to avoid copying
-    {	string id = to_string(task_idx.id);
+//   for (auto &task_idx: tasks) // access by reference to avoid copying
+//    {
+    	Task task_idx = tasks[0];
+	string id = to_string(task_idx.id);
 	string priority = to_string(task_idx.priority);
         mvwprintw(my_task_window, i + 2, 2, "Task id: ");
-        mvwprintw(my_task_window, i + 2, 30, id.c_str());
+        mvwprintw(my_task_window, i + 2, 20, id.c_str());
         mvwprintw(my_task_window, i + 3, 2, "Type: ");
-        mvwprintw(my_task_window, i + 3, 30, task_idx.type.c_str());
+        mvwprintw(my_task_window, i + 3, 20, task_idx.type.c_str());
         mvwprintw(my_task_window, i + 4, 2, "Assignee: ");
-        mvwprintw(my_task_window, i + 4, 30, task_idx.assignees.c_str());
+        mvwprintw(my_task_window, i + 4, 20, task_idx.assignees.c_str());
         mvwprintw(my_task_window, i + 5, 2, "Priority: ");
-        mvwprintw(my_task_window, i + 5, 30, priority.c_str());
-        mvwprintw(my_task_window, i + 2, 2, "Date Assigned: ");
-        mvwprintw(my_task_window, i + 6, 30, task_idx.assignDate.c_str());
-        mvwprintw(my_task_window, i + 2, 2, "Due Date: ");
-        mvwprintw(my_task_window, i + 6, 30, task_idx.dueDate.c_str());
+        mvwprintw(my_task_window, i + 5, 20, priority.c_str());
+        mvwprintw(my_task_window, i + 6, 2, "Date Assigned: ");
+        mvwprintw(my_task_window, i + 6, 20, task_idx.assignDate.c_str());
+        mvwprintw(my_task_window, i + 7, 2, "Due Date: ");
+        mvwprintw(my_task_window, i + 7, 20, task_idx.dueDate.c_str());
         i = i + 5;
-    }
+//    }
 
     wrefresh(my_task_window);
 }

@@ -42,7 +42,7 @@
 				"id" : 1,
 				"issues" : "missing documentation",
 				"priority" : 2,
-				"status" : "DOING",
+				"status" : "DONE",
 				"title" : "OPCUA",
 				"type" : "testing"
 			},
@@ -78,7 +78,7 @@
 				"id" : 1,
 				"issues" : "missing documentation",
 				"priority" : 2,
-				"status" : "DOING",
+				"status" : "DONE",
 				"title" : "SKS",
 				"type" : "testing"
 			},
@@ -114,7 +114,7 @@
 				"id" : 1,
 				"issues" : "missing documentation",
 				"priority" : 2,
-				"status" : "DOING",
+				"status" : "DONE",
 				"title" : "TSN",
 				"type" : "testing"
 			}
