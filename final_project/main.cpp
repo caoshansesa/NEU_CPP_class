@@ -53,9 +53,7 @@ int main()
             mvprintw(grid_local->upper_left_y, 0, " Enter LOGIN_VIEW state");
             render_commands_list(MAKE_SELECT_VIEW, grid_local);
             render_data_region(MAKE_SELECT_VIEW, grid_local);
-            control_menu();
-            take_in_user_cmd(grid_local);
-            next_view = CURRENT_STATUS_VIEW;
+            next_view = control_menu();
             break;
         case MY_BOARD_VIEW:
             noecho(); // enable the curse from the screen

@@ -5,6 +5,7 @@
 #include <cwchar>
 #include <iostream>
 #include <iterator>
+#include <menu.h>
 #include <ncurses.h>
 #include <string.h>
 #include <string>
@@ -16,25 +17,6 @@ using namespace std;
 
 void goto_my_board_view(char *name)
 {
-    move(50, 40);
-    clrtoeol();
-    mvprintw(50, 40, "Item selected is : %s", name);
-
-    if (name[0] == '1')
-    {
-        next_view = MY_BOARD_VIEW;
-        mvprintw(30, 30, "MY_BOARD_VIEW selected");
-    }
-
-    if (name[0] == '2')
-    {
-        next_view = MY_BOARD_VIEW;
-    }
-
-    if (name[0] == '3')
-    {
-        next_view = MY_BOARD_VIEW;
-    }
 }
 
 void goto_my_project_view()
@@ -61,9 +43,10 @@ void goto_Login_view()
     next_view = LOGIN_VIEW;
 }
 
-void control_menu()
+enum VIEW_STATE control_menu()
 {
-    char *choices[] = {"1. View/Manage My Board", "2. View My Projects", "3. View/Edit Current Status"};
+    enum VIEW_STATE return_state;
+    char *choices[] = {"1. View/Manage My Board", "2. View My Projects", "3. View/Edit Current Task Status"};
     char *return_index[] = {"1", "2", "3"};
     ITEM **my_items;
     int c;
@@ -106,6 +89,24 @@ void control_menu()
             p = (void (*)(char *))item_userptr(cur);
             p((char *)item_name(cur));
             pos_menu_cursor(my_menu);
+
+            if ((item_name(cur)[0] == '1'))
+            {
+                return_state = MY_BOARD_VIEW;
+                mvprintw(30, 30, "MY_BOARD_VIEW selected, press F1 to continue");
+            }
+
+            if ((item_name(cur)[0] == '2'))
+            {
+                return_state = MY_PROJECT_VIEW;
+                mvprintw(30, 30, "MY_PROJECT_VIEW selected, press F1 to continue");
+            }
+
+            if ((item_name(cur)[0] == '3'))
+            {
+                return_state = MY_TASKVIEW;
+                mvprintw(30, 30, "MY_TASKVIEW selected, press F1 to continue");
+            }
             break;
         }
         break;
@@ -118,7 +119,7 @@ void control_menu()
         free_item(my_items[i]);
     }
     free_menu(my_menu);
-    endwin();
+    return return_state;
 }
 
 map<string, string> people_map;
@@ -284,9 +285,6 @@ void show_static_view_of_login()
  * */
 void show_static_view_of_selection()
 {
-    echo();
-    getch();
-    control_menu();
 }
 
 /**
@@ -423,7 +421,6 @@ void take_in_user_cmd(grid_t *grid)
     enum CMD_STATE next_state = CMD_INIT;
     int break_loop = 1;
     int keyboard_input;
-    mvprintw(6, 2, "Enter non cmd mode");
     while (break_loop)
     {
         switch (next_state)
