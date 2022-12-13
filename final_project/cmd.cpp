@@ -5,6 +5,7 @@
 #include <cwchar>
 #include <iostream>
 #include <iterator>
+#include <memory>
 #include <menu.h>
 #include <ncurses.h>
 #include <string.h>
@@ -250,9 +251,6 @@ void show_my_current_status_view()
  * */
 void show_static_my_board_summary_view()
 {
-    mvprintw(6, 0, "a: Add new task\n");
-    mvprintw(7, 0, "m: Move task to doing\n");
-    mvprintw(8, 0, "r: Remove task\n");
 
     todo_window = create_newwin(40, 49, 6, 35);
     ongoing_window = create_newwin(40, 49, 6, 85);
@@ -441,5 +439,33 @@ void take_in_user_cmd(grid_t *grid)
             break;
         }
     }
+}
+
+enum VIEW_STATE go_back_to_selection_view_with_button_q()
+{
+    enum CMD_STATE next_state = CMD_INIT;
+    enum VIEW_STATE return_view = MAKE_SELECT_VIEW;
+    int break_loop = 1;
+    int keyboard_input;
+    while (break_loop)
+    {
+        switch (next_state)
+        {
+        case CMD_INIT:
+        case RUNNING:
+            read_escape(&keyboard_input);
+            if (keyboard_input == 'q')
+            {
+                next_state = EXIT;
+            }
+            break;
+        case EXIT:
+            break_loop = 0;
+
+        default:
+            break;
+        }
+    }
+    return return_view;
 }
 
