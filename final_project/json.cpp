@@ -10,10 +10,10 @@ using namespace std;
 
 //main API
 
-int deserialize(string filename){
-	global_projects_vector= json_to_projects(filename);
+vector<Project> deserialize(string filename){
+	vector<Project> project_vec= json_to_projects(filename);
 
-	return 0;
+	return project_vec;
 
 }
 
