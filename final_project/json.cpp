@@ -50,9 +50,6 @@ int read_people(string filename){
 		name = root_group[i]["name"].asString();
 		role = root_group[i]["role"].asString();
 		people_map[name] = role;
-		cout << people_map["George"]<<endl;
-		cout << people_map["Mike"] <<endl;
-
 	}
 	file.close();
 

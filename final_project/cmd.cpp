@@ -80,7 +80,7 @@ string getstring() {
 /* *
  * @brief, Add the login readline, read in a string which used as username
  * */
-void get_name_from_login() {
+bool get_name_from_login() {
     // start get user name: new window
     char mesg[] = "Please input your username ";
     char errmsg[] ="You are not a registered user.";
@@ -97,8 +97,11 @@ void get_name_from_login() {
     refresh();
 
     //find username in people_map
-    if(people_map.find(username) == people_map.end())
+    if(people_map.find(username) == people_map.end()){
         mvprintw(y / 2 +2, (x - strlen(errmsg)) / 2, "%s", errmsg);
+	refresh();
+	return true;
+	}
     else{
         //get user role
         string role = people_map[username];
@@ -108,6 +111,8 @@ void get_name_from_login() {
 	if(role == "Owner") ProjectOwner* currentuser = new ProjectOwner();
 	if(role == "Manager") ProjectManager* currentuser = new ProjectManager();
         mvprintw(y/2 +2, (x-strlen(smsg))/2,"%s",smsg);
+	refresh();
+	return false;
     }
 }
 

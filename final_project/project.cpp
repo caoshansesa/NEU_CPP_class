@@ -62,7 +62,6 @@ int modify_project_owner(Project * project, string new_owner) {
     return 0;
 }
 
-//need to work on this 
 int delete_project(Project* project) {
   if (!project) return -1;
   
