@@ -246,7 +246,8 @@ void render_my_board_view_data_region() {
     ongoing_window = create_newwin(40, 49, 6, 75);
     done_window = create_newwin(40, 49, 6, 125);
 
-    int x, y, z = 3;
+    int x ,y, z = 4;
+
     vector <Task> tasks = global_projects_vector[0].tasks;
     for (auto &task_idx: tasks) // access by reference to avoid copying
     {
@@ -293,22 +294,23 @@ void render_my_project_view_data_region() {
  * */
 //AMEL EDIT HERE 3.
 void render_my_task_view_data_region() {
-    vector<Task> tasks = global_projects_vector[0];
+    vector<Task> tasks = global_projects_vector[0].tasks;
     int i = 0;
     for (auto &task_idx: tasks) // access by reference to avoid copying
-    {
+    {	string id = to_string(task_idx.id);
+	string priority = to_string(task_idx.priority);
         mvwprintw(my_task_window, i + 2, 2, "Task id: ");
-        mvwprintw(my_task_window, i + 2, 7, task_idx.id.c_str());
+        mvwprintw(my_task_window, i + 2, 30, id.c_str());
         mvwprintw(my_task_window, i + 3, 2, "Type: ");
-        mvwprintw(my_task_window, i + 3, 7, task_idx.type.c_str());
+        mvwprintw(my_task_window, i + 3, 30, task_idx.type.c_str());
         mvwprintw(my_task_window, i + 4, 2, "Assignee: ");
-        mvwprintw(my_task_window, i + 4, 7, task_idx.assignees.c_str());
+        mvwprintw(my_task_window, i + 4, 30, task_idx.assignees.c_str());
         mvwprintw(my_task_window, i + 5, 2, "Priority: ");
-        mvwprintw(my_task_window, i + 5, 7, task_idx.priority.c_str());
+        mvwprintw(my_task_window, i + 5, 30, priority.c_str());
         mvwprintw(my_task_window, i + 2, 2, "Date Assigned: ");
-        mvwprintw(my_task_window, i + 6, 7, task_idx.assignDate.c_str());
+        mvwprintw(my_task_window, i + 6, 30, task_idx.assignDate.c_str());
         mvwprintw(my_task_window, i + 2, 2, "Due Date: ");
-        mvwprintw(my_task_window, i + 6, 7, task_idx.dueDate.c_str());
+        mvwprintw(my_task_window, i + 6, 30, task_idx.dueDate.c_str());
         i = i + 5;
     }
 
