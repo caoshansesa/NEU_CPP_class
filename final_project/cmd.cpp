@@ -135,11 +135,11 @@ string getstring()
 void get_name_from_login()
 {
     // start get user name: new window
-    char mesg[] = "Please input your username ";
+    string mesg = "Please input your username ";
     int x, y;
     initscr();
     getmaxyx(stdscr, y, x);
-    mvprintw(y / 2, (x - strlen(mesg)) / 2, "%s", mesg);
+    mvprintw(y / 2, (x - mesg.size()) / 2, "%s", mesg.c_str());
     refresh();
     username = getstring();
     nodelay(stdscr, true);
@@ -418,7 +418,7 @@ void take_in_user_cmd(grid_t *grid)
 {
     enum CMD_STATE next_state = CMD_INIT;
     int break_loop = 1;
-    string keyboard_input;
+    int keyboard_input;
     mvprintw(6, 2, "Enter non cmd mode");
     while (break_loop)
     {
@@ -426,30 +426,11 @@ void take_in_user_cmd(grid_t *grid)
         {
         case CMD_INIT:
         case RUNNING:
-            keyboard_input = getstring();
-            if (keyboard_input.compare("edit"))
-            {
-                echo();
-                curs_set(1);
-                mvprintw(6, 2, "Enter cmd mode");
-                cmd_window(); // Open the cmd window
-                mvprintw(7, 2, "%: ");
-                mvwprintw(cmd_sumary_window, 2, 2, "input you cmd here");
-                wrefresh(cmd_sumary_window);
-                getch();
-                mvprintw(6, 2, "Enter non cmd mode");
-            }
-            if (keyboard_input.compare("quit"))
+            refresh();
+            read_escape(&keyboard_input);
+            if (keyboard_input == 'q')
             {
                 next_state = EXIT;
-            }
-
-            {
-                curs_set(0); // make cursor invinsible
-                clrtoeol();
-                mvprintw(6, 2, "Enter view mode");
-                werase(cmd_sumary_window);
-                wrefresh(cmd_sumary_window);
             }
             break;
         case EXIT:
