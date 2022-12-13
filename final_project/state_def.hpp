@@ -73,11 +73,13 @@ class User
 
 class ProjectOwner : User
 {
+public:
     ProjectOwner(){};
 };
 
 class Developer : User
 {
+public:
     Developer()
     {
         canDeletePrj = false;
@@ -89,9 +91,10 @@ class Developer : User
     };
 };
 
-class QAEngineers : User
+class QAEngineer : User
 {
-    QAEngineers()
+public:
+    QAEngineer()
     {
         canDeletePrj = false;
         canDeleteTask = false;
@@ -104,6 +107,7 @@ class QAEngineers : User
 
 class ProjectManager : User
 {
+public:
     ProjectManager()
     {
         canDeletePrj = false;

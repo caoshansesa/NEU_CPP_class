@@ -10,10 +10,10 @@ using namespace std;
 
 //main API
 
-vector<Project> deserialize(string filename){
-	vector<Project> project_vec= json_to_projects(filename);
+int deserialize(string filename){
+	global_projects_vector= json_to_projects(filename);
 
-	return project_vec;
+	return 0;
 
 }
 
@@ -30,8 +30,7 @@ int serialize(string filename){
 }
 
 
-map<string, string> read_people(string filename){
-	map<string,string> temp_map;
+int read_people(string filename){
 	Json::CharReaderBuilder rbuilder;
 	rbuilder["collectComments"] = false;
 	Json::Value root_group;
@@ -50,23 +49,14 @@ map<string, string> read_people(string filename){
 		
 		name = root_group[i]["name"].asString();
 		role = root_group[i]["role"].asString();
-	//	cout << name << ": " <<role <<endl;	
-		//people_map.insert(make_pair(name, role));
-		temp_map[name] = role;
-
-	}
-
-	auto it = temp_map.begin();
-	while(it!= temp_map.end()){
-		string name = it->first;
-		string role = it->second;
-		cout << name <<": " <<role <<endl;
-		it++;
+		people_map[name] = role;
+		cout << people_map["George"]<<endl;
+		cout << people_map["Mike"] <<endl;
 
 	}
 	file.close();
 
-	return temp_map;
+	return 0;
 }
 
 

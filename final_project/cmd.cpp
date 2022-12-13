@@ -13,12 +13,6 @@ using namespace std;
 
 map <string, string> people_map;
 vector <Project> global_projects_vector;
-map <string, class> class_role_map{
-        {"Manager", ProjectManager},
-        {"Owner" , ProjectOwner},
-        {"Developer", Developer},
-        {"QAEngineer",QAEngineers}
-};
 
 WINDOW *todo_window;
 WINDOW *ongoing_window;
@@ -90,6 +84,7 @@ void get_name_from_login() {
     // start get user name: new window
     char mesg[] = "Please input your username ";
     char errmsg[] ="You are not a registered user.";
+    char smsg[] = "You are logged in.";
     int x, y;
     initscr();
     getmaxyx(stdscr, y, x);
@@ -102,13 +97,17 @@ void get_name_from_login() {
     refresh();
 
     //find username in people_map
-    if(people_map.find(username != people_map.end()))
-        mvprintw(y / 2 +2, (x - strlen(errmsg)) / 2, "%s", errmesg);
+    if(people_map.find(username) == people_map.end())
+        mvprintw(y / 2 +2, (x - strlen(errmsg)) / 2, "%s", errmsg);
     else{
         //get user role
         string role = people_map[username];
         //construct user with that role
-        User current_user = new class_role_map[role]();
+        if(role == "Developer") Developer* currentuser = new Developer();
+	if(role == "QAEngineer") QAEngineer* currentuser = new QAEngineer();
+	if(role == "Owner") ProjectOwner* currentuser = new ProjectOwner();
+	if(role == "Manager") ProjectManager* currentuser = new ProjectManager();
+        mvprintw(y/2 +2, (x-strlen(smsg))/2,"%s",smsg);
     }
 }
 

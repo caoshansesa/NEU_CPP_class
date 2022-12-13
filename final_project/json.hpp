@@ -14,7 +14,7 @@ int users_to_json(vector<User> users,string filename);
 User json_to_user(int i,string filename);
 vector<User> json_to_users(string filename);
 
-vector<Project> deserialize(string filename); //to vector of Project objects 
+int deserialize(string filename); //to vector of Project objects 
 int serialize(string filename);//objects to Json file  
-map<string, string> read_people(string filename);
+int read_people(string filename);
 
