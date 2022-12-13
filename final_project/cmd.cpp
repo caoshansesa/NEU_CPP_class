@@ -24,29 +24,24 @@ vector<Project> global_projects_vector;
 
 void change_task_status_pop_up(int prj_id){
     int task_id;
-    string new_status;
-    //already done
-    // initscr();
+    char new_status[20];
     move(20,0);
     clrtoeol(); //clear current line
-    //mvprintw(20, 0, "Item selected is : %s", name); //print
     mvprintw(20, 0, "Please Enter the task id:");
-    //mvprintw(row/2,(col-strlen(mesg))/2,"%s",mesg)
     refresh();
     //get task id
-    scanw("%d",&task_id);
+    task_id = int(getch()) - 48;
     Project * project = find_project_by_id(prj_id);
     Task * task = find_task_by_id(project,task_id);
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print one of the options: "TODO","DOING","DONE" (case-sensistive)");
+    mvprintw(20, 0, "Please print one of the options: TODO,DOING,DONE -case-sensistive");
     getstr(new_status);
     refresh();
-    task->status = new_status;
+    string status = new_status;
+    modify_task_status(task, status);
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Task has been moved to : %s", new_status);
+    mvprintw(20, 0, "Task has been updated");
     refresh();
-    //already done
-    //endwin();
 }
 
 #if 0
