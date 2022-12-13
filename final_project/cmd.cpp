@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iterator>
 #include <ncurses.h>
+#include <string.h>
 #include <string>
 
 using namespace std;
@@ -18,7 +19,22 @@ void goto_my_board_view(char *name)
     move(50, 40);
     clrtoeol();
     mvprintw(50, 40, "Item selected is : %s", name);
-    next_view = MY_BOARD_VIEW;
+
+    if (name[0] == '1')
+    {
+        next_view = MY_BOARD_VIEW;
+        mvprintw(30, 30, "MY_BOARD_VIEW selected");
+    }
+
+    if (name[0] == '2')
+    {
+        next_view = MY_BOARD_VIEW;
+    }
+
+    if (name[0] == '3')
+    {
+        next_view = MY_BOARD_VIEW;
+    }
 }
 
 void goto_my_project_view()
@@ -47,8 +63,8 @@ void goto_Login_view()
 
 void control_menu()
 {
-    char *choices[] = {"1. View/Manage My Board", "2. View My Projects", "3. View/Edit Current Status", "4. Exit"};
-    char *return_index[] = {"1", "2", "3", "4"};
+    char *choices[] = {"1. View/Manage My Board", "2. View My Projects", "3. View/Edit Current Status"};
+    char *return_index[] = {"1", "2", "3"};
     ITEM **my_items;
     int c;
     MENU *my_menu;
@@ -68,7 +84,6 @@ void control_menu()
         set_item_userptr(my_items[i], reinterpret_cast<void *>(goto_my_board_view));
     }
     my_items[n_choices] = (ITEM *)NULL;
-
     my_menu = new_menu((ITEM **)my_items);
     post_menu(my_menu);
     refresh();
