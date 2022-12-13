@@ -2,6 +2,7 @@
 #include "grid.hpp"
 #include "state_def.hpp"
 #include <cstdio>
+#include <cwchar>
 #include <iostream>
 #include <iterator>
 #include <ncurses.h>
@@ -14,6 +15,7 @@ vector<Project> global_projects_vector;
 WINDOW *todo_window;
 WINDOW *ongoing_window;
 WINDOW *done_window;
+WINDOW *cmd_sumary_window;
 WINDOW *current_status_win;
 WINDOW *my_task_window;
 WINDOW *prj_summary_window;
@@ -76,6 +78,7 @@ string getstring()
         input.push_back(ch);
         ch = getch();
     }
+    clrtoeol(); // delete current line
     return input;
 }
 
@@ -106,7 +109,7 @@ void show_my_task_view()
     attron(A_REVERSE | A_BOLD);
     mvprintw(5, 5, "My Task View");
     attroff(A_REVERSE | A_BOLD);
-    my_task_window = create_newwin(40, 80, 6, 25);
+    my_task_window = create_newwin(40, 80, 6, 50);
     mvwprintw(my_task_window, 2, 2, "this is a box");
     wrefresh(my_task_window);
 }
@@ -117,7 +120,7 @@ void show_my_task_view()
 void show_my_project_summary_view()
 {
     mvprintw(5, 5, "My Proejct Summary");
-    prj_summary_window = create_newwin(40, 80, 6, 25);
+    prj_summary_window = create_newwin(40, 80, 6, 50);
     mvwprintw(prj_summary_window, 2, 2, "this is a box");
     wrefresh(prj_summary_window);
 }
@@ -134,17 +137,18 @@ void show_my_current_status_view()
  * */
 void show_static_my_board_summary_view()
 {
-    mvprintw(30, 0, "a: Add new task\n");
-    mvprintw(31, 0, "m: Move task to doing\n");
-    mvprintw(32, 0, "r: Remove task\n");
+    mvprintw(6, 0, "a: Add new task\n");
+    mvprintw(7, 0, "m: Move task to doing\n");
+    mvprintw(8, 0, "r: Remove task\n");
 
-    todo_window = create_newwin(40, 49, 6, 25);
-    ongoing_window = create_newwin(40, 49, 6, 75);
-    done_window = create_newwin(40, 49, 6, 125);
+    todo_window = create_newwin(40, 49, 6, 35);
+    ongoing_window = create_newwin(40, 49, 6, 85);
+    done_window = create_newwin(40, 49, 6, 135);
 
     mvwprintw(todo_window, 2, 2, "this is a box");
     mvwprintw(ongoing_window, 2, 2, "this is a box");
     mvwprintw(done_window, 2, 2, "this is a box");
+
     wrefresh(todo_window);
     wrefresh(ongoing_window);
     wrefresh(done_window);
@@ -233,16 +237,16 @@ void render_Make_selection_view_data_region()
 void render_curent_status_view_data_region()
 {
 
-    current_status_win = create_newwin(40, 80, 5, 26);
+    current_status_win = create_newwin(40, 80, 5, 50);
     int i = 0;
     for (auto &prj_idx : global_projects_vector) // access by reference to avoid copying
     {
-        mvwprintw(current_status_win, i+ 2, 2, prj_idx.name.c_str());
+        mvwprintw(current_status_win, i + 2, 2, prj_idx.name.c_str());
         mvwprintw(current_status_win, i + 3, 2, prj_idx.projectManagerUserName.c_str());
         mvwprintw(current_status_win, i + 4, 2, prj_idx.assignDate.c_str());
         mvwprintw(current_status_win, i + 5, 2, prj_idx.dueDate.c_str());
         mvwprintw(current_status_win, i + 6, 2, prj_idx.description.c_str());
-        i= i+10;
+        i = i + 10;
     }
 
     wrefresh(current_status_win);
@@ -286,11 +290,74 @@ void render_data_region(enum VIEW_STATE state, grid_t *grid)
         render_curent_status_view_data_region();
         break;
     case MY_BOARD_VIEW:
+        render_my_board_view_data_region();
         break;
     case MY_PROJECT_VIEW:
         break;
     case MY_TASKVIEW:
         break;
+    }
+}
+/* this command window will be constrauct for input cmd */
+void cmd_window()
+{
+    cmd_sumary_window = create_newwin(40, 25, 10, 1);
+    echo();
+    wmove(cmd_sumary_window, 1, 1);
+    wrefresh(cmd_sumary_window);
+}
+
+
+/** @brief
+ *  in RUNNING state, take in user input, update current_user_obj, current_project_obj
+ *  and dump changes to json
+ *
+ *  in EXIT state, exit and goto next view
+ *  @return void
+ */
+void menu_input(grid_t *grid)
+{
+    enum CMD_STATE next_state = CMD_INIT;
+    int break_loop = 1;
+    int keyboard_input = 0;
+    mvprintw(6, 2, "Enter non cmd mode");
+    while (break_loop)
+    {
+        switch (next_state)
+        {
+        case CMD_INIT:
+        case RUNNING:
+            read_escape(&keyboard_input);
+            if (keyboard_input == 'm')
+            {
+                echo();
+                mvprintw(6, 2, "Enter cmd mode");
+                cmd_window(); // Open the cmd window
+                mvprintw(7, 2, "%: ");
+                mvwprintw(cmd_sumary_window, 2, 2, "input you cmd here");
+                wrefresh(cmd_sumary_window);
+                getch();
+                mvprintw(6, 2, "Enter non cmd mode");
+            }
+            else if (keyboard_input == 'q')
+            {
+                next_state = EXIT;
+            }
+            else
+            {
+                curs_set(0); // make cursor invinsible
+                clrtoeol();
+                mvprintw(6, 2, "Enter view mode");
+                werase(cmd_sumary_window);
+                wrefresh(cmd_sumary_window);
+            }
+            break;
+        case EXIT:
+            return;
+
+        default:
+            break;
+        }
     }
 }
 
@@ -306,17 +373,36 @@ void take_in_user_cmd(grid_t *grid)
     enum CMD_STATE next_state = CMD_INIT;
     int break_loop = 1;
     int keyboard_input = 0;
+    mvprintw(6, 2, "Enter non cmd mode");
     while (break_loop)
     {
         switch (next_state)
         {
         case CMD_INIT:
         case RUNNING:
-            refresh();
             read_escape(&keyboard_input);
-            if (keyboard_input == 'q')
+            if (keyboard_input == 'm')
+            {
+                echo();
+                mvprintw(6, 2, "Enter cmd mode");
+                cmd_window(); // Open the cmd window
+                mvprintw(7, 2, "%: ");
+                mvwprintw(cmd_sumary_window, 2, 2, "input you cmd here");
+                wrefresh(cmd_sumary_window);
+                getch();
+                mvprintw(6, 2, "Enter non cmd mode");
+            }
+            else if (keyboard_input == 'q')
             {
                 next_state = EXIT;
+            }
+            else
+            {
+                curs_set(0); // make cursor invinsible
+                clrtoeol();
+                mvprintw(6, 2, "Enter view mode");
+                werase(cmd_sumary_window);
+                wrefresh(cmd_sumary_window);
             }
             break;
         case EXIT:
