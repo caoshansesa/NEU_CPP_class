@@ -3,8 +3,8 @@
 #include "cmd.hpp"
 #include "state_def.hpp"
 
-map<string, string> people_map;
-vector<Project> global_projects_vector;
+//map<string, string> people_map;
+//vector<Project> global_projects_vector;
 
 Task* find_task_by_id(Project *project, int task_id){
   if (!project) return nullptr;
