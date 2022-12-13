@@ -23,8 +23,9 @@ void goto_my_board_view(char *name)
 enum VIEW_STATE control_menu_selection_view()
 {
     enum VIEW_STATE return_state;
-    char *choices[] = {"1. View/Manage My Board", "2. View My Projects", "3. View/Edit Current Task Status"};
-    char *return_index[] = {"1", "2", "3"};
+    char const *choices[] = {"1. View/Manage My Board", "2. View My Projects", "3. View/Edit Current Task Status",
+                             "4. LOG_OUT "};
+    char const *return_index[] = {"1", "2", "3", "4"};
     ITEM **my_items;
     int c;
     MENU *my_menu;
@@ -40,16 +41,18 @@ enum VIEW_STATE control_menu_selection_view()
     my_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
     for (i = 0; i < n_choices; ++i)
     {
-        my_items[i] = new_item(choices[i], return_index[i]);
+        my_items[i] = new_item(choices[i], "");
         set_item_userptr(my_items[i], reinterpret_cast<void *>(goto_my_board_view));
     }
     my_items[n_choices] = (ITEM *)NULL;
     my_menu = new_menu((ITEM **)my_items);
     post_menu(my_menu);
     refresh();
-
-    while ((c = getch()) != KEY_F(1))
+    c = getch();
+    while (c != KEY_F(1))
     {
+        mvprintw(0, 50, "MAKE a selection with Enter, then press F1 to continue");
+        c = getch();
         switch (c)
         {
         case KEY_DOWN:
@@ -70,19 +73,21 @@ enum VIEW_STATE control_menu_selection_view()
             if ((item_name(cur)[0] == '1'))
             {
                 return_state = MY_BOARD_VIEW;
-                mvprintw(30, 30, "MY_BOARD_VIEW selected, press F1 to continue");
             }
 
             if ((item_name(cur)[0] == '2'))
             {
                 return_state = MY_PROJECT_VIEW;
-                mvprintw(30, 30, "MY_PROJECT_VIEW selected, press F1 to continue");
             }
 
             if ((item_name(cur)[0] == '3'))
             {
                 return_state = MY_TASKVIEW;
-                mvprintw(30, 30, "MY_TASKVIEW selected, press F1 to continue");
+            }
+            if ((item_name(cur)[0] == '4'))
+            {
+                c = KEY_F(1);
+                return_state = LOGIN_VIEW;
             }
             break;
         }
@@ -99,13 +104,10 @@ enum VIEW_STATE control_menu_selection_view()
     return return_state;
 }
 
-
-
-enum VIEW_STATE control_menu_summary_page()
+void control_menu_my_board_view()
 {
-    enum VIEW_STATE return_state;
-    char *choices[] = {"1. View/Manage My Board", "2. View My Projects", "3. View/Edit Current Task Status"};
-    char *return_index[] = {"1", "2", "3"};
+    char const *choices[] = {"1. Add new task", "2. Move task", "3. Remove task", "Exit"};
+    char const *return_index[] = {"1", "2", "3", "4"};
     ITEM **my_items;
     int c;
     MENU *my_menu;
@@ -129,8 +131,11 @@ enum VIEW_STATE control_menu_summary_page()
     post_menu(my_menu);
     refresh();
 
-    while ((c = getch()) != KEY_F(1))
+    c = getch();
+    while (c != KEY_F(1))
     {
+        mvprintw(0, 50, "MAKE a selection with Enter, then press F1 to continue");
+        c = getch();
         switch (c)
         {
         case KEY_DOWN:
@@ -150,20 +155,16 @@ enum VIEW_STATE control_menu_summary_page()
 
             if ((item_name(cur)[0] == '1'))
             {
-                return_state = MY_BOARD_VIEW;
-                mvprintw(30, 30, "MY_BOARD_VIEW selected, press F1 to continue");
             }
-
             if ((item_name(cur)[0] == '2'))
             {
-                return_state = MY_PROJECT_VIEW;
-                mvprintw(30, 30, "MY_PROJECT_VIEW selected, press F1 to continue");
             }
-
             if ((item_name(cur)[0] == '3'))
             {
-                return_state = MY_TASKVIEW;
-                mvprintw(30, 30, "MY_TASKVIEW selected, press F1 to continue");
+            }
+            if ((item_name(cur)[0] == '3'))
+            {
+                c =KEY_F(1);
             }
             break;
         }
@@ -177,9 +178,7 @@ enum VIEW_STATE control_menu_summary_page()
         free_item(my_items[i]);
     }
     free_menu(my_menu);
-    return return_state;
 }
-
 
 map<string, string> people_map;
 vector<Project> global_projects_vector;

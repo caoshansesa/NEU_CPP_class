@@ -43,7 +43,6 @@ int main()
         case LOGIN_VIEW:
             clear();
             render_commands_list(LOGIN_VIEW, grid_local);
-            take_in_user_cmd(grid_local);
             update_login_view();
             next_view = MAKE_SELECT_VIEW;
             break;
@@ -58,15 +57,16 @@ int main()
         case MY_BOARD_VIEW:
             echo(); // enable the curse from the screen
             clear();
-            mvprintw(grid_local->upper_left_y, 0, " Enter MY_BOARD_VIEW state,  PRESS q go back to selection menu");
+            mvprintw(2, 50, " Enter MY_BOARD_VIEW state, Press q gto back to selection view");
             render_commands_list(MY_BOARD_VIEW, grid_local);
             render_data_region(MY_BOARD_VIEW, grid_local);
+            control_menu_my_board_view();
             next_view = go_back_to_selection_view_with_button_q();
             break;
         case CURRENT_STATUS_VIEW:
             echo();
             clear();
-            mvprintw(grid_local->upper_left_y, 0, " Enter CURRENT_STATUS_VIEW, PRESS q go back to selection menu");
+            mvprintw(2, 50, " Enter CURRENT_STATUS_VIEW, Press q gto back to selection view");
             render_commands_list(CURRENT_STATUS_VIEW, grid_local);
             render_data_region(CURRENT_STATUS_VIEW, grid_local);
             next_view = go_back_to_selection_view_with_button_q();
@@ -74,7 +74,7 @@ int main()
         case MY_PROJECT_VIEW:
             echo();
             clear();
-            mvprintw(grid_local->upper_left_y, 0, " Enter MY_PROJECT_VIEW state, PRESS q go back to selection menu");
+            mvprintw(2, 50, " Enter MY_PROJECT_VIEW state, Press q gto back to selection view");
             render_commands_list(MY_PROJECT_VIEW, grid_local);
             render_data_region(MY_PROJECT_VIEW, grid_local);
             next_view = go_back_to_selection_view_with_button_q();
@@ -82,7 +82,7 @@ int main()
         case MY_TASKVIEW:
             echo();
             clear();
-            mvprintw(grid_local->upper_left_y, 0, " Enter MY_TASKVIEW state,  PRESS q go back to selection menu");
+            mvprintw(2, 50, " Enter MY_TASKVIEW state, Press q gto back to selection view");
             render_commands_list(MY_TASKVIEW, grid_local);
             render_data_region(MY_TASKVIEW, grid_local);
             next_view = go_back_to_selection_view_with_button_q();
