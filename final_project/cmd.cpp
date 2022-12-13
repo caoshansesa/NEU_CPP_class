@@ -20,7 +20,7 @@ void goto_my_board_view(char *name)
 {
     /*do something here*/
 }
-enum VIEW_STATE control_menu()
+enum VIEW_STATE control_menu_selection_view()
 {
     enum VIEW_STATE return_state;
     char *choices[] = {"1. View/Manage My Board", "2. View My Projects", "3. View/Edit Current Task Status"};
@@ -98,6 +98,88 @@ enum VIEW_STATE control_menu()
     free_menu(my_menu);
     return return_state;
 }
+
+
+
+enum VIEW_STATE control_menu_summary_page()
+{
+    enum VIEW_STATE return_state;
+    char *choices[] = {"1. View/Manage My Board", "2. View My Projects", "3. View/Edit Current Task Status"};
+    char *return_index[] = {"1", "2", "3"};
+    ITEM **my_items;
+    int c;
+    MENU *my_menu;
+    int n_choices, i;
+    ITEM *cur_item;
+
+    initscr();
+    cbreak();
+    noecho();
+    keypad(stdscr, TRUE);
+
+    n_choices = ARRAY_SIZE(choices);
+    my_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
+    for (i = 0; i < n_choices; ++i)
+    {
+        my_items[i] = new_item(choices[i], return_index[i]);
+        set_item_userptr(my_items[i], reinterpret_cast<void *>(goto_my_board_view));
+    }
+    my_items[n_choices] = (ITEM *)NULL;
+    my_menu = new_menu((ITEM **)my_items);
+    post_menu(my_menu);
+    refresh();
+
+    while ((c = getch()) != KEY_F(1))
+    {
+        switch (c)
+        {
+        case KEY_DOWN:
+            menu_driver(my_menu, REQ_DOWN_ITEM);
+            break;
+        case KEY_UP:
+            menu_driver(my_menu, REQ_UP_ITEM);
+            break;
+        case 10: /* Enter */
+        {
+            ITEM *cur;
+            void (*p)(char *);
+            cur = current_item(my_menu);
+            p = (void (*)(char *))item_userptr(cur);
+            p((char *)item_name(cur));
+            pos_menu_cursor(my_menu);
+
+            if ((item_name(cur)[0] == '1'))
+            {
+                return_state = MY_BOARD_VIEW;
+                mvprintw(30, 30, "MY_BOARD_VIEW selected, press F1 to continue");
+            }
+
+            if ((item_name(cur)[0] == '2'))
+            {
+                return_state = MY_PROJECT_VIEW;
+                mvprintw(30, 30, "MY_PROJECT_VIEW selected, press F1 to continue");
+            }
+
+            if ((item_name(cur)[0] == '3'))
+            {
+                return_state = MY_TASKVIEW;
+                mvprintw(30, 30, "MY_TASKVIEW selected, press F1 to continue");
+            }
+            break;
+        }
+        break;
+        }
+    }
+
+    unpost_menu(my_menu);
+    for (i = 0; i < n_choices; ++i)
+    {
+        free_item(my_items[i]);
+    }
+    free_menu(my_menu);
+    return return_state;
+}
+
 
 map<string, string> people_map;
 vector<Project> global_projects_vector;
