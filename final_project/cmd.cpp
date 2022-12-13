@@ -18,32 +18,8 @@ using namespace std;
 
 void goto_my_board_view(char *name)
 {
+    /*do something here*/
 }
-
-void goto_my_project_view()
-{
-    next_view = MY_PROJECT_VIEW;
-}
-void goto_my_task_view()
-{
-    next_view = MY_TASKVIEW;
-}
-
-void goto_my_current_status_view()
-{
-    next_view = CURRENT_STATUS_VIEW;
-}
-
-void goto_my_slection_view()
-{
-    next_view = MAKE_SELECT_VIEW;
-}
-
-void goto_Login_view()
-{
-    next_view = LOGIN_VIEW;
-}
-
 enum VIEW_STATE control_menu()
 {
     enum VIEW_STATE return_state;
