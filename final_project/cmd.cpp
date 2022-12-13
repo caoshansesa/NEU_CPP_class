@@ -13,31 +13,66 @@ using namespace std;
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 #define CTRLD 4
 
-char *choices[] = {
-    "Choice 1", "Choice 2", "Choice 3", "Choice 4", "Exit",
-};
+void goto_my_board_view(char *name)
+{
+    move(50, 40);
+    clrtoeol();
+    mvprintw(50, 40, "Item selected is : %s", name);
+    next_view = MY_BOARD_VIEW;
+}
+
+void goto_my_project_view()
+{
+    next_view = MY_PROJECT_VIEW;
+}
+void goto_my_task_view()
+{
+    next_view = MY_TASKVIEW;
+}
+
+void goto_my_current_status_view()
+{
+    next_view = CURRENT_STATUS_VIEW;
+}
+
+void goto_my_slection_view()
+{
+    next_view = MAKE_SELECT_VIEW;
+}
+
+void goto_Login_view()
+{
+    next_view = LOGIN_VIEW;
+}
 
 void control_menu()
 {
+    char *choices[] = {"1. View/Manage My Board", "2. View My Projects", "3. View/Edit Current Status", "4. Exit"};
+    char *return_index[] = {"1", "2", "3", "4"};
     ITEM **my_items;
     int c;
     MENU *my_menu;
     int n_choices, i;
     ITEM *cur_item;
+
     initscr();
     cbreak();
     noecho();
     keypad(stdscr, TRUE);
+
     n_choices = ARRAY_SIZE(choices);
     my_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
     for (i = 0; i < n_choices; ++i)
     {
-        my_items[i] = new_item(choices[i], choices[i]);
+        my_items[i] = new_item(choices[i], return_index[i]);
+        set_item_userptr(my_items[i], reinterpret_cast<void *>(goto_my_board_view));
     }
     my_items[n_choices] = (ITEM *)NULL;
+
     my_menu = new_menu((ITEM **)my_items);
     post_menu(my_menu);
     refresh();
+
     while ((c = getch()) != KEY_F(1))
     {
         switch (c)
@@ -48,10 +83,25 @@ void control_menu()
         case KEY_UP:
             menu_driver(my_menu, REQ_UP_ITEM);
             break;
+        case 10: /* Enter */
+        {
+            ITEM *cur;
+            void (*p)(char *);
+            cur = current_item(my_menu);
+            p = (void (*)(char *))item_userptr(cur);
+            p((char *)item_name(cur));
+            pos_menu_cursor(my_menu);
+            break;
+        }
+        break;
         }
     }
-    free_item(my_items[0]);
-    free_item(my_items[1]);
+
+    unpost_menu(my_menu);
+    for (i = 0; i < n_choices; ++i)
+    {
+        free_item(my_items[i]);
+    }
     free_menu(my_menu);
     endwin();
 }
@@ -219,17 +269,9 @@ void show_static_view_of_login()
  * */
 void show_static_view_of_selection()
 {
-    clear();
-    mvprintw(0, 0, " Enter Slection View State");
-    attron(A_REVERSE | A_BOLD);
-    mvprintw(20, 70, "1. View/Manage My Board");
-    mvprintw(22, 70, "2. View My Projects");
-    mvprintw(24, 70, "3. View/Edit Current Status");
-    attroff(A_REVERSE | A_BOLD);
-    attron(A_BOLD | A_BLINK);
-    mvprintw(30, 65, "Please choose your view here");
-    noecho();
-    attroff(A_BOLD | A_BLINK);
+    echo();
+    getch();
+    control_menu();
 }
 
 /**
@@ -352,59 +394,6 @@ void cmd_window()
     echo();
     wmove(cmd_sumary_window, 1, 1);
     wrefresh(cmd_sumary_window);
-}
-
-/** @brief
- *  in RUNNING state, take in user input, update current_user_obj, current_project_obj
- *  and dump changes to json
- *
- *  in EXIT state, exit and goto next view
- *  @return void
- */
-void menu_input(grid_t *grid)
-{
-    enum CMD_STATE next_state = CMD_INIT;
-    int break_loop = 1;
-    int keyboard_input = 0;
-    mvprintw(6, 2, "Enter non cmd mode");
-    while (break_loop)
-    {
-        switch (next_state)
-        {
-        case CMD_INIT:
-        case RUNNING:
-            read_escape(&keyboard_input);
-            if (keyboard_input == 'm')
-            {
-                echo();
-                mvprintw(6, 2, "Enter cmd mode");
-                cmd_window(); // Open the cmd window
-                mvprintw(7, 2, "%: ");
-                mvwprintw(cmd_sumary_window, 2, 2, "input you cmd here");
-                wrefresh(cmd_sumary_window);
-                getch();
-                mvprintw(6, 2, "Enter non cmd mode");
-            }
-            else if (keyboard_input == 'q')
-            {
-                next_state = EXIT;
-            }
-            else
-            {
-                curs_set(0); // make cursor invinsible
-                clrtoeol();
-                mvprintw(6, 2, "Enter view mode");
-                werase(cmd_sumary_window);
-                wrefresh(cmd_sumary_window);
-            }
-            break;
-        case EXIT:
-            return;
-
-        default:
-            break;
-        }
-    }
 }
 
 /** @brief
