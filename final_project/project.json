@@ -18,8 +18,8 @@
 				"id" : 1,
 				"issues" : "firewall",
 				"priority" : 2,
-				"status" : "DONE",
-				"title" : "MVS POC",
+				"status" : "TODO",
+				"title" : "MVS-POC",
 				"type" : "debugging"
 			},
 			{
@@ -30,8 +30,92 @@
 				"id" : 1,
 				"issues" : "missing documentation",
 				"priority" : 2,
+				"status" : "ONGOING",
+				"title" : "CS-Brick",
+				"type" : "testing"
+			},
+			{
+				"assignDate" : "Jan-19-2021",
+				"assignees" : "mark",
+				"completionDate" : "Jan-20-2021",
+				"dueDate" : "Jan-21-2021",
+				"id" : 1,
+				"issues" : "missing documentation",
+				"priority" : 2,
 				"status" : "DONE",
-				"title" : "CS Brick integration",
+				"title" : "OPCUA",
+				"type" : "testing"
+			},
+			{
+				"assignDate" : "Jan-19-2021",
+				"assignees" : "joes",
+				"completionDate" : "Jan-19-2021",
+				"dueDate" : "Jan-30-2021",
+				"id" : 1,
+				"issues" : "firewall",
+				"priority" : 2,
+				"status" : "TODO",
+				"title" : "PKI",
+				"type" : "debugging"
+			},
+			{
+				"assignDate" : "Jan-19-2021",
+				"assignees" : "mark",
+				"completionDate" : "Jan-20-2021",
+				"dueDate" : "Jan-21-2021",
+				"id" : 1,
+				"issues" : "missing documentation",
+				"priority" : 2,
+				"status" : "ONGOING",
+				"title" : "CM",
+				"type" : "testing"
+			},
+			{
+				"assignDate" : "Jan-19-2021",
+				"assignees" : "mark",
+				"completionDate" : "Jan-20-2021",
+				"dueDate" : "Jan-21-2021",
+				"id" : 1,
+				"issues" : "missing documentation",
+				"priority" : 2,
+				"status" : "DONE",
+				"title" : "SKS",
+				"type" : "testing"
+			},
+			{
+				"assignDate" : "Jan-19-2021",
+				"assignees" : "joes",
+				"completionDate" : "Jan-19-2021",
+				"dueDate" : "Jan-30-2021",
+				"id" : 1,
+				"issues" : "firewall",
+				"priority" : 2,
+				"status" : "TODO",
+				"title" : "MVS",
+				"type" : "debugging"
+			},
+			{
+				"assignDate" : "Jan-19-2021",
+				"assignees" : "mark",
+				"completionDate" : "Jan-20-2021",
+				"dueDate" : "Jan-21-2021",
+				"id" : 1,
+				"issues" : "missing documentation",
+				"priority" : 2,
+				"status" : "ONGOING",
+				"title" : "CS",
+				"type" : "testing"
+			},
+			{
+				"assignDate" : "Jan-19-2021",
+				"assignees" : "mark",
+				"completionDate" : "Jan-20-2021",
+				"dueDate" : "Jan-21-2021",
+				"id" : 1,
+				"issues" : "missing documentation",
+				"priority" : 2,
+				"status" : "DONE",
+				"title" : "TSN",
 				"type" : "testing"
 			}
 		]
@@ -62,3 +146,4 @@
 		]
 	}
 ]
+
