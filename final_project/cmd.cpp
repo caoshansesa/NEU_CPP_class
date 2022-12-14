@@ -263,7 +263,7 @@ void modify_project_name_pop_up(){
     refresh();
 
     string x = getstring();
-    modify_project_name(project, x)
+    modify_project_name(project, x);
 
     clrtoeol(); //clear current line
     mvprintw(20, 0, "Project has been updated");
@@ -828,8 +828,9 @@ void render_current_status_view_data_region()
     int i = 0;
     for (auto &prj_idx : global_projects_vector) // access by reference to avoid copying
     {
+        string id = to_string(prj_idx.id);
         mvwprintw(current_status_win, i + 2, 2, prj_idx.name.c_str());
-        mvwprintw(current_status_win, i + 4, 2, prj_idx.id.c_str());
+        mvwprintw(current_status_win, i + 3, 2, id.c_str());
         mvwprintw(current_status_win, i + 4, 2, prj_idx.projectManagerUserName.c_str());
         mvwprintw(current_status_win, i + 5, 2, prj_idx.assignDate.c_str());
         mvwprintw(current_status_win, i + 6, 2, prj_idx.dueDate.c_str());
@@ -881,7 +882,7 @@ void render_my_project_view_data_region() {
     int i = 0;
     for (auto &prj_idx: global_projects_vector) // access by reference to avoid copying
     {
-        string id = to_string(task_idx.id);
+        string id = to_string(prj_idx.id);
         mvwprintw(my_task_window, i + 2, 2, "Project ID: ");
         mvwprintw(my_task_window, i + 2, 20, prj_idx.name.c_str());
         mvwprintw(my_task_window, i + 3, 2, "Project name: ");
