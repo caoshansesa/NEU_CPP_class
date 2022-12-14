@@ -712,7 +712,6 @@ bool get_name_from_login() {
     mvprintw(y / 2, (x - strlen(mesg)) / 2, "%s", mesg);
     refresh();
     username = getstring();
-    nodelay(stdscr, true);
     noecho();
     endwin();
     refresh();
@@ -720,6 +719,8 @@ bool get_name_from_login() {
     //find username in people_map
     if(people_map.find(username) == people_map.end()){
         mvprintw(y / 2 +2, (x - strlen(errmsg)) / 2, "%s", errmsg);
+	timeout(-1);
+	getch();
 	refresh();
 	return false;
 	}
@@ -731,7 +732,9 @@ bool get_name_from_login() {
 	if(role == "QAEngineer") QAEngineer* currentuser = new QAEngineer();
 	if(role == "Owner") ProjectOwner* currentuser = new ProjectOwner();
 	if(role == "Manager") ProjectManager* currentuser = new ProjectManager();
-        mvprintw(y/2 +2, (x-strlen(smsg))/2,"%s",smsg);
+        mvprintw(y/2 +2,(x-strlen(smsg))/2,"%s",smsg);
+	timeout(-1);
+	getch();
 	refresh();
 	return true;
     }
