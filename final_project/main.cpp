@@ -12,6 +12,9 @@
 #define WELL_WIDTH 20
 #define WELL_HEIGHT 20
 
+int project_id = 0;
+int task_id = 0;
+
 static Project *global_addr;
 unsigned int microsecond = 1000000;
 //for testing:please remove

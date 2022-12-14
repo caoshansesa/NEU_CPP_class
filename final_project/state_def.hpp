@@ -7,6 +7,8 @@
 #include <vector>
 
 using namespace std;
+extern int project_id;
+extern int task_id; 
 
 static int terminal_x, terminal_y = 0;
 static string username;
@@ -14,7 +16,7 @@ static string username;
 class Task
 {
   public:
-    int id;
+    int id = ++task_id;
     string type;
     int priority;
     string assignDate;
@@ -22,7 +24,7 @@ class Task
     string completionDate;
     string title;
     string assignees;
-    string status;
+    string status= "TODO";
     string issues;
 
     Json::Value toJson()
@@ -122,7 +124,7 @@ public:
 class Project
 {
   public:
-    int id;
+    int id = ++project_id;
     string name;
     string description;
     string assignDate;
