@@ -284,7 +284,7 @@ void modify_project_description_pop_up(){
     refresh();
 
     string x = getstring();
-    modify_project_description(project, x)
+    modify_project_description(project, x);
 
     clrtoeol(); //clear current line
     mvprintw(20, 0, "Project has been updated");
@@ -305,7 +305,7 @@ void modify_project_dueDate_pop_up(){
     refresh();
 
     string x = getstring();
-    modify_project_duedate(project, x)
+    modify_project_duedate(project, x);
 
     clrtoeol(); //clear current line
     mvprintw(20, 0, "Project has been updated");
@@ -326,7 +326,7 @@ void modify_project_completionDate_pop_up(){
     refresh();
 
     string x = getstring();
-    modify_projectcompletiondate(project, x)
+    modify_projectcompletiondate(project, x);
 
     clrtoeol(); //clear current line
     mvprintw(20, 0, "Project has been updated");
@@ -852,7 +852,7 @@ void render_my_board_view_data_region() {
     int x, y, z = 2;
     int project_id = get_project_id_from_user();
     Project * project = find_project_by_id(project_id);
-    vector <Task> tasks = project.tasks;
+    vector <Task> tasks = project->tasks;
     for (auto &task_idx: tasks) // access by reference to avoid copying
     {
         if (task_idx.status == "TODO") {
@@ -881,10 +881,12 @@ void render_my_project_view_data_region() {
     int i = 0;
     for (auto &prj_idx: global_projects_vector) // access by reference to avoid copying
     {
-        mvwprintw(my_task_window, i + 2, 2, "Project name: ");
-        mvwprintw(prj_summary_window, i + 2, 20, prj_idx.id.c_str());
-        mvwprintw(my_task_window, i + 3, 2, "Project ID: ");
-        mvwprintw(my_task_window, i + 3, 20, prj_idx.name.c_str());
+        string id = to_string(task_idx.id);
+        mvwprintw(my_task_window, i + 2, 2, "Project ID: ");
+        mvwprintw(my_task_window, i + 2, 20, prj_idx.name.c_str());
+        mvwprintw(my_task_window, i + 3, 2, "Project name: ");
+        mvwprintw(prj_summary_window, i + 3, 20, id.c_str());
+
         i += 3;
     }
 
@@ -899,7 +901,7 @@ void render_my_project_view_data_region() {
 void render_my_task_view_data_region() {
     int project_id = get_project_id_from_user();
     Project * project = find_project_by_id(project_id);
-    vector <Task> tasks = project.tasks;
+    vector <Task> tasks = project->tasks;
 
     int i = 0;
     for (auto &task_idx: tasks)
@@ -937,7 +939,7 @@ void render_data_region(enum VIEW_STATE state, grid_t *grid) {
         case MAKE_SELECT_VIEW:
             break;
         case CURRENT_STATUS_VIEW:
-            render_curent_status_view_data_region();
+            render_current_status_view_data_region();
             break;
         case MY_BOARD_VIEW:
             render_my_board_view_data_region();
