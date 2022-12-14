@@ -41,8 +41,22 @@ map<string, string> people_map;
 vector<Project> global_projects_vector;
 
 /*******POPUP FUNCTIONS START HERE**************/
-//modify task status
-void modify_task_status_pop_up(int prj_id){
+
+int get_project_id_from_user(){
+    int project_id;
+    move(20,0);
+
+    clrtoeol();
+    mvprintw(20, 0, "Please Enter the project id:");
+    refresh();
+
+    project_id = int(getch()) -48;
+
+    return project_id;
+
+}
+
+int get_task_id_from_user(){
     int task_id;
     move(20,0);
 
@@ -51,11 +65,21 @@ void modify_task_status_pop_up(int prj_id){
     refresh();
 
     task_id = int(getch()) -48;
+
+    return task_id;
+}
+//modify task status
+void modify_task_status_pop_up(int prj_id){
+    int task_id;
+    move(20,0);
+    clrtoeol();
+
+    task_id = get_task_id_from_user();
     Project * project = find_project_by_id(prj_id);
     Task * task = find_task_by_id(project,task_id);
 
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print one of the options:TODO,DOING,DONE - case-sensitive");
+    clrtoeol();
+    mvprintw(20, 0, "Please print one of the options:TODO,DOING,DONE - case-sensitive:");
     refresh();
 
     string x = getstring();
@@ -72,15 +96,13 @@ void modify_task_priority_pop_up(int prj_id){
     move(20,0);
 
     clrtoeol();
-    mvprintw(20, 0, "Please Enter the task id:");
-    refresh();
 
-    task_id = int(getch()) -48;
+    task_id =get_task_id_from_user();
     Project * project = find_project_by_id(prj_id);
     Task * task = find_task_by_id(project,task_id);
 
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print new task priority");
+    mvprintw(20, 0, "Please print new task priority from 1-10:");
     refresh();
 
     x = int(getch())- 48;
@@ -96,15 +118,13 @@ void modify_task_assignee_pop_up(int prj_id){
     move(20,0);
 
     clrtoeol();
-    mvprintw(20, 0, "Please Enter the task id:");
-    refresh();
 
-    task_id = int(getch()) -48;
+    task_id = get_task_id_from_user();
     Project * project = find_project_by_id(prj_id);
     Task * task = find_task_by_id(project,task_id);
 
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print new task assignee");
+    mvprintw(20, 0, "Please print new task assignee:");
     refresh();
 
     string x = getstring();
@@ -115,20 +135,17 @@ void modify_task_assignee_pop_up(int prj_id){
     refresh();
 }
 //modify task status
-void modify_task_completion_date_pop_up(int prj_id){
+void modify_task_completionDate_pop_up(int prj_id){
     int task_id;
     move(20,0);
 
     clrtoeol();
-    mvprintw(20, 0, "Please Enter the task id:");
-    refresh();
-
-    task_id = int(getch()) -48;
+    task_id = get_task_id_from_user();
     Project * project = find_project_by_id(prj_id);
     Task * task = find_task_by_id(project,task_id);
 
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print new task completion date as Month-day-Year");
+    mvprintw(20, 0, "Please print new task completion date as Month-day-Year:");
     refresh();
 
     string x = getstring();
@@ -144,15 +161,13 @@ void modify_task_issues_pop_up(int prj_id){
     move(20,0);
 
     clrtoeol();
-    mvprintw(20, 0, "Please Enter the task id:");
-    refresh();
 
-    task_id = int(getch()) -48;
+    task_id = get_task_id_from_user();
     Project * project = find_project_by_id(prj_id);
     Task * task = find_task_by_id(project,task_id);
 
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please enter issues");
+    mvprintw(20, 0, "Please print issues:");
     refresh();
 
     string x = getstring();
@@ -169,10 +184,8 @@ void delete_task_pop_up(int prj_id){
     move(20,0);
 
     clrtoeol();
-    mvprintw(20, 0, "Please Enter the task id:");
-    refresh();
 
-    task_id = int(getch()) -48;
+    task_id = get_task_id_from_user();
     Project * project = find_project_by_id(prj_id);
     Task * task = find_task_by_id(project,task_id);
     delete_task(task, project);
@@ -190,7 +203,7 @@ void add_task_pop_up(int prj_id){
 
     move(20,0);
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print new task type");
+    mvprintw(20, 0, "Please print new task type:");
     string type = getstring();
     new_task.type = type;
 
@@ -229,250 +242,199 @@ void add_task_pop_up(int prj_id){
     add_task(project, new_task);
 
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Task has been updated");
+    mvprintw(20, 0, "Task has been added");
     refresh();
 }
 
 /**************************************************************************/
-#if 0
-//modify project status
-void modify_project_name_pop_up(int prj_id){
+#if 1
+//modify project name
+void modify_project_name_pop_up(){
     int project_id;
-    const char * new_status[20];
-    //already done
-    // initscr();
     move(20,0);
-    clrtoeol(); //clear current line
-    //mvprintw(20, 0, "Item selected is : %s", name); //print
-    mvprintw(20, 0, "Please Enter the project id:");
-    refresh();
-    //get project id
-    //scanw("%d",&project_id);
-    project_id = int(getch()) -48;
-    Project * project = find_project_by_id(prj_id);
-    //int indx = _tstoi(project_id); //convert cstring to int
 
-    project * project = find_project_by_id(project,idx);
+    clrtoeol();
+    project_id = get_project_id_from_user();
+
+    Project * project = find_project_by_id(project_id);
+
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print one of the options: TODO,DOING,DONE -case-sensistive");
-    getstr(new_status);
+    mvprintw(20, 0, "Please print new name:");
     refresh();
-    string status = new_status;//convert cstring to string
-    project->status = new_status;
+
+    string x = getstring();
+    modify_project_name(project, x)
+
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Task has been moved to : %s", new_status);
+    mvprintw(20, 0, "Project has been updated");
     refresh();
 }
-//modify project status
-void modify_project_description_pop_up(int prj_id){
+//modify project description
+void modify_project_description_pop_up(){
     int project_id;
-    const char * new_status[20];
-    //already done
-    // initscr();
+    move(20,0);
+
+    clrtoeol();
+    project_id = get_project_id_from_user();
+
+    Project * project = find_project_by_id(project_id);
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Please print new description");
+    refresh();
+
+    string x = getstring();
+    modify_project_description(project, x)
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Project has been updated");
+    refresh();
+}
+//modify project duedate
+void modify_project_dueDate_pop_up(){
+    int project_id;
+    move(20,0);
+
+    clrtoeol();
+    project_id = get_project_id_from_user();
+
+    Project * project = find_project_by_id(project_id);
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Please print new project dueDate as Month-day-Year:");
+    refresh();
+
+    string x = getstring();
+    modify_project_duedate(project, x)
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Project has been updated");
+    refresh();
+}
+//modify project completionDate
+void modify_project_completionDate_pop_up(){
+    int project_id;
+    move(20,0);
+
+    clrtoeol();
+    project_id = get_project_id_from_user();
+
+    Project * project = find_project_by_id(project_id);
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Please print new project completionDate as Month-day-Year:");
+    refresh();
+
+    string x = getstring();
+    modify_projectcompletiondate(project, x)
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Project has been updated");
+    refresh();
+
+}
+//modify project manager
+void modify_project_manager_pop_up(){
+    int project_id;
+    move(20,0);
+
+    clrtoeol();
+
+    project_id = get_project_id_from_user();
+    Project * project = find_project_by_id(project_id);
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Please print new project manager name:");
+    refresh();
+
+    string x = getstring();
+    if(people_map.find(x) == people_map.end())
+        mvprintw(20, 0, "User you entered does not exist in the database");
+    modify_project_manager(project,x);
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Project has been updated");
+    refresh();
+}
+//modify project owner
+void modify_project_owner_pop_up(){
+    int project_id;
+    move(20,0);
+
+    clrtoeol();
+
+    project_id = get_project_id_from_user();
+    Project * project = find_project_by_id(project_id);
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Please print new project owner name:");
+    refresh();
+
+    string x = getstring();
+    if(people_map.find(x) == people_map.end())
+        mvprintw(20, 0, "User you entered does not exist in the database");
+    modify_project_owner(project,x);
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Project has been updated");
+    refresh();
+}
+
+//modify task status
+void delete_task_pop_up(){
+    int project_id;
+    move(20,0);
+
+    clrtoeol();
+
+    project_id = get_project_id_from_user();
+    Project * project = find_project_by_id(project_id);
+    delete_project(project);
+
+    clrtoeol(); //clear current line
+    mvprintw(20, 0, "Project has been deleted");
+    refresh();
+}
+//add task
+void add_project_pop_up(){
+
+    Project new_project = Project();
+
     move(20,0);
     clrtoeol(); //clear current line
-    //mvprintw(20, 0, "Item selected is : %s", name); //print
-    mvprintw(20, 0, "Please Enter the project id:");
-    refresh();
-    //get project id
-    //scanw("%d",&project_id);
-    project_id = int(getch()) -48;
-    Project * project = find_project_by_id(prj_id);
-    //int indx = _tstoi(project_id); //convert cstring to int
+    mvprintw(20, 0, "Please print new project name:");
+    string name = getstring();
+    new_project.name = name;
 
-    project * project = find_project_by_id(project,idx);
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print one of the options: "TODO","DOING","DONE" (case-sensistive)");
-    getstr(new_status);
+    clrtoeol();
+    mvprintw(20, 0, "Please print new project description:");
     refresh();
-    string status = new_status;//convert cstring to string
-    project->status = new_status;
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "project has been moved to : %s", new_status);
-    refresh();
-    //already done
-    //endwin();
-}
-//modify project status
-void modify_project_duedate_pop_up(int prj_id){
-    int project_id;
-    const char * new_status[20];
-    //already done
-    // initscr();
-    move(20,0);
-    clrtoeol(); //clear current line
-    //mvprintw(20, 0, "Item selected is : %s", name); //print
-    mvprintw(20, 0, "Please Enter the project id:");
-    refresh();
-    //get project id
-    //scanw("%d",&project_id);
-    project_id = int(getch()) -48;
-    Project * project = find_project_by_id(prj_id);
-    //int indx = _tstoi(project_id); //convert cstring to int
+    string desc = getstring();
+    new_project.description = desc;
 
-    project * project = find_project_by_id(project,idx);
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print one of the options: "TODO","DOING","DONE" (case-sensistive)");
-    getstr(new_status);
-    refresh();
-    string status = new_status;//convert cstring to string
-    project->status = new_status;
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "project has been moved to : %s", new_status);
-    refresh();
-    //already done
-    //endwin();
-}
-//modify project priority
-void modify_project__pop_up(int prj_id){
-    int project_id;
-    const char * new_status[20];
-    //already done
-    // initscr();
-    move(20,0);
-    clrtoeol(); //clear current line
-    //mvprintw(20, 0, "Item selected is : %s", name); //print
-    mvprintw(20, 0, "Please Enter the project id:");
-    refresh();
-    //get project id
-    //scanw("%d",&project_id);
-    project_id = int(getch()) -48;
-    Project * project = find_project_by_id(prj_id);
-    //int indx = _tstoi(project_id); //convert cstring to int
 
-    project * project = find_project_by_id(project,idx);
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print one of the options: "TODO","DOING","DONE" (case-sensistive)");
-    getstr(new_status);
+    clrtoeol();
+    mvprintw(20, 0, "Please print new project assignDate as Month-day-Year:");
     refresh();
-    string status = new_status;//convert cstring to string
-    project->status = new_status;
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "project has been moved to : %s", new_status);
-    refresh();
-    //already done
-    //endwin();
-}
-//modify project status
-void modify_project_status_pop_up(int prj_id){
-    int project_id;
-    const char * new_status[20];
-    //already done
-    // initscr();
-    move(20,0);
-    clrtoeol(); //clear current line
-    //mvprintw(20, 0, "Item selected is : %s", name); //print
-    mvprintw(20, 0, "Please Enter the project id:");
-    refresh();
-    //get project id
-    //scanw("%d",&project_id);
-    project_id = int(getch()) -48;
-    Project * project = find_project_by_id(prj_id);
-    //int indx = _tstoi(project_id); //convert cstring to int
+    string assigndate = getstring();
+    new_project.assignDate = assigndate;
 
-    project * project = find_project_by_id(project,idx);
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print one of the options: "TODO","DOING","DONE" (case-sensistive)");
-    getstr(new_status);
+    clrtoeol();
+    mvprintw(20, 0, "Please print new project dueDate as Month-day-Year:");
     refresh();
-    string status = new_status;//convert cstring to string
-    project->status = new_status;
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "project has been moved to : %s", new_status);
-    refresh();
-    //already done
-    //endwin();
-}
-//modify project status
-void modify_project_status_pop_up(int prj_id){
-    int project_id;
-    const char * new_status[20];
-    //already done
-    // initscr();
-    move(20,0);
-    clrtoeol(); //clear current line
-    //mvprintw(20, 0, "Item selected is : %s", name); //print
-    mvprintw(20, 0, "Please Enter the project id:");
-    refresh();
-    //get project id
-    //scanw("%d",&project_id);
-    project_id = int(getch()) -48;
-    Project * project = find_project_by_id(prj_id);
-    //int indx = _tstoi(project_id); //convert cstring to int
+    string duedate = getstring();
+    new_project.dueDate = duedate;
 
-    project * project = find_project_by_id(project,idx);
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print one of the options: "TODO","DOING","DONE" (case-sensistive)");
-    getstr(new_status);
-    refresh();
-    string status = new_status;//convert cstring to string
-    project->status = new_status;
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "project has been moved to : %s", new_status);
-    refresh();
-    //already done
-    //endwin();
-}
-//modify project priority
-void modify_project_status_pop_up(int prj_id){
-    int project_id;
-    const char * new_status[20];
-    //already done
-    // initscr();
-    move(20,0);
-    clrtoeol(); //clear current line
-    //mvprintw(20, 0, "Item selected is : %s", name); //print
-    mvprintw(20, 0, "Please Enter the project id:");
-    refresh();
-    //get project id
-    //scanw("%d",&project_id);
-    project_id = int(getch()) -48;
-    Project * project = find_project_by_id(prj_id);
-    //int indx = _tstoi(project_id); //convert cstring to int
+    //id is constructed uniquely and status is TO-DO by default.
 
-    project * project = find_project_by_id(project,idx);
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print one of the options: "TODO","DOING","DONE" (case-sensistive)");
-    getstr(new_status);
-    refresh();
-    string status = new_status;//convert cstring to string
-    project->status = new_status;
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "project has been moved to : %s", new_status);
-    refresh();
-    //already done
-    //endwin();
-}
-//modify project status
-void modify_project_status_pop_up(int prj_id){
-    int project_id;
-    const char * new_status[20];
-    //already done
-    // initscr();
-    move(20,0);
-    clrtoeol(); //clear current line
-    //mvprintw(20, 0, "Item selected is : %s", name); //print
-    mvprintw(20, 0, "Please Enter the project id:");
-    refresh();
-    //get project id
-    //scanw("%d",&project_id);
-    project_id = int(getch()) -48;
-    Project * project = find_project_by_id(prj_id);
-    //int indx = _tstoi(project_id); //convert cstring to int
+    add_project(new_project);
 
-    project * project = find_project_by_id(project,idx);
     clrtoeol(); //clear current line
-    mvprintw(20, 0, "Please print one of the options: "TODO","DOING","DONE" (case-sensistive)");
-    getstr(new_status);
+    mvprintw(20, 0, "Project has been added");
     refresh();
-    string status = new_status;//convert cstring to string
-    project->status = new_status;
-    clrtoeol(); //clear current line
-    mvprintw(20, 0, "project has been moved to : %s", new_status);
-    refresh();
-    //already done
-    //endwin();
 }
+
+
 #endif
 /*******POPUP FUNCTIONS END HERE**************/
 void goto_my_board_view(char *name)
@@ -858,20 +820,21 @@ void render_Make_selection_view_data_region()
 
 /*
  * rendering current status view data region
+ * for all projects
  * */
-void render_curent_status_view_data_region()
+void render_current_status_view_data_region()
 {
-
     current_status_win = create_newwin(40, 80, 5, 50);
     int i = 0;
     for (auto &prj_idx : global_projects_vector) // access by reference to avoid copying
     {
         mvwprintw(current_status_win, i + 2, 2, prj_idx.name.c_str());
-        mvwprintw(current_status_win, i + 3, 2, prj_idx.projectManagerUserName.c_str());
-        mvwprintw(current_status_win, i + 4, 2, prj_idx.assignDate.c_str());
-        mvwprintw(current_status_win, i + 5, 2, prj_idx.dueDate.c_str());
-        mvwprintw(current_status_win, i + 6, 2, prj_idx.description.c_str());
-        i = i + 10;
+        mvwprintw(current_status_win, i + 4, 2, prj_idx.id.c_str());
+        mvwprintw(current_status_win, i + 4, 2, prj_idx.projectManagerUserName.c_str());
+        mvwprintw(current_status_win, i + 5, 2, prj_idx.assignDate.c_str());
+        mvwprintw(current_status_win, i + 6, 2, prj_idx.dueDate.c_str());
+        mvwprintw(current_status_win, i + 7, 2, prj_idx.description.c_str());
+        i = i + 3;
     }
 
     wrefresh(current_status_win);
@@ -879,18 +842,17 @@ void render_curent_status_view_data_region()
 
 /*
  * rendering my board view data region
+ * Tasks status for one project that the user wants to view
  * */
-//AMEL EDIT HERE 1.
 void render_my_board_view_data_region() {
     todo_window = create_newwin(40, 49, 6, 25);
     ongoing_window = create_newwin(40, 49, 6, 75);
     done_window = create_newwin(40, 49, 6, 125);
 
-    int x = 2;
-    int y = 2;
-    int z = 2;
-
-    vector <Task> tasks = global_projects_vector[0].tasks;
+    int x, y, z = 2;
+    int project_id = get_project_id_from_user();
+    Project * project = find_project_by_id(project_id);
+    vector <Task> tasks = project.tasks;
     for (auto &task_idx: tasks) // access by reference to avoid copying
     {
         if (task_idx.status == "TODO") {
@@ -909,22 +871,20 @@ void render_my_board_view_data_region() {
         wrefresh(todo_window);
         wrefresh(ongoing_window);
         wrefresh(done_window);
-        // for window_myboard
-        // doing, to do, done windows
-        // loop for 1 project
-        // make it look for task which belongs to each "status" : to do, doing, done
-        // print each of the tasks into 3 different windows with task name only
     }
 }
 /*
  * rendering my project view data region
+ * render all projects name and id
  * */
-//AMEL EDIT HERE 2.
 void render_my_project_view_data_region() {
     int i = 0;
     for (auto &prj_idx: global_projects_vector) // access by reference to avoid copying
     {
-        mvwprintw(prj_summary_window, i + 2, 2, prj_idx.name.c_str());
+        mvwprintw(my_task_window, i + 2, 2, "Project name: ");
+        mvwprintw(prj_summary_window, i + 2, 20, prj_idx.id.c_str());
+        mvwprintw(my_task_window, i + 3, 2, "Project ID: ");
+        mvwprintw(my_task_window, i + 3, 20, prj_idx.name.c_str());
         i += 3;
     }
 
@@ -933,16 +893,19 @@ void render_my_project_view_data_region() {
 
 /*
  * rendering my task view data region
+ * tasks for one project that the user wants to view
  * */
-//AMEL EDIT HERE 3.
+
 void render_my_task_view_data_region() {
-    vector<Task> tasks = global_projects_vector[0].tasks;
+    int project_id = get_project_id_from_user();
+    Project * project = find_project_by_id(project_id);
+    vector <Task> tasks = project.tasks;
+
     int i = 0;
-//   for (auto &task_idx: tasks) // access by reference to avoid copying
-//    {
-    	Task task_idx = tasks[0];
-	string id = to_string(task_idx.id);
-	string priority = to_string(task_idx.priority);
+    for (auto &task_idx: tasks)
+    {
+	    string id = to_string(task_idx.id);
+	    string priority = to_string(task_idx.priority);
         mvwprintw(my_task_window, i + 2, 2, "Task id: ");
         mvwprintw(my_task_window, i + 2, 20, id.c_str());
         mvwprintw(my_task_window, i + 3, 2, "Type: ");
@@ -955,8 +918,8 @@ void render_my_task_view_data_region() {
         mvwprintw(my_task_window, i + 6, 20, task_idx.assignDate.c_str());
         mvwprintw(my_task_window, i + 7, 2, "Due Date: ");
         mvwprintw(my_task_window, i + 7, 20, task_idx.dueDate.c_str());
-        i = i + 5;
-//    }
+        i = i + 3;
+   }
 
     wrefresh(my_task_window);
 }
