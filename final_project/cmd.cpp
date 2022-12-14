@@ -216,7 +216,7 @@ void add_task_pop_up(int prj_id){
     mvprintw(20, 0, "Please print new task dueDate:");
     refresh();
     string duedate = getstring();
-    new_task.dueDate = dueDate;
+    new_task.dueDate = duedate;
 
     clrtoeol();
     mvprintw(20, 0, "Please print new task assignee:");
@@ -234,6 +234,7 @@ void add_task_pop_up(int prj_id){
 }
 
 /**************************************************************************/
+#if 0
 //modify project status
 void modify_project_name_pop_up(int prj_id){
     int project_id;
@@ -472,7 +473,7 @@ void modify_project_status_pop_up(int prj_id){
     //already done
     //endwin();
 }
-
+#endif
 /*******POPUP FUNCTIONS END HERE**************/
 void goto_my_board_view(char *name)
 {
@@ -620,7 +621,7 @@ void control_menu_my_board_view()
             }
             if ((item_name(cur)[0] == '2'))
             {
-                change_task_status_pop_up(0);
+               // modify_task_status_pop_up(0);
             }
             if ((item_name(cur)[0] == '3'))
             {
@@ -720,7 +721,7 @@ bool get_name_from_login() {
     if(people_map.find(username) == people_map.end()){
         mvprintw(y / 2 +2, (x - strlen(errmsg)) / 2, "%s", errmsg);
 	refresh();
-	return true;
+	return false;
 	}
     else{
         //get user role
@@ -732,7 +733,7 @@ bool get_name_from_login() {
 	if(role == "Manager") ProjectManager* currentuser = new ProjectManager();
         mvprintw(y/2 +2, (x-strlen(smsg))/2,"%s",smsg);
 	refresh();
-	return false;
+	return true;
     }
 }
 

@@ -33,6 +33,6 @@ int modify_task_priority(Task *task, int priority);
 int modify_task_status(Task *task, string status);
 int modify_task_assignee(Task *task, string assignee);
 int modify_task_completiondate(Task *task,string completionDate);
-int modidy_task_issues(Task *task, string issues);
+int modify_task_issues(Task *task, string issues);
 int delete_task(Task *task, Project *projects);
 #endif

@@ -46,7 +46,7 @@ int modify_task_completiondate(Task *task,string completionDate){
   task->completionDate = completionDate;
   return 0;
 }
-int modidy_task_issues(Task *task, string issues){
+int modify_task_issues(Task *task, string issues){
   if (!task) return -1;
   task->issues = issues;
   return 0;
